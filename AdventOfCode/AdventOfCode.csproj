@@ -19,8 +19,4 @@
     <None Remove="Inputs\2020\5.txt" />
     <None Remove="Inputs\2020\6.txt" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Problems\Year2020\Utilities\" />
-  </ItemGroup>
 </Project>
