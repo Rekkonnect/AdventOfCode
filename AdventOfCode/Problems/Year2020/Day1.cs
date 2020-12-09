@@ -7,7 +7,7 @@ namespace AdventOfCode.Problems.Year2020
     {
         public override int SolvePart1()
         {
-            var numbers = FileLines.Select(a => int.Parse(a)).ToArray();
+            var numbers = FileNumbersInt32;
             Array.Sort(numbers);
             for (int i = 0; i < numbers.Length; i++)
             {
@@ -23,7 +23,7 @@ namespace AdventOfCode.Problems.Year2020
         {
             // THIS IS O(n^2 * logn) AND IT'S ACTUALLY THE BEST I COULD DO
             // SO MGOSTIH DOES NOT CRY
-            var numbers = FileLines.Select(a => int.Parse(a)).ToArray();
+            var numbers = FileNumbersInt32;
             Array.Sort(numbers);
 
             for (int i = 0; i < numbers.Length; i++)

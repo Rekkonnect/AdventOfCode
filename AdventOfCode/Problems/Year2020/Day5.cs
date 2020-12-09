@@ -6,11 +6,11 @@ namespace AdventOfCode.Problems.Year2020
     {
         public override int SolvePart1()
         {
-            return FileLines.Select(l => new SeatCode(l)).Max(s => s.SeatID);
+            return FileLines.Select(SeatCode.Parse).Max(s => s.SeatID);
         }
         public override int SolvePart2()
         {
-            var seats = FileLines.Select(l => new SeatCode(l));
+            var seats = FileLines.Select(SeatCode.Parse);
             int min = seats.Min(s => s.SeatID);
             int max = seats.Max(s => s.SeatID);
 
@@ -47,6 +47,8 @@ namespace AdventOfCode.Problems.Year2020
             {
                 SeatID = ParseFromBinaryRepresentation(SeatCodeToBinary(code));
             }
+
+            public static SeatCode Parse(string code) => new SeatCode(code);
         }
     }
 }

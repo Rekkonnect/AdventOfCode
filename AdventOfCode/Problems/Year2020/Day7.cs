@@ -21,7 +21,7 @@ namespace AdventOfCode.Problems.Year2020
 
         private RuleSystem GetRuleSystem()
         {
-            var rules = FileLines.Select(r => Rule.Parse(r));
+            var rules = FileLines.Select(Rule.Parse);
             return new RuleSystem(rules);
         }
 

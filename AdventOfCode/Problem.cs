@@ -26,8 +26,8 @@ namespace AdventOfCode
         protected string FileContents => GetFileContents(CurrentTestCase);
         protected string NormalizedFileContents => GetFileContents(CurrentTestCase).NormalizeLineEndings();
         protected string[] FileLines => GetFileLines(CurrentTestCase);
-        protected int[] FileNumbersInt32 => FileLines.Select(n => int.Parse(n)).ToArray();
-        protected long[] FileNumbersInt64 => FileLines.Select(n => long.Parse(n)).ToArray();
+        protected int[] FileNumbersInt32 => FileLines.Select(int.Parse).ToArray();
+        protected long[] FileNumbersInt64 => FileLines.Select(long.Parse).ToArray();
 
         public int Year => int.Parse(GetType().Namespace.Split('.').Last()[^4..]);
         public int Day => int.Parse(GetType().Name["Day".Length..]);
