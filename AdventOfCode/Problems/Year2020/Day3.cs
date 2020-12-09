@@ -5,7 +5,7 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day3 : Problem2<long>
     {
-        public override long RunPart1()
+        public override long SolvePart1()
         {
             long trees = 0;
 
@@ -18,7 +18,7 @@ namespace AdventOfCode.Problems.Year2020
 
             return trees;
         }
-        public override long RunPart2()
+        public override long SolvePart2()
         {
             var locationOffsets = new Location2D[] { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) };
             var slopes = new ValueCounterDictionary<Location2D>(locationOffsets, 0);

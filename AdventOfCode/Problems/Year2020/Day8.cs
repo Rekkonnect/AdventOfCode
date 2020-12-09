@@ -4,13 +4,13 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day8 : Problem2<int>
     {
-        public override int RunPart1()
+        public override int SolvePart1()
         {
             var computer = GetComputer();
             computer.RunUntilExecutedInstruction();
             return computer.Accumulator;
         }
-        public override int RunPart2()
+        public override int SolvePart2()
         {
             var computer = GetComputer();
             for (int i = 0; i < computer.TotalInstructions; i++)

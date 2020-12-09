@@ -40,7 +40,7 @@ namespace AdventOfCode
                 Console.WriteLine();
             }
             Console.WriteLine("Running problem");
-            foreach (var p in instance.RunAllParts())
+            foreach (var p in instance.SolveAllParts())
                 Console.WriteLine(p);
         }
     }

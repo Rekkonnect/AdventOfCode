@@ -6,7 +6,7 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day6 : Problem2<int>
     {
-        public override int RunPart1()
+        public override int SolvePart1()
         {
             var groups = NormalizedFileContents.Split("\n\n");
 
@@ -24,7 +24,7 @@ namespace AdventOfCode.Problems.Year2020
 
             return sum;
         }
-        public override int RunPart2()
+        public override int SolvePart2()
         {
             var groups = NormalizedFileContents.Split("\n\n");
 

@@ -5,7 +5,7 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day1 : Problem2<int>
     {
-        public override int RunPart1()
+        public override int SolvePart1()
         {
             var numbers = FileLines.Select(a => int.Parse(a)).ToArray();
             Array.Sort(numbers);
@@ -19,7 +19,7 @@ namespace AdventOfCode.Problems.Year2020
             }
             return -1;
         }
-        public override int RunPart2()
+        public override int SolvePart2()
         {
             // THIS IS O(n^2 * logn) AND IT'S ACTUALLY THE BEST I COULD DO
             // SO MGOSTIH DOES NOT CRY

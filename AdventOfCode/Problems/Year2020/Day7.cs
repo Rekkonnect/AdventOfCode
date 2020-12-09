@@ -8,12 +8,12 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day7 : Problem2<int>
     {
-        public override int RunPart1()
+        public override int SolvePart1()
         {
             var system = GetRuleSystem();
             return system.GetAllowedContainers("shiny gold").Count;
         }
-        public override int RunPart2()
+        public override int SolvePart2()
         {
             var system = GetRuleSystem();
             return system.GetTotalContainedBags("shiny gold");

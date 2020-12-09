@@ -4,11 +4,11 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day5 : Problem2<int>
     {
-        public override int RunPart1()
+        public override int SolvePart1()
         {
             return FileLines.Select(l => new SeatCode(l)).Max(s => s.SeatID);
         }
-        public override int RunPart2()
+        public override int SolvePart2()
         {
             var seats = FileLines.Select(l => new SeatCode(l));
             int min = seats.Min(s => s.SeatID);

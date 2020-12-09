@@ -4,7 +4,7 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day2 : Problem2<int>
     {
-        public override int RunPart1()
+        public override int SolvePart1()
         {
             int validPasswords = 0;
             foreach (var l in FileLines)
@@ -22,7 +22,7 @@ namespace AdventOfCode.Problems.Year2020
 
             return validPasswords;
         }
-        public override int RunPart2()
+        public override int SolvePart2()
         {
             int validPasswords = 0;
             foreach (var l in FileLines)

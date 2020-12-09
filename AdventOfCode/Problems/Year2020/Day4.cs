@@ -7,11 +7,11 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day4 : Problem2<int>
     {
-        public override int RunPart1()
+        public override int SolvePart1()
         {
             return AnalyzePassports(p => p.HasRequiredFields);
         }
-        public override int RunPart2()
+        public override int SolvePart2()
         {
             return AnalyzePassports(p => p.IsValid);
         }
