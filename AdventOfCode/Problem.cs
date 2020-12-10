@@ -1,4 +1,4 @@
-﻿using AdventOfCode.Functions;
+﻿using Garyon.Extensions;
 using System;
 using System.IO;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace AdventOfCode
 
         protected string BaseDirectory => $@"Inputs\{Year}";
         protected string FileContents => GetFileContents(CurrentTestCase);
-        protected string NormalizedFileContents => GetFileContents(CurrentTestCase).NormalizeLineEndings();
+        protected string NormalizedFileContents => GetFileContents(CurrentTestCase).NormalizeLineSeparators();
         protected string[] FileLines => GetFileLines(CurrentTestCase);
         protected int[] FileNumbersInt32 => FileLines.Select(int.Parse).ToArray();
         protected long[] FileNumbersInt64 => FileLines.Select(long.Parse).ToArray();
