@@ -19,4 +19,8 @@
     <None Remove="Inputs\2020\5.txt" />
     <None Remove="Inputs\2020\6.txt" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Garyon" Version="0.1.0" />
+  </ItemGroup>
 </Project>

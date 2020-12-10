@@ -1,5 +1,5 @@
 ﻿using System;
-using static AdventOfCode.Functions.MathExtensions;
+using static AdventOfCode.Functions.MathFunctions;
 using static System.Math;
 
 namespace AdventOfCode.Utilities.TwoDimensions

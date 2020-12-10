@@ -18,7 +18,7 @@ namespace AdventOfCode.Problems.Year2020
 
         private int AnalyzePassports(Func<Passport, bool> predicate)
         {
-            return FileContents.NormalizeLineEndings().Split("\n\n").Select(Passport.Parse).ToList().Count(predicate);
+            return NormalizedFileContents.Split("\n\n").Select(Passport.Parse).ToList().Count(predicate);
         }
 
         private class Passport

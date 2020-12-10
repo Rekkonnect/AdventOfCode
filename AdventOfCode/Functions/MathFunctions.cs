@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Functions
 {
-    public static class MathExtensions
+    public static class MathFunctions
     {
         public const double FullCircleDegrees = 360;
         public const double FullCircleRadians = 2 * PI;
@@ -20,13 +20,13 @@ namespace AdventOfCode.Functions
                 else
                     b %= a;
 
-            return a == 0 ? b : a;
+            return a | b;
         }
-        public static void SimplifyFraction(ref int a, ref int b)
+        public static void SimplifyFraction(ref int nominator, ref int denominator)
         {
-            var gcd = GCD(a, b);
-            a /= gcd;
-            b /= gcd;
+            var gcd = GCD(nominator, denominator);
+            nominator /= gcd;
+            denominator /= gcd;
         }
 
         public static double ToDegrees(double rad) => rad / PI * 180;

@@ -1,4 +1,4 @@
-﻿using AdventOfCode.Functions;
+﻿using Garyon.Extensions;
 using AdventOfCode.Utilities;
 using System.Linq;
 
