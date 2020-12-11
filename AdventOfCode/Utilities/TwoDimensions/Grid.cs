@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using static System.Convert;
 
 namespace AdventOfCode.Utilities.TwoDimensions
 {
-    public abstract class Grid<T>
+    public abstract class Grid<T> : IEnumerable<T>
     {
         protected T[,] Values;
 
@@ -80,6 +81,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
                     if (Values[x, y].Equals(original) && GetAdjacentValues((x, y)) == 4)
                         Values[x, y] = intersection;
         }
+
+        #region Adjacency
         public int GetAdjacentValues(Location2D location) => GetAdjacentValues(location.X, location.Y);
         public int GetAdjacentValues(Location2D location, T value) => GetAdjacentValues(location.X, location.Y, value);
         public int GetAdjacentValues(int x, int y) => GetAdjacentValues(x, y, Values[x, y]);
@@ -98,6 +101,33 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
             return result;
         }
+
+        public int GetAdjacentValuesWithDiagonals(Location2D location) => GetAdjacentValuesWithDiagonals(location.X, location.Y);
+        public int GetAdjacentValuesWithDiagonals(Location2D location, T value) => GetAdjacentValuesWithDiagonals(location.X, location.Y, value);
+        public int GetAdjacentValuesWithDiagonals(int x, int y) => GetAdjacentValuesWithDiagonals(x, y, Values[x, y]);
+        public virtual int GetAdjacentValuesWithDiagonals(int x, int y, T value)
+        {
+            int result = GetAdjacentValues(x, y, value);
+
+            // If only there was a convenient way to ignore out of bounds exceptions
+            if (x - 1 >= 0)
+            {
+                if (y - 1 >= 0)
+                    result += ToInt32(value.Equals(Values[x - 1, y - 1]));
+                if (y + 1 < Height)
+                    result += ToInt32(value.Equals(Values[x - 1, y + 1]));
+            }
+            if (x + 1 < Width)
+            {
+                if (y - 1 >= 0)
+                    result += ToInt32(value.Equals(Values[x + 1, y - 1]));
+                if (y + 1 < Height)
+                    result += ToInt32(value.Equals(Values[x + 1, y + 1]));
+            }
+
+            return result;
+        }
+        #endregion
 
         public int GetMedianXOfFirstRegion(int y, T regionValue)
         {
@@ -166,6 +196,14 @@ namespace AdventOfCode.Utilities.TwoDimensions
         public bool IsValidLocation(Location2D location) => location.IsNonNegative && location.X < Width && location.Y < Height;
 
         protected virtual bool IsImpassableObject(T element) => false;
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            // Is that how it should be done?
+            foreach (T v in Values)
+                yield return v;
+        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public virtual T this[int x, int y]
         {
