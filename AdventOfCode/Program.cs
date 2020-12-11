@@ -8,7 +8,7 @@ namespace AdventOfCode
     {
         public static void Main(string[] args)
         {
-            var currentDate = DateTime.Now;
+            var currentDate = DateTime.Now - TimeSpan.FromHours(7);
             var currentYear = currentDate.Year;
             var currentDay = currentDate.Day;
 
@@ -22,7 +22,6 @@ namespace AdventOfCode
             }
         }
         
-
         private static void RunProblem<T>()
             where T : Problem, new()
         {

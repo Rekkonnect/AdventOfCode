@@ -82,7 +82,10 @@ namespace AdventOfCode.Problems.Year2020
         }
         protected override void LoadState()
         {
-            numbers ??= FileNumbersInt32;
+            if (numbers != null)
+                return;
+
+            numbers = FileNumbersInt32;
             Array.Sort(numbers);
         }
     }

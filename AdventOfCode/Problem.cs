@@ -33,15 +33,23 @@ namespace AdventOfCode
         public int Day => int.Parse(GetType().Name["Day".Length..]);
         public int TestCaseFiles => Directory.GetFiles(BaseDirectory).Where(f => f.Replace('\\', '/').Split('/').Last().StartsWith($"{Day}T")).Count();
 
-        public object[] SolveAllParts() => SolveAllParts("RunPart", null);
-        public object[] TestRunAllParts(int testCase) => SolveAllParts("TestRunPart", new object[] { testCase });
+        public object[] SolveAllParts(bool displayExecutionTimes = true) => SolveAllParts("RunPart", null, displayExecutionTimes);
+        public object[] TestRunAllParts(int testCase, bool displayExecutionTimes = true) => SolveAllParts("TestRunPart", new object[] { testCase }, displayExecutionTimes);
 
-        private object[] SolveAllParts(string methodPrefix, object[] parameters)
+        private object[] SolveAllParts(string methodPrefix, object[] parameters, bool displayExecutionTimes)
         {
             var methods = GetType().GetMethods().Where(m => m.Name.StartsWith(methodPrefix)).ToArray();
             var result = new object[methods.Length];
             for (int i = 0; i < result.Length; i++)
+            {
+                var start = DateTime.Now;
+
                 result[i] = methods[i].Invoke(this, parameters);
+
+                var end = DateTime.Now;
+                if (displayExecutionTimes)
+                    Console.WriteLine($"Part {i + 1} execution time: {(end - start).TotalMilliseconds:N2}ms");
+            }
             return result;
         }
 
