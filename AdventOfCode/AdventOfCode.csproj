@@ -5,6 +5,14 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Include="Inputs\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -15,6 +23,7 @@
     <None Remove="Inputs\2020\10T1.txt" />
     <None Remove="Inputs\2020\10T2.txt" />
     <None Remove="Inputs\2020\11T1.txt" />
+    <None Remove="Inputs\2020\12T1.txt" />
     <None Remove="Inputs\2020\1T2.txt" />
     <None Remove="Inputs\2020\2.txt" />
     <None Remove="Inputs\2020\3.txt" />

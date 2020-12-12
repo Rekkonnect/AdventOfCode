@@ -27,6 +27,40 @@ namespace AdventOfCode.Utilities.TwoDimensions
         public Location2D InvertY => (X, -Y);
         public Location2D Transpose => (Y, X);
 
+        public Quadrant Quadrant
+        {
+            get
+            {
+                if (IsNonNegative)
+                    return Quadrant.TopRight;
+
+                if (IsNonPositive)
+                    return Quadrant.BottomLeft;
+
+                if (X < 0 && Y >= 0)
+                    return Quadrant.TopLeft;
+
+                if (X >= 0 && Y < 0)
+                    return Quadrant.BottomRight;
+
+                // This should never be reached
+                return default;
+            }
+            set
+            {
+                (X, Y) = value switch
+                {
+                    Quadrant.TopRight => (Abs(X), Abs(Y)),
+                    Quadrant.TopLeft => (-Abs(X), Abs(Y)),
+                    Quadrant.BottomLeft => (-Abs(X), -Abs(Y)),
+                    Quadrant.BottomRight => (Abs(X), -Abs(Y)),
+
+                    // Preserve state in case of fucked up input
+                    _ => (X, Y)
+                };
+            }
+        }
+
         IHasX IHasX.InvertX => InvertX;
         IHasY IHasY.InvertY => InvertY;
 
@@ -55,6 +89,26 @@ namespace AdventOfCode.Utilities.TwoDimensions
             return AddRadians(HalfCircleRadians, Atan2(slope.Y, slope.X));
         }
         public double GetSlopeDegrees(Location2D other) => ToDegrees(GetSlopeRadians(other));
+
+        public void TurnRightAroundCenter()
+        {
+            this = Transpose.InvertY;
+        }
+        public void TurnLeftAroundCenter()
+        {
+            this = Transpose.InvertX;
+        }
+
+        public void TurnRightAroundCenter(int times)
+        {
+            for (int i = 0; i < times; i++)
+                TurnRightAroundCenter();
+        }
+        public void TurnLeftAroundCenter(int times)
+        {
+            for (int i = 0; i < times; i++)
+                TurnLeftAroundCenter();
+        }
 
         public void Forward(Direction d, bool invertX = false, bool invertY = false) => Forward(d, 1, invertX, invertY);
         public void Forward(Direction d, int moves, bool invertX = false, bool invertY = false) => this += new DirectionalLocation(d, invertX, invertY).LocationOffset * moves;

@@ -5,6 +5,11 @@
         Up,
         Down,
         Left,
-        Right
+        Right,
+
+        North = Up,
+        South = Down,
+        East = Right,
+        West = Left,
     }
 }

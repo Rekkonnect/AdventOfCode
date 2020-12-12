@@ -6,10 +6,10 @@ namespace AdventOfCode.Utilities.TwoDimensions
     {
         private static Dictionary<Direction, Location2D> locations = new Dictionary<Direction, Location2D>
         {
-            { Direction.Up, (0, 1) },
-            { Direction.Down, (0, -1) },
-            { Direction.Left, (-1, 0) },
-            { Direction.Right, (1, 0) },
+            [Direction.Up] = (0, 1),
+            [Direction.Down] = (0, -1),
+            [Direction.Left] = (-1, 0),
+            [Direction.Right] = (1, 0),
         };
         private static Direction[] orderedDirections =
         {
@@ -50,12 +50,15 @@ namespace AdventOfCode.Utilities.TwoDimensions
         public Direction TurnLeft() => Turn(3);
         public Direction TurnRight() => Turn(1);
 
+        public Direction TurnLeft(int times) => Turn(4 - times);
+        public Direction TurnRight(int times) => Turn(times);
+
         private Direction Turn(int indexAdjustment)
         {
             directionIndex = (directionIndex + indexAdjustment) % 4;
             return Direction;
         }
-        
+
         public static Location2D GetLocationOffset(Direction d, bool invertX = false, bool invertY = false)
         {
             var l = locations[d];
@@ -73,7 +76,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
                 'D' => Direction.Down,
                 'L' => Direction.Left,
                 'R' => Direction.Right,
-                 _  => default,
+                _ => default,
             });
         }
 
