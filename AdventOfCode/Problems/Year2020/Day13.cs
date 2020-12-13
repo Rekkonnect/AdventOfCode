@@ -75,15 +75,7 @@ namespace AdventOfCode.Problems.Year2020
                 }
             }
 
-            currentTimestamp -= sortedIDOffsets[0];
-
-            while (true)
-            {
-                if (currentTimestamp % busIDs[0] == 0)
-                    return currentTimestamp;
-
-                currentTimestamp += velocity;
-            }
+            return currentTimestamp - sortedIDOffsets[0];
         }
 
         private static int CompareDescending<T>(T a, T b)
