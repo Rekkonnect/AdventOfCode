@@ -8,7 +8,7 @@ namespace AdventOfCode
     {
         public static void Main(string[] args)
         {
-            var currentDate = DateTime.Now - TimeSpan.FromHours(7);
+            var currentDate = DateTime.UtcNow - TimeSpan.FromHours(5);
             var currentYear = currentDate.Year;
             var currentDay = currentDate.Day;
 
