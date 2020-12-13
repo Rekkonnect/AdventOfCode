@@ -99,7 +99,7 @@ namespace AdventOfCode.Problems.Year2020
                         return false;
 
                     var hex = stringValue[1..];
-                    return !hex.Any(c => !c.IsValidHexCharacter());
+                    return hex.IsValidHexString();
                 }
             }
             private bool IsValidEyeColor => validEyeColors.Contains(EyeColor);

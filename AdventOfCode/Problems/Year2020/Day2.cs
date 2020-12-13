@@ -15,7 +15,7 @@ namespace AdventOfCode.Problems.Year2020
                 int max = int.Parse(splitRange[1]);
                 char matchingCharacter = split[1][0];
                 var password = split[2];
-                int occurrences = password.OccurrencesOf(matchingCharacter);
+                int occurrences = password.GetCharacterOccurences(matchingCharacter);
                 if (min <= occurrences && occurrences <= max)
                     validPasswords++;
             }
@@ -33,7 +33,7 @@ namespace AdventOfCode.Problems.Year2020
                 int b = int.Parse(splitRange[1]) - 1;
                 char matchingCharacter = split[1][0];
                 var password = split[2];
-                int occurrences = password.OccurrencesOf(matchingCharacter);
+                int occurrences = password.GetCharacterOccurences(matchingCharacter);
                 if ((password[a] == matchingCharacter) ^ (password[b] == matchingCharacter))
                     validPasswords++;
             }

@@ -9,7 +9,8 @@ namespace AdventOfCode.Functions
         public const double HalfCircleDegrees = 180;
         public const double HalfCircleRadians = PI;
 
-        public static int GCD(int a, int b)
+        public static int GCD(int a, int b) => (int)GCD((long)a, b);
+        public static long GCD(long a, long b)
         {
             a = Abs(a);
             b = Abs(b);
@@ -22,6 +23,8 @@ namespace AdventOfCode.Functions
 
             return a | b;
         }
+        public static long LCM(long a, long b) => a * b / GCD(a, b);
+
         public static void SimplifyFraction(ref int nominator, ref int denominator)
         {
             var gcd = GCD(nominator, denominator);
