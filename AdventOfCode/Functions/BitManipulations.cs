@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
+using System.Runtime.Intrinsics.X86;
 
 namespace AdventOfCode.Functions
 {
@@ -10,6 +12,18 @@ namespace AdventOfCode.Functions
         /// <returns>The combinations that were generated. Each combination is generated and returned using <see langword="yield return"/>.</returns>
         public static IEnumerable<ulong> GetCombinationsFromMask(ulong mask, int accountedBits = 64)
         {
+            if (Bmi2.X64.IsSupported)
+            {
+                var maxCombination = 1ul << BitOperations.PopCount(mask);
+                for (ulong combinationIndex = 0; combinationIndex < maxCombination; combinationIndex++)
+                    yield return Bmi2.X64.ParallelBitDeposit(combinationIndex, mask);
+
+                yield break;
+            }
+
+            // I had written this code before discovering the PDEP instruction
+            // So I'm mercying people with ARM-based CPUs by leaving this piece of code here
+
             var aceIndices = new List<int>(accountedBits);
             ulong currentMask = 1;
             for (int i = 0; i < accountedBits; i++, currentMask <<= 1)
