@@ -1,18 +1,20 @@
-﻿using System.Linq;
+﻿using AdventOfCode.Functions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
     public class Day5 : Problem2<int>
     {
+        private IEnumerable<SeatCode> seats;
+
         public override int SolvePart1()
         {
-            return FileLines.Select(SeatCode.Parse).Max(s => s.SeatID);
+            return seats.Max(s => s.SeatID);
         }
         public override int SolvePart2()
         {
-            var seats = FileLines.Select(SeatCode.Parse);
-            int min = seats.Min(s => s.SeatID);
-            int max = seats.Max(s => s.SeatID);
+            var (min, max) = seats.MinMax(s => s.SeatID);
 
             bool[] occupiedSeats = new bool[max + 1];
             foreach (var s in seats)
@@ -23,6 +25,15 @@ namespace AdventOfCode.Problems.Year2020
                     return i;
 
             return -1;
+        }
+
+        protected override void LoadState()
+        {
+            seats = FileLines.Select(SeatCode.Parse);
+        }
+        protected override void ResetState()
+        {
+            seats = null;
         }
 
         private static string SeatCodeToBinary(string code) => code.Replace('F', '0').Replace('B', '1').Replace('L', '0').Replace('R', '1');

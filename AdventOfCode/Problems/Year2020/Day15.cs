@@ -1,44 +1,48 @@
-﻿using AdventOfCode.Utilities;
+﻿using System.Buffers;
 using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day15 : Problem<int, long>
+    public class Day15 : Problem2<int>
     {
         private int[] startingNumbers;
 
         public override int SolvePart1()
         {
-            var game = new NumberGame(startingNumbers);
-            game.PlayUntilTurn(2019);
-            return game.LastSpokenNumber;
+            return RunGame(2020);
         }
-        public override long SolvePart2()
+        public override int SolvePart2()
         {
-            var game = new NumberGame(startingNumbers);
-            // Brute force because fuck it
-            game.PlayUntilTurn(30000000 - 1);
+            return RunGame(30000000);
+        }
+
+        private int RunGame(int turns)
+        {
+            var game = new NumberGame(startingNumbers, turns);
+            game.PlayUntilTurn(turns - 1);
             return game.LastSpokenNumber;
         }
 
-        protected override void ResetState()
-        {
-            startingNumbers = null;
-        }
         protected override void LoadState()
         {
             startingNumbers = FileContents.Split(',').Select(int.Parse).ToArray();
         }
+        protected override void ResetState()
+        {
+            startingNumbers = null;
+        }
 
         private class NumberGame
         {
-            private FlexibleDictionary<int, NumberGameEntry> spokenNumbers = new();
+            private NumberGameEntry[] spokenNumbersTable;
 
             public int CurrentTurn { get; private set; }
             public int LastSpokenNumber { get; private set; }
 
-            public NumberGame(int[] startingNumbers)
+            public NumberGame(int[] startingNumbers, int expectedTurns)
             {
+                spokenNumbersTable = new NumberGameEntry[expectedTurns];
+
                 for (CurrentTurn = 0; CurrentTurn < startingNumbers.Length; CurrentTurn++)
                     RegisterSpokenNumber(startingNumbers[CurrentTurn]);
             }
@@ -51,11 +55,11 @@ namespace AdventOfCode.Problems.Year2020
             }
             public void PlayTurn()
             {
-                var last = spokenNumbers[LastSpokenNumber];
-                if ((last?.SpokenTimes ?? 0) <= 1)
-                    RegisterTurn(0);
-                else
+                var last = spokenNumbersTable[LastSpokenNumber];
+                if (last?.SpokenTwice == true)
                     RegisterTurn(last.LastSpokenTurn - last.PreviousSpokenTurn);
+                else
+                    RegisterTurn(0);
             }
             private void RegisterTurn(int number)
             {
@@ -65,25 +69,19 @@ namespace AdventOfCode.Problems.Year2020
             }
             private void RegisterSpokenNumber(int number)
             {
-                spokenNumbers[number] ??= new NumberGameEntry(number);
-                spokenNumbers[number].RegisterSpoken(CurrentTurn);
+                spokenNumbersTable[number] ??= new();
+                spokenNumbersTable[number].RegisterSpoken(CurrentTurn);
             }
         }
         private class NumberGameEntry
         {
-            public int Number { get; init; }
-            public int SpokenTimes { get; private set; }
-            public int LastSpokenTurn { get; private set; }
-            public int PreviousSpokenTurn { get; private set; }
+            public int LastSpokenTurn { get; private set; } = -1;
+            public int PreviousSpokenTurn { get; private set; } = -1;
 
-            public NumberGameEntry(int number)
-            {
-                Number = number;
-            }
+            public bool SpokenTwice => PreviousSpokenTurn > -1;
 
             public void RegisterSpoken(int currentTurn)
             {
-                SpokenTimes++;
                 PreviousSpokenTurn = LastSpokenTurn;
                 LastSpokenTurn = currentTurn;
             }

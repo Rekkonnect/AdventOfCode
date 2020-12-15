@@ -7,6 +7,8 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day4 : Problem2<int>
     {
+        private IEnumerable<Passport> passports;
+
         public override int SolvePart1()
         {
             return AnalyzePassports(p => p.HasRequiredFields);
@@ -16,9 +18,15 @@ namespace AdventOfCode.Problems.Year2020
             return AnalyzePassports(p => p.IsValid);
         }
 
-        private int AnalyzePassports(Func<Passport, bool> predicate)
+        private int AnalyzePassports(Func<Passport, bool> predicate) => passports.Count(predicate);
+
+        protected override void LoadState()
         {
-            return NormalizedFileContents.Split("\n\n").Select(Passport.Parse).ToList().Count(predicate);
+            passports = NormalizedFileContents.Split("\n\n").Select(Passport.Parse);
+        }
+        protected override void ResetState()
+        {
+            passports = null;
         }
 
         private class Passport

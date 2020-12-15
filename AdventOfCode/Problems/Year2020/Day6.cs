@@ -1,33 +1,44 @@
-﻿using Garyon.Extensions;
-using AdventOfCode.Utilities;
+﻿using AdventOfCode.Utilities;
+using Garyon.Extensions;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
     public class Day6 : Problem2<int>
     {
+        private string[] groups;
+
         public override int SolvePart1()
         {
-            var groups = NormalizedFileContents.Split("\n\n");
+            return SolveProblem(Predicate);
 
-            int sum = 0;
-            var dictionary = new BoolDictionary('a', 'z');
-            foreach (var group in groups)
+            bool Predicate(KeyValuePair<char, int> counter, int peopleCount)
             {
-                foreach (var person in group.GetLines())
-                    foreach (var question in person)
-                        dictionary.Set(question);
-                
-                sum += dictionary.Count;
-                dictionary.Reset();
+                return counter.Value > 0;
             }
-
-            return sum;
         }
         public override int SolvePart2()
         {
-            var groups = NormalizedFileContents.Split("\n\n");
+            return SolveProblem(Predicate);
 
+            bool Predicate(KeyValuePair<char, int> counter, int peopleCount)
+            {
+                return counter.Value == peopleCount;
+            }
+        }
+
+        protected override void LoadState()
+        {
+            groups = NormalizedFileContents.Split("\n\n");
+        }
+        protected override void ResetState()
+        {
+            groups = null;
+        }
+
+        private int SolveProblem(SumCalculationPredicate sumCalculationPredicate)
+        {
             int sum = 0;
             var dictionary = new ValueCounterDictionary<char>();
             foreach (var group in groups)
@@ -38,11 +49,13 @@ namespace AdventOfCode.Problems.Year2020
                     foreach (var question in person)
                         dictionary.Add(question);
 
-                sum += dictionary.Count(kvp => kvp.Value == people.Length);
+                sum += dictionary.Count(kvp => sumCalculationPredicate(kvp, people.Length));
                 dictionary.Clear();
             }
 
             return sum;
         }
+
+        private delegate bool SumCalculationPredicate(KeyValuePair<char, int> counter, int peopleCount);
     }
 }

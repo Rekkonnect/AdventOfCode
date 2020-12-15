@@ -8,21 +8,25 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day7 : Problem2<int>
     {
+        private RuleSystem system;
+
         public override int SolvePart1()
         {
-            var system = GetRuleSystem();
             return system.GetAllowedContainers("shiny gold").Count;
         }
         public override int SolvePart2()
         {
-            var system = GetRuleSystem();
             return system.GetTotalContainedBags("shiny gold");
         }
 
-        private RuleSystem GetRuleSystem()
+        protected override void LoadState()
         {
             var rules = FileLines.Select(Rule.Parse);
-            return new RuleSystem(rules);
+            system = new RuleSystem(rules);
+        }
+        protected override void ResetState()
+        {
+            system = null;
         }
 
         private class RuleSystem

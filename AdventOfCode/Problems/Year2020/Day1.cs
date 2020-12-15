@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
     public class Day1 : Problem2<int>
     {
+        private int[] numbers;
+
         public override int SolvePart1()
         {
-            var numbers = FileNumbersInt32;
-            Array.Sort(numbers);
             for (int i = 0; i < numbers.Length; i++)
             {
                 int a = numbers[i];
@@ -23,8 +22,6 @@ namespace AdventOfCode.Problems.Year2020
         {
             // THIS IS O(n^2 * logn) AND IT'S ACTUALLY THE BEST I COULD DO
             // SO MGOSTIH DOES NOT CRY
-            var numbers = FileNumbersInt32;
-            Array.Sort(numbers);
 
             for (int i = 0; i < numbers.Length; i++)
             {
@@ -43,6 +40,16 @@ namespace AdventOfCode.Problems.Year2020
                 }
             }
             return -1;
+        }
+
+        protected override void LoadState()
+        {
+            numbers = FileNumbersInt32;
+            Array.Sort(numbers);
+        }
+        protected override void ResetState()
+        {
+            numbers = null;
         }
     }
 }

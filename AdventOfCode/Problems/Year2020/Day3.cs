@@ -5,11 +5,12 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day3 : Problem2<long>
     {
+        private TreeGrid grid;
+
         public override long SolvePart1()
         {
             long trees = 0;
 
-            var grid = ParseGrid();
             for (int i = 0; i < grid.Height; i++)
             {
                 if (grid[i * 3, i] == TreeGridCellType.Tree)
@@ -23,7 +24,6 @@ namespace AdventOfCode.Problems.Year2020
             var locationOffsets = new Location2D[] { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) };
             var slopes = new ValueCounterDictionary<Location2D>(locationOffsets, 0);
 
-            var grid = ParseGrid();
             for (int i = 0; i < grid.Height; i++)
             {
                 foreach (var o in locationOffsets)
@@ -41,6 +41,15 @@ namespace AdventOfCode.Problems.Year2020
             foreach (var s in slopes)
                 product *= s.Value;
             return product;
+        }
+
+        protected override void LoadState()
+        {
+            grid = ParseGrid();
+        }
+        protected override void ResetState()
+        {
+            grid = null;
         }
 
         private TreeGrid ParseGrid()

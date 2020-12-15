@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using Garyon.Exceptions;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace AdventOfCode.Utilities
 {
@@ -24,6 +27,27 @@ namespace AdventOfCode.Utilities
         {
             Remove(oldValue);
             Add(newValue);
+        }
+
+        public int GetFilteredCountersNumber(int value, InequalityState inequality = InequalityState.Equal)
+        {
+            inequality &= InequalityState.Any;
+
+            if (inequality == InequalityState.Any)
+                return Count;
+
+            if (inequality == default)
+                ThrowHelper.Throw<InvalidEnumArgumentException>("There provided inequality state is invalid.");
+
+            return Values.Count(v => inequality switch
+            {
+                InequalityState.Less => v < value,
+                InequalityState.Equal => v == value,
+                InequalityState.Greater => v > value,
+                InequalityState.LessOrEqual => v <= value,
+                InequalityState.GreaterOrEqual => v >= value,
+                InequalityState.Different => v != value,
+            });
         }
 
         public override int this[T key]

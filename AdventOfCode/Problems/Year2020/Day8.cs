@@ -4,15 +4,15 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day8 : Problem2<int>
     {
+        private ConsoleSimulator computer;
+
         public override int SolvePart1()
         {
-            var computer = GetComputer();
             computer.RunUntilExecutedInstruction();
             return computer.Accumulator;
         }
         public override int SolvePart2()
         {
-            var computer = GetComputer();
             for (int i = 0; i < computer.TotalInstructions; i++)
             {
                 var instruction = computer.Instructions[i];
@@ -41,9 +41,13 @@ namespace AdventOfCode.Problems.Year2020
             return -1;
         }
 
-        private ConsoleSimulator GetComputer()
+        protected override void LoadState()
         {
-            return new(FileLines, true);
+            computer = new(FileLines, true);
+        }
+        protected override void ResetState()
+        {
+            computer = null;
         }
     }
 }

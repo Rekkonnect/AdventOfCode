@@ -11,6 +11,8 @@ namespace AdventOfCode.Utilities
         public IEnumerable<TKey> Keys => dictionary.Keys;
         public IEnumerable<TValue> Values => dictionary.Values;
 
+        public int Count => dictionary.Count;
+
         public FlexibleDictionary() { }
         public FlexibleDictionary(IEnumerable collection)
         {
