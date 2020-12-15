@@ -1,6 +1,6 @@
 ## Custom files that should not be included in the repo
 Maintenance.cs
-AdventOfCode/Problems/Year2020/SolutionTemplate.cs
+AdventOfCode/Problems/SolutionTemplate.cs
 
 ## --- Generated stuff
 ## Ignore Visual Studio temporary files, build results, and
