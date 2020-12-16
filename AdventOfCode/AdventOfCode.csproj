@@ -32,6 +32,8 @@
     <None Remove="Inputs\2020\13T6.txt" />
     <None Remove="Inputs\2020\14T1.txt" />
     <None Remove="Inputs\2020\15T1.txt" />
+    <None Remove="Inputs\2020\16T1.txt" />
+    <None Remove="Inputs\2020\16T2.txt" />
     <None Remove="Inputs\2020\1T2.txt" />
     <None Remove="Inputs\2020\2.txt" />
     <None Remove="Inputs\2020\3.txt" />
