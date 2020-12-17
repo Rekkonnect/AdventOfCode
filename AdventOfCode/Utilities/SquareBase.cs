@@ -1,5 +1,6 @@
 ﻿namespace AdventOfCode.Utilities
 {
+    // This should be probably inherit Grid2D
     public class SquareBase<T>
     {
         protected T[,] Values;

@@ -188,7 +188,7 @@ namespace AdventOfCode.Problems.Year2020
             };
         }
 
-        private class SeatGrid : Grid<SeatGridCell>
+        private class SeatGrid : Grid2D<SeatGridCell>
         {
             public SeatGrid(int width, int height)
                 : base(width, height) { }

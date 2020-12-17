@@ -4,21 +4,21 @@ using System.Text;
 
 namespace AdventOfCode.Utilities.TwoDimensions
 {
-    public abstract class PrintableGrid<T> : Grid<T>
+    public abstract class PrintableGrid2D<T> : Grid2D<T>, IPrintableGrid<T>
     {
         private Dictionary<T, char> printableCharacters;
 
-        private PrintableGrid(int width, int height, T defaultValue, bool initializeValueCounters)
+        private PrintableGrid2D(int width, int height, T defaultValue, bool initializeValueCounters)
             : base(width, height, defaultValue, initializeValueCounters)
         {
             printableCharacters = GetPrintableCharacters();
         }
 
-        public PrintableGrid(int both) : this(both, both, default) { }
-        public PrintableGrid(int both, T defaultValue) : this(both, both, defaultValue) { }
-        public PrintableGrid(int width, int height) : this(width, height, default) { }
-        public PrintableGrid(int width, int height, T defaultValue) : this(width, height, defaultValue, true) { }
-        public PrintableGrid(PrintableGrid<T> other)
+        public PrintableGrid2D(int both) : this(both, both, default) { }
+        public PrintableGrid2D(int both, T defaultValue) : this(both, both, defaultValue) { }
+        public PrintableGrid2D(int width, int height) : this(width, height, default) { }
+        public PrintableGrid2D(int width, int height, T defaultValue) : this(width, height, defaultValue, true) { }
+        public PrintableGrid2D(PrintableGrid2D<T> other)
             : base(other)
         {
             printableCharacters = other.printableCharacters;

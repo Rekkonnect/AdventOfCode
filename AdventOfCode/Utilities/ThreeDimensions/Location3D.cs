@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32.SafeHandles;
+﻿using System;
 using static System.Math;
 
 namespace AdventOfCode.Utilities.ThreeDimensions
@@ -18,6 +18,7 @@ namespace AdventOfCode.Utilities.ThreeDimensions
         public bool IsNegative => X < 0 && Y < 0 && Z < 0;
 
         public int ValueSum => X + Y + Z;
+        public int ValueProduct => X * Y * Z;
         public int ManhattanDistanceFromCenter => Absolute.ValueSum;
 
         public Location3D Absolute => (Abs(X), Abs(Y), Abs(Z));
@@ -31,10 +32,11 @@ namespace AdventOfCode.Utilities.ThreeDimensions
         IHasY IHasY.InvertY => InvertY;
         IHasZ IHasZ.InvertZ => InvertZ;
 
+        public Location3D(int all) => (X, Y, Z) = (all, all, all);
         public Location3D(int x, int y, int z) => (X, Y, Z) = (x, y, z);
         public Location3D((int, int, int) point) => (X, Y, Z) = point;
 
-        public int ManhattanDistance(Location3D other) => Abs(X - other.X) + Abs(Y - other.Y);
+        public int ManhattanDistance(Location3D other) => Abs(X - other.X) + Abs(Y - other.Y) + Abs(Z - other.Z);
 
         public Location3D SignedDifferenceFrom(Location3D other)
         {
@@ -63,6 +65,10 @@ namespace AdventOfCode.Utilities.ThreeDimensions
         public static bool operator ==(Location3D left, Location3D right) => left.X == right.X && left.Y == right.Y && left.Z == right.Z;
         public static bool operator !=(Location3D left, Location3D right) => left.X != right.X || left.Y != right.Y || left.Z != right.Z;
 
+        public bool Equals(Location3D other) => this == other;
+
         public override string ToString() => $"({X}, {Y}, {Z})";
+        public override int GetHashCode() => HashCode.Combine(X, Y, Z);
+        public override bool Equals(object obj) => obj is Location3D l && this == l;
     }
 }

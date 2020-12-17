@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Utilities
+﻿using System;
+
+namespace AdventOfCode.Utilities
 {
     public interface ILocation
     {
@@ -9,10 +11,11 @@
         bool IsNegative { get; }
 
         int ValueSum { get; }
+        int ValueProduct { get; }
         int ManhattanDistanceFromCenter { get; }
     }
 
-    public interface ILocation<T> : ILocation
+    public interface ILocation<T> : ILocation, IEquatable<T>
     {
         T Absolute { get; }
         T Invert { get; }

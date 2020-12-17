@@ -1,6 +1,7 @@
 ## Custom files that should not be included in the repo
 Maintenance.cs
 AdventOfCode/Problems/SolutionTemplate.cs
+AdventOfCode.Benchmarks
 
 ## --- Generated stuff
 ## Ignore Visual Studio temporary files, build results, and

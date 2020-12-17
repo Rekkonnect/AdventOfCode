@@ -4,7 +4,7 @@ using static System.Math;
 
 namespace AdventOfCode.Utilities.TwoDimensions
 {
-    public struct Location2D : IEquatable<Location2D>, ILocation<Location2D>, IHasX, IHasY
+    public struct Location2D : ILocation<Location2D>, IHasX, IHasY
     {
         public static Location2D Zero => (0, 0);
 
@@ -18,6 +18,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
         public bool IsNegative => X < 0 && Y < 0;
 
         public int ValueSum => X + Y;
+        public int ValueProduct => X * Y;
         public int ManhattanDistanceFromCenter => Absolute.ValueSum;
 
         public Location2D Absolute => (Abs(X), Abs(Y));

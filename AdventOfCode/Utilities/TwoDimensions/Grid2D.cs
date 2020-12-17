@@ -1,24 +1,25 @@
-﻿using System.Collections;
+﻿using AdventOfCode.Utilities.FourDimensions;
+using AdventOfCode.Utilities.ThreeDimensions;
+using Garyon.DataStructures;
 using System.Collections.Generic;
 using static System.Convert;
 
 namespace AdventOfCode.Utilities.TwoDimensions
 {
-    public abstract class Grid<T> : IEnumerable<T>
+    public class Grid2D<T> : BaseGrid<T, Location2D>
     {
         protected T[,] Values;
 
-        public readonly ValueCounterDictionary<T> ValueCounters;
         public readonly int Width, Height;
 
-        public Location2D Dimensions => (Width, Height);
-        public Location2D Center => Dimensions / 2;
+        public override Location2D Dimensions => (Width, Height);
+        public override Location2D Center => Dimensions / 2;
 
-        public FlexibleDictionary<T, List<Location2D>> ElementDictionary
+        public override FlexibleListDictionary<T, Location2D> ElementDictionary
         {
             get
             {
-                var result = new FlexibleDictionary<T, List<Location2D>>();
+                var result = new FlexibleListDictionary<T, Location2D>();
                 for (int x = 0; x < Width; x++)
                     for (int y = 0; y < Height; y++)
                         result[Values[x, y]].Add((x, y));
@@ -26,7 +27,36 @@ namespace AdventOfCode.Utilities.TwoDimensions
             }
         }
 
-        protected Grid(int width, int height, T defaultValue, bool initializeValueCounters)
+        #region Dimension Transformations
+        public Grid3D<T> As3D
+        {
+            get
+            {
+                var result = new Grid3D<T>(Width, Height, 1);
+
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                        result[x, y, 0] = Values[x, y];
+
+                return result;
+            }
+        }
+        public Grid4D<T> As4D
+        {
+            get
+            {
+                var result = new Grid4D<T>(Width, Height, 1, 1);
+
+                for (int x = 0; x < Width; x++)
+                    for (int y = 0; y < Height; y++)
+                        result[x, y, 0, 0] = Values[x, y];
+
+                return result;
+            }
+        }
+        #endregion
+
+        protected Grid2D(int width, int height, T defaultValue, bool initializeValueCounters)
         {
             Values = new T[Width = width, Height = height];
             if (!defaultValue.Equals(default(T)))
@@ -38,15 +68,17 @@ namespace AdventOfCode.Utilities.TwoDimensions
                 ValueCounters = new ValueCounterDictionary<T>(Values);
         }
 
-        public Grid(int both)
+        public Grid2D(int both)
             : this(both, both, default) { }
-        public Grid(int both, T defaultValue)
+        public Grid2D(int both, T defaultValue)
             : this(both, both, defaultValue) { }
-        public Grid(int width, int height)
+        public Grid2D(Location2D dimensions)
+            : this(dimensions.X, dimensions.Y, default) { }
+        public Grid2D(int width, int height)
             : this(width, height, default) { }
-        public Grid(int width, int height, T defaultValue)
+        public Grid2D(int width, int height, T defaultValue)
             : this(width, height, defaultValue, true) { }
-        public Grid(Grid<T> other)
+        public Grid2D(Grid2D<T> other)
             : this(other.Width, other.Height, default, false)
         {
             for (int x = 0; x < Width; x++)
@@ -197,13 +229,12 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
         protected virtual bool IsImpassableObject(T element) => false;
 
-        public IEnumerator<T> GetEnumerator()
+        public override IEnumerator<T> GetEnumerator()
         {
             // Is that how it should be done?
             foreach (T v in Values)
                 yield return v;
         }
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public virtual T this[int x, int y]
         {
@@ -214,7 +245,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
                 Values[x, y] = value;
             }
         }
-        public T this[Location2D location]
+        public override T this[Location2D location]
         {
             get => this[location.X, location.Y];
             set => this[location.X, location.Y] = value;
