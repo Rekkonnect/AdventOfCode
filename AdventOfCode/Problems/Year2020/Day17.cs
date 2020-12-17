@@ -4,7 +4,7 @@ using AdventOfCode.Utilities.TwoDimensions;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day17 : Problem<int, long>
+    public class Day17 : Problem2<int>
     {
         private Grid2D<CubeState> defaultGrid;
 
@@ -43,7 +43,7 @@ namespace AdventOfCode.Problems.Year2020
 
             return grid.ValueCounters[CubeState.Active];
         }
-        public override long SolvePart2()
+        public override int SolvePart2()
         {
             // This is awfully copy-pasted
             const int cycles = 6;
