@@ -119,11 +119,7 @@ namespace AdventOfCode.Problems.Year2020
                     };
 
                     int priority = GetPriority(operation);
-                    if (priority < previousPriority)
-                    {
-                        FinalizeCurrentExpression();
-                    }
-                    else if (priority == previousPriority)
+                    if (priority <= previousPriority)
                     {
                         FinalizeCurrentExpression();
                     }

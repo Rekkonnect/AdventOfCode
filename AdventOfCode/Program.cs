@@ -8,6 +8,11 @@ namespace AdventOfCode
     {
         public static void Main(string[] args)
         {
+            RunTodaysProblem();
+        }
+
+        private static void RunTodaysProblem()
+        {
             var currentDate = DateTime.UtcNow - TimeSpan.FromHours(5);
             var currentYear = currentDate.Year;
             var currentDay = currentDate.Day;
