@@ -45,6 +45,8 @@ namespace AdventOfCode.Utilities
         public bool ContainsKey(TKey key) => dictionary.ContainsKey(key);
         public bool TryGetValue(TKey key, out TValue value) => dictionary.TryGetValue(key, out value);
 
+        protected virtual TValue GetDefaultValue() => default;
+
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => dictionary.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => dictionary.GetEnumerator();
 
@@ -53,7 +55,7 @@ namespace AdventOfCode.Utilities
             get
             {
                 if (!ContainsKey(key))
-                    dictionary.Add(key, default);
+                    dictionary.Add(key, GetDefaultValue());
                 return dictionary[key];
             }
             set

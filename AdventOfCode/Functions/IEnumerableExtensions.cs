@@ -6,6 +6,14 @@ namespace AdventOfCode.Functions
 {
     public static class IEnumerableExtensions
     {
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> enumerable)
+        {
+            var flattened = new List<T>();
+            foreach (var e in enumerable)
+                flattened.AddRange(e);
+            return flattened;
+        }
+
         // TODO: Implement for other types too kekw
         public static MinMaxResult<int> MinMax(this IEnumerable<int> source)
         {

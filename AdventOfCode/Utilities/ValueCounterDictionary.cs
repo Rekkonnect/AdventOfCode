@@ -29,6 +29,28 @@ namespace AdventOfCode.Utilities
             Add(newValue);
         }
 
+        public KeyValuePair<T, int> Max()
+        {
+            KeyValuePair<T, int> max = default;
+            int maxValue = 0;
+
+            foreach (var kvp in this)
+            {
+                if (kvp.Value > maxValue)
+                {
+                    max = kvp;
+                    maxValue = kvp.Value;
+                }
+                else if (kvp.Value == maxValue)
+                {
+                    // Reset the max kvp to indicate that there is not a single kvp that has the max value
+                    max = default;
+                }
+            }
+            
+            return max;
+        }
+
         public int GetFilteredCountersNumber(int value, InequalityState inequality = InequalityState.Equal)
         {
             inequality &= InequalityState.Any;
