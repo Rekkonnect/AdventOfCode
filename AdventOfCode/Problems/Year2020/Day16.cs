@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Utilities;
+using AdventOfCode.Utilities.TwoDimensions;
 using Garyon.Extensions;
 using System;
 using System.Collections.Generic;

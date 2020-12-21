@@ -7,17 +7,35 @@ namespace AdventOfCode.Utilities
     public class KeyedObjectDictionary<TKey, TObject> : IEnumerable<TObject>
         where TObject : IKeyedObject<TKey>
     {
-        private Dictionary<TKey, TObject> d = new Dictionary<TKey, TObject>();
+        private Dictionary<TKey, TObject> d;
 
         public TObject[] Values => d.Values.ToArray();
         public int Count => d.Count;
 
-        public KeyedObjectDictionary() { }
+        public KeyedObjectDictionary()
+        {
+            d = new Dictionary<TKey, TObject>();
+        }
+        public KeyedObjectDictionary(int capacity)
+        {
+            d = new Dictionary<TKey, TObject>(capacity);
+        }
+        public KeyedObjectDictionary(IEnumerable<TObject> objects)
+            : this()
+        {
+            AddRange(objects);
+        }
         public KeyedObjectDictionary(KeyedObjectDictionary<TKey, TObject> other) => d = new Dictionary<TKey, TObject>(other.d);
 
         public void Add(TObject value) => d.Add(value.Key, value);
         public bool Remove(TKey key) => d.Remove(key);
         public void Clear() => d.Clear();
+
+        public void AddRange(IEnumerable<TObject> objects)
+        {
+            foreach (var o in objects)
+                Add(o);
+        }
 
         public bool Contains(TObject item) => d.ContainsKey(item.Key);
         public bool ContainsKey(TKey key) => d.ContainsKey(key);

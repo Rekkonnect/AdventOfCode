@@ -102,11 +102,25 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
         public void TurnRightAroundCenter(int times)
         {
+            times %= 4;
+            if (times < 0)
+            {
+                TurnLeftAroundCenter(-times);
+                return;
+            }
+
             for (int i = 0; i < times; i++)
                 TurnRightAroundCenter();
         }
         public void TurnLeftAroundCenter(int times)
         {
+            times %= 4;
+            if (times < 0)
+            {
+                TurnRightAroundCenter(-times);
+                return;
+            }
+
             for (int i = 0; i < times; i++)
                 TurnLeftAroundCenter();
         }

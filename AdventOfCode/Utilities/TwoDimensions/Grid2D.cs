@@ -1,6 +1,7 @@
 ﻿using AdventOfCode.Utilities.FourDimensions;
 using AdventOfCode.Utilities.ThreeDimensions;
 using Garyon.DataStructures;
+using System;
 using System.Collections.Generic;
 using static System.Convert;
 
@@ -56,6 +57,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
         }
         #endregion
 
+        #region Constructors
         protected Grid2D(int width, int height, T defaultValue, bool initializeValueCounters)
         {
             Values = new T[Width = width, Height = height];
@@ -66,6 +68,11 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
             if (initializeValueCounters)
                 ValueCounters = new ValueCounterDictionary<T>(Values);
+        }
+        protected Grid2D(int width, int height, T defaultValue, ValueCounterDictionary<T> valueCounters)
+            : this(width, height, defaultValue, false)
+        {
+            ValueCounters = new(valueCounters);
         }
 
         public Grid2D(int both)
@@ -87,6 +94,24 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
             ValueCounters = new ValueCounterDictionary<T>(other.ValueCounters);
         }
+        #endregion
+
+        public T[] GetXLine(int y)
+        {
+            var result = new T[Width];
+            for (int x = 0; x < Width; x++)
+                result[x] = Values[x, y];
+            return result;
+        }
+        public T[] GetYLine(int x)
+        {
+            var result = new T[Height];
+            for (int y = 0; y < Height; y++)
+                result[y] = Values[x, y];
+            return result;
+        }
+        public T[] GetXLine(Index y) => GetXLine(y.GetOffset(Width));
+        public T[] GetYLine(Index x) => GetYLine(x.GetOffset(Height));
 
         public Location2D GetUniqueElementLocation(T element)
         {
@@ -114,6 +139,65 @@ namespace AdventOfCode.Utilities.TwoDimensions
                         Values[x, y] = intersection;
         }
 
+        #region Rotation
+        public virtual Grid2D<T> FlipHorizontally()
+        {
+            var result = new Grid2D<T>(Height, Width, default, ValueCounters);
+            for (int x = 0; x < Width; x++)
+                for (int y = 0; y < Height; y++)
+                    result[Width - x, y] = Values[x, y];
+            return result;
+        }
+        public virtual Grid2D<T> FlipVertically()
+        {
+            var result = new Grid2D<T>(Height, Width, default, ValueCounters);
+            for (int x = 0; x < Width; x++)
+                for (int y = 0; y < Height; y++)
+                    result[x, Height - y] = Values[x, y];
+            return result;
+        }
+
+        public virtual Grid2D<T> RotateClockwise(int turns)
+        {
+            turns %= 4;
+
+            if (turns == 0)
+                return this;
+
+            if (turns < 0)
+                return RotateCounterClockwise(-turns);
+
+            var result = new Grid2D<T>(Height, Width, default, ValueCounters);
+
+            switch (turns)
+            {
+                case 1:
+                    for (int x = 0; x < Width; x++)
+                        for (int y = 0; y < Height; y++)
+                            result[^(y + 1), x] = Values[x, y];
+                    return result;
+
+                case 2:
+                    for (int x = 0; x < Width; x++)
+                        for (int y = 0; y < Height; y++)
+                            result[^(x + 1), ^(y + 1)] = Values[x, y];
+                    return result;
+
+                case 3:
+                    for (int x = 0; x < Width; x++)
+                        for (int y = 0; y < Height; y++)
+                            result[y, ^(x + 1)] = Values[x, y];
+                    return result;
+            }
+
+            return result;
+        }
+        public virtual Grid2D<T> RotateCounterClockwise(int turns)
+        {
+            return RotateClockwise(4 - turns % 4);
+        }
+        #endregion
+
         #region Adjacency
         public int GetAdjacentValues(Location2D location) => GetAdjacentValues(location.X, location.Y);
         public int GetAdjacentValues(Location2D location, T value) => GetAdjacentValues(location.X, location.Y, value);
@@ -134,10 +218,10 @@ namespace AdventOfCode.Utilities.TwoDimensions
             return result;
         }
 
-        public int GetAdjacentValuesWithDiagonals(Location2D location) => GetAdjacentValuesWithDiagonals(location.X, location.Y);
-        public int GetAdjacentValuesWithDiagonals(Location2D location, T value) => GetAdjacentValuesWithDiagonals(location.X, location.Y, value);
-        public int GetAdjacentValuesWithDiagonals(int x, int y) => GetAdjacentValuesWithDiagonals(x, y, Values[x, y]);
-        public virtual int GetAdjacentValuesWithDiagonals(int x, int y, T value)
+        public int GetNeighborValues(Location2D location) => GetNeighborValues(location.X, location.Y);
+        public int GetNeighborValues(Location2D location, T value) => GetNeighborValues(location.X, location.Y, value);
+        public int GetNeighborValues(int x, int y) => GetNeighborValues(x, y, Values[x, y]);
+        public virtual int GetNeighborValues(int x, int y, T value)
         {
             int result = GetAdjacentValues(x, y, value);
 
@@ -244,6 +328,11 @@ namespace AdventOfCode.Utilities.TwoDimensions
                 ValueCounters.AdjustValue(Values[x, y], value);
                 Values[x, y] = value;
             }
+        }
+        public virtual T this[Index x, Index y]
+        {
+            get => this[x.GetOffset(Width), y.GetOffset(Height)];
+            set => this[x.GetOffset(Width), y.GetOffset(Height)] = value;
         }
         public override T this[Location2D location]
         {

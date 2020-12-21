@@ -70,6 +70,11 @@ namespace AdventOfCode.Utilities.ThreeDimensions
                 ValueCounters.Add(defaultValue, width * height * depth);
             }
         }
+        protected Grid3D(int width, int height, int depth, T defaultValue, ValueCounterDictionary<T> valueCounters)
+            : this(width, height, depth, defaultValue, false)
+        {
+            ValueCounters = new(valueCounters);
+        }
 
         public Grid3D(int all)
             : this(all, all, all, default) { }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AdventOfCode.Utilities
+namespace AdventOfCode.Utilities.TwoDimensions
 {
-    public class BoolLatinSquare : SquareBase<bool>
+    public class BoolLatinSquare : SquareGrid2D<bool>
     {
         public int Count { get; protected set; }
 

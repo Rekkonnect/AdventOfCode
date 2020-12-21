@@ -28,7 +28,7 @@ namespace AdventOfCode.Problems.Year2020
                         if (cell == SeatGridCell.Floor)
                             continue;
 
-                        var adjacent = grid.GetAdjacentValuesWithDiagonals(x, y, SeatGridCell.Occupied);
+                        var adjacent = grid.GetNeighborValues(x, y, SeatGridCell.Occupied);
 
                         tempGrid[x, y] = (cell, adjacent) switch
                         {
