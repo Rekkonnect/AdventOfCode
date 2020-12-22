@@ -2,6 +2,7 @@
 
 namespace AdventOfCode.Utilities
 {
+    // TODO: Consider transforming into a record
     public class MinMaxResult<T>
         where T : IComparable<T>
     {
