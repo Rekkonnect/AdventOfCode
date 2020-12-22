@@ -46,7 +46,7 @@ namespace AdventOfCode.Problems.Year2020
                 foreach (var c in directContainability[contained])
                 {
                     set.Add(c);
-                    set.AddRange(GetAllowedContainers(c));
+                    set.UnionWith(GetAllowedContainers(c));
                 }
                 return set;
             }
