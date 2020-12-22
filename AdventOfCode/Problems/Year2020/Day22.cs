@@ -1,14 +1,15 @@
-﻿//#define DEBUGLOGGING
+﻿// You can have fun with those
+
+//#define DEBUGLOGGING
 
 #if DEBUG && DEBUGLOGGING
     //#define DEBUGLOGGING_PLAYERSTATES
     //#define DEBUGLOGGING_GAMEINITIALIZATIONS
-    //#define DEBUGLOGGING_INFINITELOOPDETECTIONS
 #endif
 
 using AdventOfCode.Functions;
+using AdventOfCode.Utilities;
 using Garyon.Extensions;
-using Garyon.Objects.Enumerators;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,15 +19,20 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day22 : Problem2<int>
     {
+        // I feel so bad for having made a purely generalized solution;
+        // the game is only between two players after all
+        // A rework is out of question though; for long as it runs within 7 seconds, I'm more than fine
+        // What I'm not fine with is the inability to optimize with parallelization
+
         private List<Player> players;
 
         public override int SolvePart1()
         {
-            return new CombatGame(players).PlayToEnd().Score;
+            return new CombatGame(GetNewPlayerInstances()).PlayToEnd().Score;
         }
         public override int SolvePart2()
         {
-            return new RecursiveCombatGame(players).PlayToEnd().Score;
+            return new RecursiveCombatGame(GetNewPlayerInstances()).PlayToEnd().Score;
         }
 
         protected override void LoadState()
@@ -46,6 +52,8 @@ namespace AdventOfCode.Problems.Year2020
         {
             players = null;
         }
+
+        private IEnumerable<Player> GetNewPlayerInstances() => players.Select(p => p.Clone());
 
         private class PlayerDeckState
         {
@@ -68,24 +76,17 @@ namespace AdventOfCode.Problems.Year2020
 
             public RoundState(IEnumerable<Player> players)
             {
-                var list = (PlayerDeckStates = new List<PlayerDeckState>()) as List<PlayerDeckState>;
-                foreach (var p in players)
-                    list.Add(new PlayerDeckState(p));
+                PlayerDeckStates = new List<PlayerDeckState>(players.Select(p => new PlayerDeckState(p)));
             }
 
-            public bool Equals(RoundState state)
-            {
-                if (PlayerDeckStates.Count() != state.PlayerDeckStates.Count())
-                    return false;
-
-                var parallel = new ParallellyEnumerable<PlayerDeckState, PlayerDeckState>(this, state);
-
-                foreach (var (s1, s2) in parallel)
-                    if (!s1.Equals(s2))
-                        return false;
-                return true;
-            }
             public override bool Equals(object obj) => obj is RoundState state && Equals(state);
+            public override int GetHashCode()
+            {
+                var hashCode = new HashCode();
+                foreach (var state in PlayerDeckStates)
+                    hashCode.Add(state);
+                return hashCode.ToHashCode();
+            }
 
             public IEnumerator<PlayerDeckState> GetEnumerator() => PlayerDeckStates.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -93,12 +94,10 @@ namespace AdventOfCode.Problems.Year2020
 
         private class RecursiveCombatGame : CombatGame
         {
-            private List<RoundState> previousRoundStates = new();
+            private HashedItemSet<RoundState> previousRoundStates = new(500);
 
             public RecursiveCombatGame(IEnumerable<Player> players)
-                : base(players)
-            {
-            }
+                : base(players) { }
 
             protected override Player DetermineRoundWinner(SortedDictionary<Card, Player> playedCardDictionary)
             {
@@ -134,21 +133,7 @@ namespace AdventOfCode.Problems.Year2020
             }
             protected override bool DeterminePrematureGameTermination()
             {
-                var currentState = CurrentRoundState;
-
-                var index = previousRoundStates.FindIndex(s => s.Equals(currentState));
-                if (index > -1)
-                {
-#if DEBUGLOGGING_INFINITELOOPDETECTIONS
-                    Console.WriteLine($"Index: {index}\n===");
-                    foreach (var state in currentState.PlayerDeckStates)
-                        Console.WriteLine($"Player {state.Player.PlayerID} card count: {state.Deck.Count}");
-                    Console.WriteLine();
-#endif
-                    return true;
-                }
-                previousRoundStates.Add(currentState);
-                return false;
+                return !previousRoundStates.Add(CurrentRoundState);
             }
         }
         private class CombatGame
@@ -166,7 +151,7 @@ namespace AdventOfCode.Problems.Year2020
             public CombatGame(IEnumerable<Player> players)
             {
                 Players = players;
-                alivePlayers = new(players);
+                alivePlayers = new(Players);
                 PlayerCount = alivePlayers.Count;
             }
 
@@ -301,18 +286,6 @@ namespace AdventOfCode.Problems.Year2020
             public IEnumerator<Card> GetEnumerator() => cards.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-            public bool Equals(Deck deck)
-            {
-                if (cards.Count != deck.cards.Count)
-                    return false;
-
-                var parallel = new ParallellyEnumerable<Card, Card>(this, deck);
-                foreach (var (c1, c2) in parallel)
-                    if (c1 != c2)
-                        return false;
-                
-                return true;
-            }
             public override bool Equals(object obj) => obj is Deck deck && Equals(deck);
             public override int GetHashCode()
             {

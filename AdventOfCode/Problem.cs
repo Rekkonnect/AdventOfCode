@@ -9,6 +9,8 @@ namespace AdventOfCode
     {
         private int currentTestCase;
 
+        protected bool StateLoaded { get; private set; }
+
         protected int CurrentTestCase
         {
             get => currentTestCase;
@@ -18,7 +20,7 @@ namespace AdventOfCode
                     return;
 
                 currentTestCase = value;
-                ResetState();
+                ResetLoadedState();
             }
         }
 
@@ -64,6 +66,23 @@ namespace AdventOfCode
         protected virtual void LoadState() { }
         protected virtual void ResetState() { }
 
+        protected void EnsureLoadedState()
+        {
+            HandleStateLoading(true, LoadState);
+        }
+        private void ResetLoadedState()
+        {
+            HandleStateLoading(false, ResetState);
+        }
+
+        private void HandleStateLoading(bool targetStateLoadedStatus, Action stateHandler)
+        {
+            if (StateLoaded == targetStateLoadedStatus)
+                return;
+            stateHandler();
+            StateLoaded = targetStateLoadedStatus;
+        }
+
         private string GetFileContents(int testCase) => File.ReadAllText(GetFileLocation(testCase));
         private string[] GetFileLines(int testCase) => GetFileContents(testCase).GetLines();
 
@@ -75,12 +94,12 @@ namespace AdventOfCode
         #region Normal Part Running
         public T1 RunPart1()
         {
-            LoadState();
+            EnsureLoadedState();
             return SolvePart1();
         }
         public T2 RunPart2()
         {
-            LoadState();
+            EnsureLoadedState();
             return SolvePart2();
         }
 
@@ -105,7 +124,7 @@ namespace AdventOfCode
         #region Normal Part Running
         public T3 RunPart3()
         {
-            LoadState();
+            EnsureLoadedState();
             return SolvePart3();
         }
 
