@@ -20,6 +20,7 @@ namespace AdventOfCode.Functions
         }
 
         #region MinMax
+        // Behold the true copy-paste hell
         /// <summary>Gets the minimum and maximum values within the collection.</summary>
         /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
         /// <returns>The minimum and maximum values.</returns>
@@ -243,6 +244,117 @@ namespace AdventOfCode.Functions
 
         /// <summary>Gets the minimum and maximum values within the collection.</summary>
         /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<byte?> MinMax(this IEnumerable<byte?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<byte?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<sbyte?> MinMax(this IEnumerable<sbyte?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<sbyte?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<short?> MinMax(this IEnumerable<short?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<short?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<ushort?> MinMax(this IEnumerable<ushort?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<ushort?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<int?> MinMax(this IEnumerable<int?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<int?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<uint?> MinMax(this IEnumerable<uint?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<uint?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<long?> MinMax(this IEnumerable<long?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<long?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<ulong?> MinMax(this IEnumerable<ulong?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<ulong?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<float?> MinMax(this IEnumerable<float?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<float?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<double?> MinMax(this IEnumerable<double?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<double?>.Default;
+            return MinMax(filtered);
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <returns>The minimum and maximum values of the objects in the sequence that are non-<see langword="null"/>, otherwise <seealso cref="MinMaxResult{T}.Default"/>.</returns>
+        public static MinMaxResult<decimal?> MinMax(this IEnumerable<decimal?> source)
+        {
+            var filtered = source.Where(e => e.HasValue);
+            if (!filtered.Any())
+                return MinMaxResult<decimal?>.Default;
+            return MinMax(filtered);
+        }
+
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
         /// <param name="selector">The selector.</param>
         /// <returns>The minimum and maximum values.</returns>
         public static MinMaxResult<byte> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, byte> selector)
@@ -302,6 +414,119 @@ namespace AdventOfCode.Functions
         /// <param name="selector">The selector.</param>
         /// <returns>The minimum and maximum values.</returns>
         public static MinMaxResult<ulong> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, ulong> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<float> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, float> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<double> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, double> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<decimal> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<byte?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, byte?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<sbyte?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, sbyte?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<short?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, short?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<ushort?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, ushort?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<int?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, int?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<uint?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, uint?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<long?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, long?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<ulong?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, ulong?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<float?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, float?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<double?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, double?> selector)
+        {
+            return MinMax(source.Select(selector));
+        }
+        /// <summary>Gets the minimum and maximum values within the collection.</summary>
+        /// <param name="source">The collection. It must be non-<see langword="null"/>, and contain at least one element.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>The minimum and maximum values.</returns>
+        public static MinMaxResult<decimal?> MinMax<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector)
         {
             return MinMax(source.Select(selector));
         }

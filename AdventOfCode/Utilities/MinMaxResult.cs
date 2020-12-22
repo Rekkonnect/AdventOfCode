@@ -1,15 +1,8 @@
-﻿using System;
-
-namespace AdventOfCode.Utilities
+﻿namespace AdventOfCode.Utilities
 {
-    // TODO: Consider transforming into a record
-    public class MinMaxResult<T>
-        where T : IComparable<T>
+    public record MinMaxResult<T>(T Min, T Max)
     {
-        public T Min { get; init; }
-        public T Max { get; init; }
-
-        public MinMaxResult(T min, T max) => (Min, Max) = (min, max);
+        public static MinMaxResult<T> Default => new MinMaxResult<T>(default, default);
 
         public void Deconstruct(out T min, out T max)
         {
