@@ -53,7 +53,7 @@ namespace AdventOfCode.Problems.Year2020
             players = null;
         }
 
-        private IEnumerable<Player> GetNewPlayerInstances() => players.Select(p => p.Clone());
+        private IEnumerable<Player> GetNewPlayerInstances() => players.Select(p => p.Clone()).ToList();
 
         private class PlayerDeckState
         {
@@ -76,7 +76,7 @@ namespace AdventOfCode.Problems.Year2020
 
             public RoundState(IEnumerable<Player> players)
             {
-                PlayerDeckStates = new List<PlayerDeckState>(players.Select(p => new PlayerDeckState(p)));
+                PlayerDeckStates = players.Select(p => new PlayerDeckState(p)).ToList();
             }
 
             public override bool Equals(object obj) => obj is RoundState state && Equals(state);

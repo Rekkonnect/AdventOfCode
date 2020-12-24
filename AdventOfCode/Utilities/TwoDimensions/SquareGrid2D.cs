@@ -22,6 +22,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
             if (other.Width != other.Height)
                 ThrowHelper.Throw<InvalidOperationException>("The provided grid is not a square.");
         }
+        public SquareGrid2D(SquareGrid2D<T> other, Location2D dimensions, Location2D offset)
+            : base(other, dimensions, offset) { }
         #endregion
 
         public override SquareGrid2D<T> RotateClockwise(int turns) => new(base.RotateClockwise(turns));

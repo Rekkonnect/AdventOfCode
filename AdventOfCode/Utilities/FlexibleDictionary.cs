@@ -6,30 +6,41 @@ namespace AdventOfCode.Utilities
 {
     public class FlexibleDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
-        private Dictionary<TKey, TValue> dictionary = new Dictionary<TKey, TValue>();
+        private Dictionary<TKey, TValue> dictionary;
 
         public IEnumerable<TKey> Keys => dictionary.Keys;
         public IEnumerable<TValue> Values => dictionary.Values;
 
         public int Count => dictionary.Count;
 
-        public FlexibleDictionary() { }
+        public FlexibleDictionary()
+        {
+            dictionary = new();
+        }
+        public FlexibleDictionary(int capacity)
+        {
+            dictionary = new(capacity);
+        }
         public FlexibleDictionary(IEnumerable collection)
+            : this()
         {
             foreach (var v in collection)
                 Add((TKey)v);
         }
         public FlexibleDictionary(IEnumerable<TKey> collection)
+            : this()
         {
             foreach (var v in collection)
                 Add(v);
         }
         public FlexibleDictionary(IEnumerable<TValue> collection, Func<TValue, TKey> keySelector)
+            : this()
         {
             foreach (var v in collection)
                 Add(keySelector(v), v);
         }
         public FlexibleDictionary(FlexibleDictionary<TKey, TValue> other)
+            : this(other.Count)
         {
             foreach (var kvp in other.dictionary)
                 dictionary.Add(kvp.Key, kvp.Value);
