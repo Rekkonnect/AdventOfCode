@@ -19,14 +19,25 @@ namespace AdventOfCode
 
             try
             {
-                RunProblem(Assembly.GetExecutingAssembly().GetTypes().First(t => t.FullName.EndsWith($"Year{currentYear}.Day{currentDay}")));
+                RunProblem(currentYear, currentDay);
             }
             catch
             {
                 Console.Error.WriteLine("Today's problem has no solution class. Get back to development you lazy fucking ass.");
             }
         }
-        
+
+        private static void RunThisYearsProblem(int day)
+        {
+            var currentDate = DateTime.UtcNow - TimeSpan.FromHours(5);
+            var currentYear = currentDate.Year;
+            RunProblem(currentYear, day);
+        }
+        private static void RunProblem(int year, int day)
+        {
+            RunProblem(Assembly.GetExecutingAssembly().GetTypes().First(t => t.FullName.EndsWith($"Year{year}.Day{day}")));
+        }
+
         private static void RunProblem<T>()
             where T : Problem, new()
         {
