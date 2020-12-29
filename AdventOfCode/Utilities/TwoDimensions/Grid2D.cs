@@ -156,7 +156,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
             var result = new Grid2D<T>(Height, Width, default, ValueCounters);
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
-                    result[Width - x, y] = Values[x, y];
+                    result[^(x + 1), y] = Values[x, y];
             return result;
         }
         public virtual Grid2D<T> FlipVertically()
@@ -164,7 +164,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
             var result = new Grid2D<T>(Height, Width, default, ValueCounters);
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
-                    result[x, Height - y] = Values[x, y];
+                    result[x, ^(y + 1)] = Values[x, y];
             return result;
         }
 

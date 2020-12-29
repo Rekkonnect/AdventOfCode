@@ -28,5 +28,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
         public override SquareGrid2D<T> RotateClockwise(int turns) => new(base.RotateClockwise(turns));
         public override SquareGrid2D<T> RotateCounterClockwise(int turns) => new(base.RotateCounterClockwise(turns));
+        public override SquareGrid2D<T> FlipHorizontally() => new(base.FlipHorizontally());
+        public override SquareGrid2D<T> FlipVertically() => new(base.FlipVertically());
     }
 }
