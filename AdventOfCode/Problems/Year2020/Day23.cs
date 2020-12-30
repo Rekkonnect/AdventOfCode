@@ -60,6 +60,8 @@ namespace AdventOfCode.Problems.Year2020
 
             private FlexibleDictionary<int, CircularLinkedListNode<int>> hashedLabels;
 
+            private CircularLinkedListNode<int>[] currentlyPickedUp = new CircularLinkedListNode<int>[3];
+
             public ulong LeftStarLabel => (ulong)hashedLabels[1].Next.Next.Value;
             public ulong RightStarLabel => (ulong)hashedLabels[1].Next.Value;
             public ulong StarsLabelProduct => LeftStarLabel * RightStarLabel;
@@ -93,18 +95,17 @@ namespace AdventOfCode.Problems.Year2020
                 int destination = PreviousLabel(currentSelectedCup.Value);
 
                 // Those manual operations are so unsafe but they reduce overhead
-                var pickedUp = new List<CircularLinkedListNode<int>>(3);
                 var firstPickedUp = currentSelectedCup.Next;
                 var lastPickedUp = firstPickedUp;
                 for (int i = 1; i < 3; i++)
                 {
-                    pickedUp.Add(lastPickedUp);
+                    currentlyPickedUp[i - 1] = lastPickedUp;
                     lastPickedUp = lastPickedUp.Next;
                 }
-                pickedUp.Add(lastPickedUp);
+                currentlyPickedUp[^1] = lastPickedUp;
                 currentSelectedCup.Next = lastPickedUp.Next;
 
-                while (pickedUp.Any(n => n.Value == destination))
+                while (currentlyPickedUp.Any(n => n.Value == destination))
                     destination = PreviousLabel(destination);
 
                 var destinationNode = hashedLabels[destination];
