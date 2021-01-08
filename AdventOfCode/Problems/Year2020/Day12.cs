@@ -49,7 +49,7 @@ namespace AdventOfCode.Problems.Year2020
                 waypointOffset.Forward(Direction.East, 10);
                 waypointOffset.Forward(Direction.North, 1);
             }
-            
+
             public override void ApplyCommand(ShipCommand command)
             {
                 switch (command.Type)

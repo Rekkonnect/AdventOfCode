@@ -7,7 +7,6 @@
     //#define DEBUGLOGGING_GAMEINITIALIZATIONS
 #endif
 
-using AdventOfCode.Functions;
 using AdventOfCode.Utilities;
 using Garyon.Extensions;
 using System;
@@ -193,7 +192,7 @@ namespace AdventOfCode.Problems.Year2020
 #endif
                     return;
                 }
-                
+
                 var cardList = new List<Card>(PlayerCount);
                 foreach (var card in playedCardDictionary)
                     cardList.Add(card.Key);

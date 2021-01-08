@@ -64,7 +64,7 @@ namespace AdventOfCode.Problems.Year2020
             for (int y = 0; y < lines.Length; y++)
                 for (int x = 0; x < lines[y].Length; x++)
                     grid[x, y] = ParseCellType(lines[y][x]);
-            
+
             return grid;
         }
 

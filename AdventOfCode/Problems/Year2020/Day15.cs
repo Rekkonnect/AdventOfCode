@@ -50,7 +50,7 @@ namespace AdventOfCode.Problems.Year2020
             public void PlayNextTurns(int nextTurns) => PlayUntilTurn(CurrentTurn + nextTurns);
             public void PlayUntilTurn(int turn)
             {
-                for (; CurrentTurn <= turn; )
+                while (CurrentTurn <= turn)
                     PlayTurn();
             }
             public void PlayTurn()

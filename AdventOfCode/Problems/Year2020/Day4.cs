@@ -1,5 +1,4 @@
-﻿using AdventOfCode.Functions;
-using Garyon.Extensions;
+﻿using Garyon.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,7 +90,7 @@ namespace AdventOfCode.Problems.Year2020
                         return IsWithin(value, 150, 193);
                     if (stringValue.EndsWith("in"))
                         return IsWithin(value, 59, 76);
-                    
+
                     return false;
                 }
             }

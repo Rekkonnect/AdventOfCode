@@ -24,7 +24,7 @@ namespace AdventOfCode.Functions
             for (; endIndex < s.Length; endIndex++)
                 if (!s[endIndex].IsDigit())
                     break;
-            
+
             return s[startingIndex..endIndex].TryParseInt32(out value);
         }
     }

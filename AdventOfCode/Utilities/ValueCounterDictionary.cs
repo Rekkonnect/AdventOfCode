@@ -47,7 +47,7 @@ namespace AdventOfCode.Utilities
                     max = default;
                 }
             }
-            
+
             return max;
         }
 

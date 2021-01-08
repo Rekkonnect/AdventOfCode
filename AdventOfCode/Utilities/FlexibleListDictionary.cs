@@ -36,7 +36,7 @@ namespace AdventOfCode.Utilities
 
             base[key].Remove(value);
         }
-        
+
         public bool TryGetValue(TKey key, int index, out TObject value)
         {
             value = default;

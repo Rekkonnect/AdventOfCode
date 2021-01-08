@@ -180,7 +180,7 @@ namespace AdventOfCode.Problems.Year2020
                 {
                     chars[BitLength - 1 - i] = (FloatingBitsMask & currentMask, RawMemoryAddress & currentMask) switch
                     {
-                        (> 0, _) => 'X',
+                        ( > 0, _) => 'X',
                         (_, > 0) => '1',
                         (_, _) => '0',
                     };
@@ -194,7 +194,7 @@ namespace AdventOfCode.Problems.Year2020
             public ulong XMask { get; }
             public ulong RawValueMask { get; }
 
-            public Bitmask() 
+            public Bitmask()
                 : this(default, default) { }
 
             public Bitmask(ulong xMask, ulong rawValueMask)
@@ -223,7 +223,7 @@ namespace AdventOfCode.Problems.Year2020
                 {
                     chars[BitLength - 1 - i] = (XMask & currentMask, RawValueMask & currentMask) switch
                     {
-                        (> 0, _) => 'X',
+                        ( > 0, _) => 'X',
                         (_, > 0) => '1',
                         (_, _) => '0',
                     };

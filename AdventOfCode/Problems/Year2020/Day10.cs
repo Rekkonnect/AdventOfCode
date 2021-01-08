@@ -33,7 +33,7 @@ namespace AdventOfCode.Problems.Year2020
                 int difference = numbers[i] - previousJoltage;
                 if (difference == 3)
                     segmentList.AddSegmentStart(i + 1);
-                
+
                 previousJoltage = numbers[i];
             }
             segmentList.AddSegmentStart(numbers.Length + 1);

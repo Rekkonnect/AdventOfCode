@@ -194,7 +194,7 @@ namespace AdventOfCode.Problems.Year2020
                     for (int i = 0; i < Length; i++)
                         if (range[i])
                             result[i] = true;
-                
+
                 return result;
             }
         }

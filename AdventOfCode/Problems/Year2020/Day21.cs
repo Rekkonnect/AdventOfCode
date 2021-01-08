@@ -1,5 +1,4 @@
-﻿using AdventOfCode.Functions;
-using AdventOfCode.Utilities;
+﻿using AdventOfCode.Utilities;
 using Garyon.Extensions;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ namespace AdventOfCode.Problems.Year2020
                 foreach (var ingredient in food.Ingredients)
                     if (nonAllergen.Contains(ingredient))
                         count++;
-            
+
             return count;
         }
         public override string SolvePart2()

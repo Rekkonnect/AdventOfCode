@@ -11,7 +11,7 @@ namespace AdventOfCode.Problems.Year2020.Utilities
         #region State
         private int currentInstructionIndex;
         #endregion
-        
+
         #region Variables
         public int Accumulator { get; set; }
         #endregion

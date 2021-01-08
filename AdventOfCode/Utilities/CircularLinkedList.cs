@@ -102,7 +102,7 @@ namespace AdventOfCode.Utilities
         {
             if (Count > 1)
                 return false;
-            
+
             if (Count == 1)
                 ResetState();
 

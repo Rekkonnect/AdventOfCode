@@ -10,7 +10,7 @@ namespace AdventOfCode.Problems.Year2020
     {
         private int earliestTimestamp;
         private int[] busIDs;
-        
+
         public override int SolvePart1()
         {
             int minimumAwait = int.MaxValue;
