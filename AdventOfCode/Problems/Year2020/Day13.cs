@@ -1,5 +1,6 @@
 ﻿using AdventOfCode.Functions;
 using Garyon.DataStructures;
+using Garyon.Extensions;
 using System;
 using System.Linq;
 

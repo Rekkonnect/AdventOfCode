@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Functions;
+using Garyon.Extensions;
 
 namespace AdventOfCode.Problems.Year2020
 {
