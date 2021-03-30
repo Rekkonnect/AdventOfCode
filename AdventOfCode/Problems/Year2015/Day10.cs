@@ -3,15 +3,15 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2015
 {
-    public class Day10 : Problem<long, long>
+    public class Day10 : Problem<int, int>
     {
         private LookAndSaySequence startingSequence;
 
-        public override long SolvePart1()
+        public override int SolvePart1()
         {
             return startingSequence.Iterate(40).Length;
         }
-        public override long SolvePart2()
+        public override int SolvePart2()
         {
             return startingSequence.Iterate(50).Length;
         }

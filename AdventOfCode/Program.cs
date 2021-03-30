@@ -1,8 +1,5 @@
 ﻿using AdventOfCode.Problems;
-using AdventOfCode.Utilities.TwoDimensions;
-using Garyon.Functions;
 using System;
-using System.Numerics;
 using static Garyon.Functions.ConsoleUtilities;
 using static System.Console;
 
@@ -78,7 +75,7 @@ namespace AdventOfCode
             do
             {
                 Write(requestMessage);
-                value = int.Parse(ReadLineWithColor(ConsoleColor.Cyan));
+                int.TryParse(ReadLineWithColor(ConsoleColor.Cyan), out value);
             }
             while (!verifier(value));
             return value;
