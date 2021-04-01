@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day4 : Problem2<int>
+    public class Day4 : Problem<int>
     {
         private IEnumerable<Passport> passports;
 

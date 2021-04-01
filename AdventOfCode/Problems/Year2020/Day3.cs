@@ -3,7 +3,7 @@ using AdventOfCode.Utilities.TwoDimensions;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day3 : Problem2<long>
+    public class Day3 : Problem<long>
     {
         private TreeGrid grid;
 

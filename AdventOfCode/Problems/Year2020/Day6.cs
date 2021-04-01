@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day6 : Problem2<int>
+    public class Day6 : Problem<int>
     {
         private string[] groups;
 

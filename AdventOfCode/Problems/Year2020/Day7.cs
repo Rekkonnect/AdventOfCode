@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day7 : Problem2<int>
+    public class Day7 : Problem<int>
     {
         private RuleSystem system;
 

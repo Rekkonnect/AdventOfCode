@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day12 : Problem2<int>
+    public class Day12 : Problem<int>
     {
         private ShipCommand[] commands;
 

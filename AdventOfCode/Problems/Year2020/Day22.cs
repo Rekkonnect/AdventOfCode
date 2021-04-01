@@ -16,7 +16,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day22 : Problem2<int>
+    public class Day22 : Problem<int>
     {
         // I feel so bad for having made a purely generalized solution;
         // the game is only between two players after all

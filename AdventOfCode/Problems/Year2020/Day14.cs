@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day14 : Problem2<ulong>
+    public class Day14 : Problem<ulong>
     {
         private MemorySystem memorySystem;
 

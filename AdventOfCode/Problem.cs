@@ -118,24 +118,6 @@ namespace AdventOfCode
         }
         #endregion
     }
-    // Just in case there are 3-part problems
-    public abstract class Problem<T1, T2, T3> : Problem<T1, T2>
-    {
-        #region Normal Part Running
-        public T3 RunPart3()
-        {
-            EnsureLoadedState();
-            return SolvePart3();
-        }
 
-        public abstract T3 SolvePart3();
-        #endregion
-
-        #region Test Part Running
-        public T3 TestRunPart3(int testCase)
-        {
-            return TestRunPart(RunPart3, testCase);
-        }
-        #endregion
-    }
+    public abstract class Problem<T> : Problem<T, T> { }
 }

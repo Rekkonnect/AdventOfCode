@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day25 : Problem2<ulong>
+    public class Day25 : Problem<ulong>
     {
         private PublicKey cardKey;
         private PublicKey doorKey;

@@ -4,7 +4,7 @@ using AdventOfCode.Utilities.TwoDimensions;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day17 : Problem2<int>
+    public class Day17 : Problem<int>
     {
         private Grid2D<CubeState> defaultGrid;
 

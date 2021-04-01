@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day8 : Problem2<int>
+    public class Day8 : Problem<int>
     {
         private ConsoleSimulator computer;
 

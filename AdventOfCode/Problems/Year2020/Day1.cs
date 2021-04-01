@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day1 : Problem2<int>
+    public class Day1 : Problem<int>
     {
         private int[] numbers;
 

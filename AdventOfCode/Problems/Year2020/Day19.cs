@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day19 : Problem2<int>
+    public class Day19 : Problem<int>
     {
         private RuleSystem ruleSystem;
         private string[] messages;

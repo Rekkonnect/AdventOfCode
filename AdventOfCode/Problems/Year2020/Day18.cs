@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day18 : Problem2<ulong>
+    public class Day18 : Problem<ulong>
     {
         private IEnumerable<ArithmeticExpression> expressions;
 

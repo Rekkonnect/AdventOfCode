@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day15 : Problem2<int>
+    public class Day15 : Problem<int>
     {
         private int[] startingNumbers;
 

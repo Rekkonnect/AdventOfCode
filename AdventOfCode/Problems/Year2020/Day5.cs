@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day5 : Problem2<int>
+    public class Day5 : Problem<int>
     {
         private IEnumerable<SeatCode> seats;
 

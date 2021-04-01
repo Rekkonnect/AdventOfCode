@@ -3,7 +3,7 @@ using static System.Convert;
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day11 : Problem2<int>
+    public class Day11 : Problem<int>
     {
         private SeatGrid baseGrid;
 

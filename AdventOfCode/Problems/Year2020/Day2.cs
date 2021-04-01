@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day2 : Problem2<int>
+    public class Day2 : Problem<int>
     {
         public override int SolvePart1()
         {
