@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Garyon.DataStructures;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AdventOfCode.Utilities

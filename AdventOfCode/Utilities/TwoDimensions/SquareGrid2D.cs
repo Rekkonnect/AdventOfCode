@@ -1,4 +1,5 @@
-﻿using Garyon.Exceptions;
+﻿using Garyon.DataStructures;
+using Garyon.Exceptions;
 using System;
 
 namespace AdventOfCode.Utilities.TwoDimensions

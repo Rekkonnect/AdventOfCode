@@ -1,4 +1,5 @@
-﻿using Garyon.Exceptions;
+﻿using Garyon.DataStructures;
+using Garyon.Exceptions;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,28 +7,20 @@ using System.Linq;
 
 namespace AdventOfCode.Utilities
 {
-    public class ValueCounterDictionary<T> : FlexibleDictionary<T, int>
+    public class NextValueCounterDictionary<T> : ValueCounterDictionary<T>
     {
-        public ValueCounterDictionary() { }
-        public ValueCounterDictionary(IEnumerable<T> collection, int initial = 1)
+        public NextValueCounterDictionary() { }
+        public NextValueCounterDictionary(IEnumerable<T> collection, int initial = 1)
         {
             foreach (var v in collection)
                 Add(v, initial);
         }
-        public ValueCounterDictionary(IEnumerable collection, int initial = 1)
+        public NextValueCounterDictionary(IEnumerable collection, int initial = 1)
         {
             foreach (var v in collection)
                 Add((T)v, initial);
         }
-        public ValueCounterDictionary(ValueCounterDictionary<T> other) : base(other) { }
-
-        public override void Add(T value, int count = 1) => this[value] += count;
-        public void Remove(T value, int count = 1) => this[value] -= count;
-        public void AdjustValue(T oldValue, T newValue)
-        {
-            Remove(oldValue);
-            Add(newValue);
-        }
+        public NextValueCounterDictionary(NextValueCounterDictionary<T> other) : base(other) { }
 
         public KeyValuePair<T, int> Max()
         {
@@ -70,12 +63,6 @@ namespace AdventOfCode.Utilities
                 InequalityState.GreaterOrEqual => v >= value,
                 InequalityState.Different => v != value,
             });
-        }
-
-        public override int this[T key]
-        {
-            get => base[key];
-            set => base[key] = value;
         }
     }
 }

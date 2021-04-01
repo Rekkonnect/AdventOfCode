@@ -41,7 +41,7 @@ namespace AdventOfCode.Problems.Year2015
         private class UnoptimizedLightGrid
         {
             private int[,] lights = new int[1000, 1000];
-            
+
             public int GetTotalBrightness()
             {
                 int totalBrightness = 0;
@@ -169,7 +169,7 @@ namespace AdventOfCode.Problems.Year2015
                 *adjustedMaskBytePtr = (byte)(*adjustedMaskBytePtr & (0xFF << (7 - endOffsetBitIndex)));
                 for (byte* ptr = adjustedMaskBytePtr + 1; ptr < maskEndPtr; ptr++)
                     *ptr = 0;
-                
+
                 if (instruction.Action is LightAction.TurnOff)
                 {
                     startMask = AVXHelper.NOTVector256(startMask);

@@ -1,7 +1,9 @@
 ﻿using AdventOfCode.Utilities.FourDimensions;
 using AdventOfCode.Utilities.ThreeDimensions;
+using Garyon.DataStructures;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static System.Convert;
 
 namespace AdventOfCode.Utilities.TwoDimensions
@@ -68,7 +70,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
                         Values[x, y] = defaultValue;
 
             if (initializeValueCounters)
-                ValueCounters = new ValueCounterDictionary<T>(Values);
+                ValueCounters = new(Values.Cast<T>());
         }
         protected Grid2D(int width, int height, T defaultValue, ValueCounterDictionary<T> valueCounters)
             : this(width, height, defaultValue, false)
@@ -93,7 +95,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
                 for (int y = 0; y < Height; y++)
                     Values[x, y] = other.Values[x, y];
 
-            ValueCounters = new ValueCounterDictionary<T>(other.ValueCounters);
+            ValueCounters = new(other.ValueCounters);
         }
         public Grid2D(Grid2D<T> other, Location2D dimensions, Location2D offset)
             : this(dimensions, default, false)
@@ -102,7 +104,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
                 for (int y = 0; y < other.Height; y++)
                     this[offset + (x, y)] = other.Values[x, y];
 
-            ValueCounters = new ValueCounterDictionary<T>(other.ValueCounters);
+            ValueCounters = new(other.ValueCounters);
             ValueCounters.Add(default, dimensions.ValueProduct - other.Dimensions.ValueProduct);
         }
         #endregion
@@ -336,7 +338,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
             get => Values[x, y];
             set
             {
-                ValueCounters?.AdjustValue(Values[x, y], value);
+                ValueCounters?.AdjustCounters(Values[x, y], value);
                 Values[x, y] = value;
             }
         }

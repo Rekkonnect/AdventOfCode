@@ -27,10 +27,10 @@ namespace AdventOfCode.Utilities.FourDimensions
             var offsets = new List<Location4D>(3 * 3 * 3 * 3);
 
             foreach (var xOffset in xOffsets)
-            foreach (var yOffset in yOffsets)
-            foreach (var zOffset in zOffsets)
-            foreach (var wOffset in wOffsets)
-                offsets.Add(xOffset + yOffset + zOffset + wOffset);
+                foreach (var yOffset in yOffsets)
+                    foreach (var zOffset in zOffsets)
+                        foreach (var wOffset in wOffsets)
+                            offsets.Add(xOffset + yOffset + zOffset + wOffset);
 
             neighborOffsets = offsets.ToArray();
         }
@@ -71,7 +71,7 @@ namespace AdventOfCode.Utilities.FourDimensions
 
             if (initializeValueCounters)
             {
-                ValueCounters = new ValueCounterDictionary<T>();
+                ValueCounters = new();
                 ValueCounters.Add(defaultValue, width * height * depth);
             }
         }
@@ -97,7 +97,7 @@ namespace AdventOfCode.Utilities.FourDimensions
                         for (int w = 0; w < other.DepthW; w++)
                             this[offset + (x, y, z, w)] = other.Values[x, y, z, w];
 
-            ValueCounters = new ValueCounterDictionary<T>(other.ValueCounters);
+            ValueCounters = new(other.ValueCounters);
             ValueCounters.Add(default, dimensions.ValueProduct - other.Dimensions.ValueProduct);
         }
 
@@ -230,7 +230,7 @@ namespace AdventOfCode.Utilities.FourDimensions
             get => Values[x, y, z, w];
             set
             {
-                ValueCounters?.AdjustValue(Values[x, y, z, w], value);
+                ValueCounters?.AdjustCounters(Values[x, y, z, w], value);
                 Values[x, y, z, w] = value;
             }
         }

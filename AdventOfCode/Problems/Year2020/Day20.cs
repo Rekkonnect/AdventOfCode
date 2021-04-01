@@ -1,13 +1,11 @@
-﻿using AdventOfCode.Functions;
-using AdventOfCode.Utilities;
+﻿using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
+using Garyon.DataStructures;
 using Garyon.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace AdventOfCode.Problems.Year2020
 {
@@ -271,7 +269,7 @@ namespace AdventOfCode.Problems.Year2020
                     return;
 
                 int turns = 0;
-                
+
                 switch (originalOrientation)
                 {
                     case TileSides.Top:
@@ -388,8 +386,8 @@ namespace AdventOfCode.Problems.Year2020
 
             public void Add(TileSideHash hash)
             {
-                Add(hash.HashValue, hash);
-                Add(hash.InvertedHashValue, hash);
+                this[hash.HashValue].Add(hash);
+                this[hash.InvertedHashValue].Add(hash);
             }
             public void AddFromTile(Tile tile)
             {
@@ -401,8 +399,8 @@ namespace AdventOfCode.Problems.Year2020
 
             public void Remove(TileSideHash hash)
             {
-                Remove(hash.HashValue, hash);
-                Remove(hash.InvertedHashValue, hash);
+                this[hash.HashValue].Remove(hash);
+                this[hash.InvertedHashValue].Remove(hash);
             }
             public void RemoveFromTile(Tile tile)
             {

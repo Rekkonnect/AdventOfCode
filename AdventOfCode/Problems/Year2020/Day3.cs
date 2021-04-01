@@ -1,5 +1,5 @@
-﻿using AdventOfCode.Utilities;
-using AdventOfCode.Utilities.TwoDimensions;
+﻿using AdventOfCode.Utilities.TwoDimensions;
+using Garyon.DataStructures;
 
 namespace AdventOfCode.Problems.Year2020
 {

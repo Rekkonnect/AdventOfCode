@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Utilities.TwoDimensions;
+using Garyon.DataStructures;
 using System;
 using System.Collections.Generic;
 
@@ -24,9 +25,9 @@ namespace AdventOfCode.Utilities.ThreeDimensions
             var offsets = new List<Location3D>(3 * 3 * 3);
 
             foreach (var xOffset in xOffsets)
-            foreach (var yOffset in yOffsets)
-            foreach (var zOffset in zOffsets)
-                offsets.Add(xOffset + yOffset + zOffset);
+                foreach (var yOffset in yOffsets)
+                    foreach (var zOffset in zOffsets)
+                        offsets.Add(xOffset + yOffset + zOffset);
 
             neighborOffsets = offsets.ToArray();
         }
@@ -65,7 +66,7 @@ namespace AdventOfCode.Utilities.ThreeDimensions
 
             if (initializeValueCounters)
             {
-                ValueCounters = new ValueCounterDictionary<T>();
+                ValueCounters = new();
                 ValueCounters.Add(defaultValue, width * height * depth);
             }
         }
@@ -95,7 +96,7 @@ namespace AdventOfCode.Utilities.ThreeDimensions
                     for (int z = 0; z < other.Depth; z++)
                         this[offset + (x, y, z)] = other.Values[x, y, z];
 
-            ValueCounters = new ValueCounterDictionary<T>(other.ValueCounters);
+            ValueCounters = new(other.ValueCounters);
             ValueCounters.Add(default, dimensions.ValueProduct - other.Dimensions.ValueProduct);
         }
 
@@ -240,7 +241,7 @@ namespace AdventOfCode.Utilities.ThreeDimensions
             get => Values[x, y, z];
             set
             {
-                ValueCounters?.AdjustValue(Values[x, y, z], value);
+                ValueCounters?.AdjustCounters(Values[x, y, z], value);
                 Values[x, y, z] = value;
             }
         }

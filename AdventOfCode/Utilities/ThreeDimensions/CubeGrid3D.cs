@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Utilities.ThreeDimensions
+﻿using Garyon.DataStructures;
+
+namespace AdventOfCode.Utilities.ThreeDimensions
 {
     // Not today, my friend
     public class CubeGrid3D<T> : Grid3D<T>

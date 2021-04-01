@@ -1,4 +1,4 @@
-﻿using AdventOfCode.Utilities;
+﻿using Garyon.DataStructures;
 using Garyon.Extensions;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace AdventOfCode.Problems.Year2020
             foodCollection = null;
         }
 
-        private class IngredientAllergenCorrelationDictionary : FlexibleDictionary<string, ValueCounterDictionary<string>>
+        private class IngredientAllergenCorrelationDictionary : FlexibleInitializableValueDictionary<string, ValueCounterDictionary<string>>
         {
             public IngredientAllergenCorrelationDictionary()
                 : base() { }
@@ -59,8 +59,6 @@ namespace AdventOfCode.Problems.Year2020
                     foreach (var allergen in food.Allergens)
                         this[allergen].Add(ingredient);
             }
-
-            protected override ValueCounterDictionary<string> GetDefaultValue() => new ValueCounterDictionary<string>();
         }
 
         private class FoodCollection : IEnumerable<Food>

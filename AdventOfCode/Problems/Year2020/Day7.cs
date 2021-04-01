@@ -1,4 +1,4 @@
-﻿using AdventOfCode.Utilities;
+﻿using Garyon.DataStructures;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -30,8 +30,8 @@ namespace AdventOfCode.Problems.Year2020
 
         private class RuleSystem
         {
-            private readonly FlexibleHashSetDictionary<string, string> directContainability = new FlexibleHashSetDictionary<string, string>();
-            private readonly FlexibleDictionary<string, Rule> ruleDictionary = new FlexibleDictionary<string, Rule>();
+            private readonly FlexibleInitializableValueDictionary<string, HashSet<string>> directContainability = new();
+            private readonly FlexibleDictionary<string, Rule> ruleDictionary = new();
 
             public RuleSystem(IEnumerable<Rule> rules)
             {
@@ -63,7 +63,7 @@ namespace AdventOfCode.Problems.Year2020
             {
                 foreach (var r in ruleDictionary.Values)
                     foreach (var contained in r.Contained)
-                        directContainability.Add(contained.Color, r.Container);
+                        directContainability[contained.Color].Add(r.Container);
             }
 
             public Rule this[string container] => ruleDictionary[container];
