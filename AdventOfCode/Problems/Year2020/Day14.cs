@@ -4,21 +4,23 @@ using Garyon.Extensions;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2020
 {
     public class Day14 : Problem<ulong>
     {
+        private IEnumerable<MemorySystemCommand> commands;
         private MemorySystem memorySystem;
 
         public override ulong SolvePart1()
         {
-            memorySystem = new MemorySystem(FileLines.Select(MemorySystemCommand.ParseBase));
+            memorySystem = new MemorySystem(commands);
             return RunCommandsForSystem();
         }
         public override ulong SolvePart2()
         {
-            memorySystem = new MemorySystemVersion2(FileLines.Select(MemorySystemCommand.ParseBase));
+            memorySystem = new MemorySystemVersion2(commands);
             return RunCommandsForSystem();
         }
 
@@ -30,7 +32,12 @@ namespace AdventOfCode.Problems.Year2020
 
         protected override void ResetState()
         {
+            commands = null;
             memorySystem = null;
+        }
+        protected override void LoadState()
+        {
+            commands = FileLines.Select(MemorySystemCommand.ParseBase);
         }
 
         #region Memory Systems
@@ -116,6 +123,8 @@ namespace AdventOfCode.Problems.Year2020
         }
         private class MemoryWriteCommand : MemorySystemCommand
         {
+            private static readonly Regex commandPattern = new(@"mem\[(?'addr'\d*)\] = (?'val'[01]*)", RegexOptions.Compiled);
+
             public ulong MemoryAddress { get; }
             public ulong NewValue { get; }
 
@@ -130,10 +139,9 @@ namespace AdventOfCode.Problems.Year2020
 
             public static MemoryWriteCommand Parse(string command)
             {
-                var split = command.Split(" = ");
-                int indexerStart = split[0].IndexOf('[') + 1;
-                ulong memoryAddress = split[0][indexerStart..^1].ParseUInt32();
-                ulong value = split[1].ParseUInt64();
+                var groups = commandPattern.Match(command).Groups;
+                ulong memoryAddress = groups["addr"].Value.ParseUInt32();
+                ulong value = groups["val"].Value.ParseUInt64();
                 return new(memoryAddress, value);
             }
 
@@ -141,6 +149,8 @@ namespace AdventOfCode.Problems.Year2020
         }
         private class MaskSetCommand : MemorySystemCommand
         {
+            private static readonly Regex commandPattern = new(@"mask = (?'val'[01X]*)", RegexOptions.Compiled);
+
             public Bitmask NewMask { get; }
 
             public MaskSetCommand(Bitmask newMask)
@@ -150,25 +160,17 @@ namespace AdventOfCode.Problems.Year2020
 
             public static MaskSetCommand Parse(string command)
             {
-                return new(Bitmask.Parse(command.Split(" = ").Last()));
+                return new(Bitmask.Parse(commandPattern.Match(command).Groups["val"].Value));
             }
 
             public override string ToString() => $"mask = {NewMask}";
         }
         #endregion
 
-        #region Records but not really records
-        private class MaskedMemoryAddress
+        #region Records
+        private record MaskedMemoryAddress(ulong RawMemoryAddress, ulong FloatingBitsMask)
         {
-            public ulong RawMemoryAddress { get; }
-            public ulong FloatingBitsMask { get; }
             public ulong MaskedBaseMemoryAddress => RawMemoryAddress & (~FloatingBitsMask);
-
-            public MaskedMemoryAddress(ulong rawMemoryAddress, ulong floatingBitsMask)
-            {
-                RawMemoryAddress = rawMemoryAddress;
-                FloatingBitsMask = floatingBitsMask;
-            }
 
             public override string ToString()
             {
@@ -189,19 +191,10 @@ namespace AdventOfCode.Problems.Year2020
             }
         }
 
-        private class Bitmask
+        private record Bitmask(ulong XMask, ulong RawValueMask)
         {
-            public ulong XMask { get; }
-            public ulong RawValueMask { get; }
-
             public Bitmask()
                 : this(default, default) { }
-
-            public Bitmask(ulong xMask, ulong rawValueMask)
-            {
-                XMask = xMask;
-                RawValueMask = rawValueMask;
-            }
 
             public ulong ApplyToValue(ulong value)
             {

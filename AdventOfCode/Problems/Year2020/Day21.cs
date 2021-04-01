@@ -1,8 +1,10 @@
-﻿using Garyon.DataStructures;
+﻿using AdventOfCode.Utilities;
+using Garyon.DataStructures;
 using Garyon.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2020
 {
@@ -38,7 +40,7 @@ namespace AdventOfCode.Problems.Year2020
             foodCollection = null;
         }
 
-        private class IngredientAllergenCorrelationDictionary : FlexibleInitializableValueDictionary<string, ValueCounterDictionary<string>>
+        private class IngredientAllergenCorrelationDictionary : FlexibleInitializableValueDictionary<string, NextValueCounterDictionary<string>>
         {
             public IngredientAllergenCorrelationDictionary()
                 : base() { }
@@ -117,25 +119,15 @@ namespace AdventOfCode.Problems.Year2020
             public IEnumerator<Food> GetEnumerator() => Foods.GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         }
-        private class Food
+        private record Food(IEnumerable<string> Ingredients, IEnumerable<string> Allergens)
         {
-            private string[] ingredients;
-            private string[] allergens;
-
-            public IEnumerable<string> Ingredients => ingredients;
-            public IEnumerable<string> Allergens => allergens;
-
-            public Food(string[] foodIngredients, string[] foodAllergens)
-            {
-                ingredients = foodIngredients;
-                allergens = foodAllergens;
-            }
+            private readonly static Regex foodPattern = new(@"(?'ingredients'[\w ]*) \(contains (?'allergens'.*)\)", RegexOptions.Compiled);
 
             public static Food Parse(string raw)
             {
-                var split = raw[..^1].Split(" (contains ");
-                var ingredients = split[0].Split(' ');
-                var allergens = split[1].Split(", ");
+                var groups = foodPattern.Match(raw).Groups;
+                var ingredients = groups["ingredients"].Value.Split(' ');
+                var allergens = groups["allergens"].Value.Split(", ");
                 return new(ingredients, allergens);
             }
         }

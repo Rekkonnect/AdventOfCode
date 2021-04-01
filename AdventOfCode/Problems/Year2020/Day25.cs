@@ -16,7 +16,7 @@ namespace AdventOfCode.Problems.Year2020
         }
         public override ulong SolvePart2()
         {
-            // D20, D23
+            // D20P2
             return default;
         }
 

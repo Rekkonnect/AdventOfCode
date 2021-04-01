@@ -83,7 +83,7 @@ namespace AdventOfCode.Problems.Year2020
 
             public void DiscoverColumns(IEnumerable<Ticket> validTickets)
             {
-                if (candidateSquare == null)
+                if (candidateSquare is null)
                     InitializeColumnDiscovery();
 
                 foreach (var ticket in validTickets)
@@ -114,7 +114,7 @@ namespace AdventOfCode.Problems.Year2020
                 var split = raw.Split(": ");
                 var fieldName = split[0];
 
-                var validRanges = new ValidFieldRanges(fieldName);
+                var validRanges = new ValidFieldRanges();
                 var splitValidRanges = split[1].Split(" or ");
                 foreach (var range in splitValidRanges)
                 {
@@ -161,13 +161,6 @@ namespace AdventOfCode.Problems.Year2020
             public const int Length = 1000;
 
             private bool[] validRanges = new bool[Length];
-            public string FieldName { get; }
-
-            public ValidFieldRanges() { }
-            public ValidFieldRanges(string fieldName)
-            {
-                FieldName = FieldName;
-            }
 
             public void Set(int start, int end, bool value = true)
             {

@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Utilities.TwoDimensions;
+using Garyon.Extensions;
 using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
@@ -123,7 +124,7 @@ namespace AdventOfCode.Problems.Year2020
                 return new()
                 {
                     Type = ParseCommandType(command[0]),
-                    Value = int.Parse(command[1..])
+                    Value = command[1..].ParseInt32(),
                 };
             }
             private static ShipCommandType ParseCommandType(char c)
