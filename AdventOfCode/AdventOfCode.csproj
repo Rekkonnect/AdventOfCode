@@ -25,6 +25,9 @@
     <None Remove="Inputs\2015\10T1.txt" />
     <None Remove="Inputs\2015\11.txt" />
     <None Remove="Inputs\2015\11T1.txt" />
+    <None Remove="Inputs\2015\12.txt" />
+    <None Remove="Inputs\2015\12T1.txt" />
+    <None Remove="Inputs\2015\12T2.txt" />
     <None Remove="Inputs\2015\1T1.txt" />
     <None Remove="Inputs\2015\2.txt" />
     <None Remove="Inputs\2015\3.txt" />

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AdventOfCode.Utilities
+namespace AdventOfCode.Functions
 {
     public static class IEnumerableExtensions
     {

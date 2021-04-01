@@ -31,8 +31,8 @@ namespace AdventOfCode
         protected int[] FileNumbersInt32 => FileLines.Select(int.Parse).ToArray();
         protected long[] FileNumbersInt64 => FileLines.Select(long.Parse).ToArray();
 
-        public int Year => int.Parse(GetType().Namespace.Split('.').Last()[^4..]);
-        public int Day => int.Parse(GetType().Name["Day".Length..]);
+        public int Year => GetType().Namespace.Split('.').Last()[^4..].ParseInt32();
+        public int Day => GetType().Name["Day".Length..].ParseInt32();
         public int TestCaseFiles => Directory.GetFiles(BaseDirectory).Where(f => f.Replace('\\', '/').Split('/').Last().StartsWith($"{Day}T")).Count();
 
         public object[] SolveAllParts(bool displayExecutionTimes = true) => SolveAllParts("RunPart", null, displayExecutionTimes);
