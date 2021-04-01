@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2015
 {
-    public class Day10 : Problem<int, int>
+    public class Day10 : Problem<int>
     {
         private LookAndSaySequence startingSequence;
 

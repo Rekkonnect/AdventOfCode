@@ -3,7 +3,7 @@ using System.Text;
 
 namespace AdventOfCode.Problems.Year2015
 {
-    public class Day4 : Problem<int, int>
+    public class Day4 : Problem<int>
     {
         private string secretKey;
 

@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2015
 {
-    public class Day9 : Problem<int, int>
+    public class Day9 : Problem<int>
     {
         private LocationSystem locations;
 

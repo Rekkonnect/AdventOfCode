@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2015
 {
-    public class Day5 : Problem<int, int>
+    public class Day5 : Problem<int>
     {
         private string[] strings;
 

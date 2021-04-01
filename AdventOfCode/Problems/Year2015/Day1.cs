@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2015
 {
-    public class Day1 : Problem<int, int>
+    public class Day1 : Problem<int>
     {
         private InstructionString instructionString;
 

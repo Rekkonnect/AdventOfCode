@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2015
 {
-    public class Day11 : Problem<string, string>
+    public class Day11 : Problem<string>
     {
         private Password password;
 

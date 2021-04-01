@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AdventOfCode.Problems.Year2015
 {
-    public class Day8 : Problem<int, int>
+    public class Day8 : Problem<int>
     {
         private CodeString[] strings;
 

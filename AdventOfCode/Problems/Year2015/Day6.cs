@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2015
 {
-    public class Day6 : Problem<int, int>
+    public class Day6 : Problem<int>
     {
         private Instruction[] instructions;
 

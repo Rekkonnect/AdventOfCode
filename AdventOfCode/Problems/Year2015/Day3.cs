@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2015
 {
-    public class Day3 : Problem<int, int>
+    public class Day3 : Problem<int>
     {
         private DeliveryDirections directions;
         private AssistedDeliveryDirections assistedDirections;
