@@ -1,4 +1,5 @@
-﻿using Garyon.Extensions;
+﻿using AdventOfCode.Functions;
+using Garyon.Extensions;
 using System;
 using System.IO;
 using System.Linq;
@@ -42,17 +43,26 @@ namespace AdventOfCode
         {
             var methods = GetType().GetMethods().Where(m => m.Name.StartsWith(methodPrefix)).ToArray();
             var result = new object[methods.Length];
+
+            DisplayExecutionTimes(displayExecutionTimes, "State loading", EnsureLoadedState);
+
             for (int i = 0; i < result.Length; i++)
             {
-                var start = DateTime.Now;
-
-                result[i] = methods[i].Invoke(this, parameters);
-
-                var end = DateTime.Now;
-                if (displayExecutionTimes)
-                    Console.WriteLine($"Part {i + 1} execution time: {(end - start).TotalMilliseconds:N2}ms");
+                DisplayExecutionTimes(displayExecutionTimes, $"Part {i + 1}", () =>
+                {
+                    result[i] = methods[i].Invoke(this, parameters);
+                });
             }
             return result;
+        }
+
+        private static void DisplayExecutionTimes(bool displayExecutionTimes, string title, Action action)
+        {
+            if (!displayExecutionTimes)
+                return;
+
+            var executionTime = BasicBenchmarking.MeasureExecutionTime(action);
+            Console.WriteLine($"{title} execution time: {executionTime.TotalMilliseconds:N2}ms");
         }
 
         protected T TestRunPart<T>(Func<T> runner, int testCase)
