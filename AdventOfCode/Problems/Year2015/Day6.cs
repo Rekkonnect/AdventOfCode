@@ -32,9 +32,6 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            if (instructions != null)
-                return;
-
             instructions = FileLines.Select(Instruction.Parse).ToArray();
         }
 

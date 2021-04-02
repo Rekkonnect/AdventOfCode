@@ -44,7 +44,7 @@ namespace AdventOfCode.Problems.Year2020
         }
         protected override void LoadState()
         {
-            numbers ??= FileNumbersInt64;
+            numbers = FileNumbersInt64;
         }
 
         private long GetFirstInvalidNumber(out int index)

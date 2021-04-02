@@ -1,7 +1,6 @@
 ﻿using AdventOfCode.Functions;
 using Garyon.DataStructures;
 using Garyon.Extensions;
-using Garyon.Functions;
 using Garyon.Objects;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,20 +27,15 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            if (locations != null)
-                return;
-
             locations = new(FileLines.Select(Trip.Parse));
         }
 
         private class LocationSystem
         {
             private DestinationDictionary locations = new();
-            private IEnumerable<Trip> trips;
 
             public LocationSystem(IEnumerable<Trip> destinationTrips)
             {
-                trips = destinationTrips;
                 foreach (var trip in destinationTrips)
                 {
                     locations[trip.LocationA].RegisterTrip(trip);

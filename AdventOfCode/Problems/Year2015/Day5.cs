@@ -29,9 +29,6 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            if (strings != null)
-                return;
-
             strings = FileLines;
         }
 

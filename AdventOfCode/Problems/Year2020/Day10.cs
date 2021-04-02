@@ -83,9 +83,6 @@ namespace AdventOfCode.Problems.Year2020
         }
         protected override void LoadState()
         {
-            if (numbers != null)
-                return;
-
             numbers = FileNumbersInt32;
             Array.Sort(numbers);
         }

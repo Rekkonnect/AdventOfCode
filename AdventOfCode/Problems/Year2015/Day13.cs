@@ -28,9 +28,6 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            if (dinnerTable != null)
-                return;
-
             dinnerTable = new(FileLines.Select(SittingArrangementRule.Parse));
         }
 

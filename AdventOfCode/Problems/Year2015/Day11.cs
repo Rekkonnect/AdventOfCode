@@ -19,9 +19,6 @@
         }
         protected override void LoadState()
         {
-            if (password != null)
-                return;
-
             password = new(FileContents);
         }
 

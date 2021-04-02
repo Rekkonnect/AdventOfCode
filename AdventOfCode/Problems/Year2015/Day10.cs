@@ -22,9 +22,6 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            if (startingSequence != null)
-                return;
-
             startingSequence = new(FileContents.Select(c => (byte)(c - '0')).ToArray());
         }
 

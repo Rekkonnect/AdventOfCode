@@ -19,9 +19,6 @@
         }
         protected override void LoadState()
         {
-            if (instructionString != null)
-                return;
-
             instructionString = new(FileContents);
         }
 

@@ -24,9 +24,6 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            if (directions != null)
-                return;
-
             directions = new(FileContents);
             assistedDirections = new(FileContents);
         }

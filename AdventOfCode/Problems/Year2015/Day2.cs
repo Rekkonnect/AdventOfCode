@@ -23,9 +23,6 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            if (presentBoxes != null)
-                return;
-
             presentBoxes = FileLines.Select(PresentBox.Parse).ToArray();
         }
 

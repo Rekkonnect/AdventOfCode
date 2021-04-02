@@ -28,9 +28,6 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            if (secretKey != null)
-                return;
-
             secretKey = FileContents;
         }
 
