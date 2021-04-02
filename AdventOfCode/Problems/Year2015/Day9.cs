@@ -1,4 +1,5 @@
-﻿using Garyon.DataStructures;
+﻿using AdventOfCode.Functions;
+using Garyon.DataStructures;
 using Garyon.Extensions;
 using Garyon.Functions;
 using Garyon.Objects;
@@ -58,7 +59,7 @@ namespace AdventOfCode.Problems.Year2015
             }
             private int GetDesiredDistance(ComparisonResult desiredComparison, int startingDistance)
             {
-                var destinations = locations.Values.ToDictionary(Selectors.SelfObjectReturner, _ => true);
+                var destinations = locations.Values.ToAvailabilityDictionary();
                 int desiredDistance = startingDistance;
 
                 foreach (var d in locations.Values)
