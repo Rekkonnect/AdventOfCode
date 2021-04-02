@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2020
 {
@@ -231,9 +232,10 @@ namespace AdventOfCode.Problems.Year2020
 
         private class Player
         {
-            public Deck Deck { get; }
+            private static readonly Regex playerPattern = new(@"Player (?'id'\d)\n(?'cards'((\d*)\n)*)", RegexOptions.Compiled);
 
             public int PlayerID { get; init; }
+            public Deck Deck { get; }
 
             public int Score
             {
@@ -261,6 +263,14 @@ namespace AdventOfCode.Problems.Year2020
             public void ClaimWinningCards(IEnumerable<Card> winningCards)
             {
                 Deck.ClaimWinningCards(winningCards);
+            }
+
+            public static Player Parse(string rawPlayer)
+            {
+                var groups = playerPattern.Match(rawPlayer).Groups;
+                int playerID = groups["id"].Value.ParseInt32();
+                var cards = groups["cards"].Value.GetLines(false).Select(v => new Card(v.ParseInt32()));
+                return new(playerID, cards);
             }
         }
         private class Deck : IEnumerable<Card>
