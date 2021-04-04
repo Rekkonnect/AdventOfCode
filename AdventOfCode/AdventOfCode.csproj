@@ -39,6 +39,7 @@
     <None Remove="Inputs\2015\1T1.txt" />
     <None Remove="Inputs\2015\2.txt" />
     <None Remove="Inputs\2015\20.txt" />
+    <None Remove="Inputs\2015\21.txt" />
     <None Remove="Inputs\2015\3.txt" />
     <None Remove="Inputs\2015\4.txt" />
     <None Remove="Inputs\2015\4T1.txt" />
