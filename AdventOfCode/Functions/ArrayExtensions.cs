@@ -51,5 +51,28 @@ namespace AdventOfCode.Functions
                 offsets[i] = indices[i].GetOffset(array, i);
             return (T)array.GetValue(offsets);
         }
+
+        public static T[] Replace<T>(this T[] source, T[] replacement, int start, int length)
+        {
+            int end = start + length;
+            var replaced = new T[source.Length - length + replacement.Length];
+
+            Array.Copy(source, replaced, start);
+            Array.Copy(replacement, 0, replaced, start, replacement.Length);
+            Array.Copy(source, end, replaced, start + replacement.Length, source.Length - end);
+
+            return replaced;
+        }
+        public static T[] Replace<T>(this T[] source, T replacement, int start, int length)
+        {
+            int end = start + length;
+            var replaced = new T[source.Length - length + 1];
+
+            Array.Copy(source, replaced, start);
+            replaced[start] = replacement;
+            Array.Copy(source, end, replaced, start + 1, source.Length - end);
+
+            return replaced;
+        }
     }
 }
