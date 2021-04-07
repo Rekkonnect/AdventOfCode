@@ -62,7 +62,7 @@ namespace AdventOfCode
                 return;
 
             var executionTime = BasicBenchmarking.MeasureExecutionTime(action);
-            Console.WriteLine($"{title} execution time: {executionTime.TotalMilliseconds:N2}ms");
+            Console.WriteLine($"{title} execution time: {executionTime.TotalMilliseconds:N2} ms");
         }
 
         protected T TestRunPart<T>(Func<T> runner, int testCase)
