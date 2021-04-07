@@ -13,7 +13,7 @@ namespace AdventOfCode.Problems.Year2015
         public override ulong SolvePart1()
         {
             int targetWeight = packageWeights.Sum() / 3;
-            int minGroupSize = GetMinGroupSize(targetWeight);
+            GetMinMaxGroupSize(targetWeight, out int minGroupSize, out int maxGroupSize);
 
             // Start finding the groups
             int group1Size = minGroupSize;
@@ -30,7 +30,7 @@ namespace AdventOfCode.Problems.Year2015
                 {
                     var remainingWeights = new HashSet<int>(packageWeightsSet);
                     remainingWeights.ExceptWith(group1);
-                    int maxGroup2Size = remainingWeights.Count - minGroupSize;
+                    int maxGroup2Size = maxGroupSize - (packageWeightsSet.Count - remainingWeights.Count);
 
                     for (int group2Size = minGroupSize; group2Size < maxGroup2Size; group2Size++)
                     {
@@ -57,11 +57,9 @@ namespace AdventOfCode.Problems.Year2015
         }
         public override ulong SolvePart2()
         {
-            // 10.3+ seconds it is
-            // It used to be 94s, then 52s, then 36s, then 11.7s, I think I can live with that much optimization
-            // Although I suspect there is some sort of genius mathematical optimization due to the input being full of primes
+            // Just 1.5s now
             int targetWeight = packageWeights.Sum() / 4;
-            int minGroupSize = GetMinGroupSize(targetWeight);
+            GetMinMaxGroupSize(targetWeight, out int minGroupSize, out int maxGroupSize);
 
             int group1Size = minGroupSize;
 
@@ -77,7 +75,7 @@ namespace AdventOfCode.Problems.Year2015
                 {
                     var remainingGroup2Weights = new HashSet<int>(packageWeightsSet);
                     remainingGroup2Weights.ExceptWith(group1);
-                    int maxGroup2Size = remainingGroup2Weights.Count - minGroupSize;
+                    int maxGroup2Size = maxGroupSize - (packageWeightsSet.Count - remainingGroup2Weights.Count);
 
                     for (int group2Size = minGroupSize; group2Size < maxGroup2Size; group2Size++)
                     {
@@ -91,7 +89,7 @@ namespace AdventOfCode.Problems.Year2015
                             
                             var remainingGroup3Weights = new HashSet<int>(remainingGroup2Weights);
                             remainingGroup3Weights.ExceptWith(group2);
-                            int maxGroup3Size = remainingGroup3Weights.Count - minGroupSize;
+                            int maxGroup3Size = maxGroupSize - (packageWeightsSet.Count - remainingGroup3Weights.Count);
 
                             for (int group3Size = minGroupSize; group3Size < maxGroup3Size; group3Size++)
                             {
@@ -119,14 +117,20 @@ namespace AdventOfCode.Problems.Year2015
             }
         }
 
-        private int GetMinGroupSize(int targetWeight)
+        private void GetMinMaxGroupSize(int targetWeight, out int minGroupSize, out int maxGroupSize)
         {
             int currentBestWeight = 0;
 
-            int minGroupSize = 1;
+            minGroupSize = 1;
             for (; currentBestWeight < targetWeight; minGroupSize++)
                 currentBestWeight += packageWeights[^minGroupSize];
-            return minGroupSize - 1;
+            minGroupSize--;
+
+            currentBestWeight = 0;
+
+            maxGroupSize = 0;
+            for (; currentBestWeight < targetWeight; maxGroupSize++)
+                currentBestWeight += packageWeights[maxGroupSize];
         }
 
         private static void EvaluateBestGroup(PackageGroup packageGroup, ref PackageGroup bestGroup, ref ulong bestGroupQE)
