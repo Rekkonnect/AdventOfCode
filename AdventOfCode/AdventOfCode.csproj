@@ -53,6 +53,15 @@
     <None Remove="Inputs\2015\7.txt" />
     <None Remove="Inputs\2015\8.txt" />
     <None Remove="Inputs\2015\9.txt" />
+    <None Remove="Inputs\2016\1.txt" />
+    <None Remove="Inputs\2016\2.txt" />
+    <None Remove="Inputs\2016\3.txt" />
+    <None Remove="Inputs\2016\4.txt" />
+    <None Remove="Inputs\2016\5.txt" />
+    <None Remove="Inputs\2016\6.txt" />
+    <None Remove="Inputs\2016\7.txt" />
+    <None Remove="Inputs\2016\7T1.txt" />
+    <None Remove="Inputs\2016\7T2.txt" />
     <None Remove="Inputs\2020\10T1.txt" />
     <None Remove="Inputs\2020\10T2.txt" />
     <None Remove="Inputs\2020\11T1.txt" />

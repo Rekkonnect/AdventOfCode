@@ -31,7 +31,7 @@ namespace AdventOfCode.Problems.Year2015
             secretKey = FileContents;
         }
 
-        private class AdventCoinMinerPart2 : AdventCoinMinerPart1
+        private sealed class AdventCoinMinerPart2 : AdventCoinMiner
         {
             protected override bool DetermineHashValidity(byte[] hash)
             {
@@ -43,7 +43,7 @@ namespace AdventOfCode.Problems.Year2015
             }
         }
 
-        private class AdventCoinMinerPart1 : AdventCoinMiner
+        private sealed class AdventCoinMinerPart1 : AdventCoinMiner
         {
             protected override bool DetermineHashValidity(byte[] hash)
             {

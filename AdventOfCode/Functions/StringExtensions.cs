@@ -27,5 +27,17 @@ namespace AdventOfCode.Functions
 
             return s[startingIndex..endIndex].TryParseInt32(out value);
         }
+
+        public static bool ReverseOf(this string a, string b)
+        {
+            if (a.Length != b.Length)
+                return false;
+
+            for (int i = 0; i < a.Length; i++)
+                if (a[i] != b[^(i + 1)])
+                    return false;
+
+            return true;
+        }
     }
 }

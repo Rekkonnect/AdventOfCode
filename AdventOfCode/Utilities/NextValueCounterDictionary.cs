@@ -1,5 +1,7 @@
 ﻿using Garyon.DataStructures;
 using Garyon.Exceptions;
+using Garyon.Extensions;
+using Garyon.Objects;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,26 +24,30 @@ namespace AdventOfCode.Utilities
         }
         public NextValueCounterDictionary(NextValueCounterDictionary<T> other) : base(other) { }
 
-        public KeyValuePair<T, int> Max()
+        public KeyValuePair<T, int> Max() => Best(ComparisonResult.Greater);
+        public KeyValuePair<T, int> Min() => Best(ComparisonResult.Less);
+
+        public KeyValuePair<T, int> Best(ComparisonResult matchingResult)
         {
-            KeyValuePair<T, int> max = default;
-            int maxValue = 0;
+            KeyValuePair<T, int> best = default;
+            int bestValue = int.MaxValue * -(int)matchingResult;
 
             foreach (var kvp in this)
             {
-                if (kvp.Value > maxValue)
+                var comparisonResult = kvp.Value.GetComparisonResult(bestValue);
+                if (comparisonResult == matchingResult)
                 {
-                    max = kvp;
-                    maxValue = kvp.Value;
+                    best = kvp;
+                    bestValue = kvp.Value;
                 }
-                else if (kvp.Value == maxValue)
+                else if (comparisonResult == ComparisonResult.Equal)
                 {
-                    // Reset the max kvp to indicate that there is not a single kvp that has the max value
-                    max = default;
+                    // Reset the best kvp to indicate that there is not a single kvp that has the best value
+                    best = default;
                 }
             }
 
-            return max;
+            return best;
         }
 
         public int GetFilteredCountersNumber(int value, InequalityState inequality = InequalityState.Equal)
