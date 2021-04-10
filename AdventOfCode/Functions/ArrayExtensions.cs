@@ -1,6 +1,7 @@
 ﻿using Garyon.Exceptions;
 using Garyon.Extensions;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace AdventOfCode.Functions
 {
@@ -50,6 +51,25 @@ namespace AdventOfCode.Functions
             for (int i = 0; i < offsets.Length; i++)
                 offsets[i] = indices[i].GetOffset(array, i);
             return (T)array.GetValue(offsets);
+        }
+
+        public static T[] RotateRight<T>(this T[] source, int rotation)
+        {
+            int length = source.Length;
+            rotation %= length;
+
+            T[] result = new T[length];
+
+            for (int i = 0; i < length; i++)
+                result[(i + rotation) % length] = source[i];
+
+            return result;
+        }
+        public static T[] Rotateleft<T>(this T[] source, int rotation)
+        {
+            int length = source.Length;
+            rotation %= length;
+            return RotateRight(source, length - rotation);
         }
 
         public static T[] Replace<T>(this T[] source, T[] replacement, int start, int length)

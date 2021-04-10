@@ -1,31 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AdventOfCode.Utilities
 {
     public class KeyedObjectDictionary<TKey, TObject> : IEnumerable<TObject>
         where TObject : IKeyedObject<TKey>
     {
-        private Dictionary<TKey, TObject> d;
+        private readonly Dictionary<TKey, TObject> d;
 
-        public TObject[] Values => d.Values.ToArray();
+        public ICollection<TObject> Values => d.Values;
         public int Count => d.Count;
 
         public KeyedObjectDictionary()
         {
-            d = new Dictionary<TKey, TObject>();
+            d = new();
         }
         public KeyedObjectDictionary(int capacity)
         {
-            d = new Dictionary<TKey, TObject>(capacity);
+            d = new(capacity);
         }
         public KeyedObjectDictionary(IEnumerable<TObject> objects)
             : this()
         {
             AddRange(objects);
         }
-        public KeyedObjectDictionary(KeyedObjectDictionary<TKey, TObject> other) => d = new Dictionary<TKey, TObject>(other.d);
+        public KeyedObjectDictionary(KeyedObjectDictionary<TKey, TObject> other)
+        {
+            d = new(other.d);
+        }
+
+        public bool TryAddPreserve(TObject value) => TryAddPreserve(value, out _);
+        public bool TryAddPreserve(TObject value, out TObject resultingValue)
+        {
+            var key = value.Key;
+            if (ContainsKey(key))
+            {
+                resultingValue = d[key];
+                return false;
+            }
+
+            d.Add(key, resultingValue = value);
+            return true;
+        }
 
         public void Add(TObject value) => d.Add(value.Key, value);
         public bool Remove(TKey key) => d.Remove(key);

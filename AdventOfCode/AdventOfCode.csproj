@@ -54,6 +54,7 @@
     <None Remove="Inputs\2015\8.txt" />
     <None Remove="Inputs\2015\9.txt" />
     <None Remove="Inputs\2016\1.txt" />
+    <None Remove="Inputs\2016\10.txt" />
     <None Remove="Inputs\2016\2.txt" />
     <None Remove="Inputs\2016\3.txt" />
     <None Remove="Inputs\2016\4.txt" />
@@ -62,6 +63,15 @@
     <None Remove="Inputs\2016\7.txt" />
     <None Remove="Inputs\2016\7T1.txt" />
     <None Remove="Inputs\2016\7T2.txt" />
+    <None Remove="Inputs\2016\8.txt" />
+    <None Remove="Inputs\2016\9.txt" />
+    <None Remove="Inputs\2016\9T1.txt" />
+    <None Remove="Inputs\2016\9T2.txt" />
+    <None Remove="Inputs\2016\9T3.txt" />
+    <None Remove="Inputs\2016\9T4.txt" />
+    <None Remove="Inputs\2016\9T5.txt" />
+    <None Remove="Inputs\2016\9T6.txt" />
+    <None Remove="Inputs\2016\9T7.txt" />
     <None Remove="Inputs\2020\10T1.txt" />
     <None Remove="Inputs\2020\10T2.txt" />
     <None Remove="Inputs\2020\11T1.txt" />

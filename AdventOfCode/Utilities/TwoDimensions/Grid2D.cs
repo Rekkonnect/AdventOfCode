@@ -1,6 +1,8 @@
-﻿using AdventOfCode.Utilities.FourDimensions;
+﻿using AdventOfCode.Functions;
+using AdventOfCode.Utilities.FourDimensions;
 using AdventOfCode.Utilities.ThreeDimensions;
 using Garyon.DataStructures;
+using Garyon.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,6 +128,25 @@ namespace AdventOfCode.Utilities.TwoDimensions
         public T[] GetXLine(Index y) => GetXLine(y.GetOffset(Width));
         public T[] GetYLine(Index x) => GetYLine(x.GetOffset(Height));
 
+        public void SetXLine(int y, T[] values)
+        {
+            if (values.Length != Width)
+                ThrowHelper.Throw<ArgumentException>("The values must match the grid's width.");
+
+            for (int x = 0; x < Width; x++)
+                this[x, y] = values[x];
+        }
+        public void SetYLine(int x, T[] values)
+        {
+            if (values.Length != Height)
+                ThrowHelper.Throw<ArgumentException>("The values must match the grid's height.");
+
+            for (int y = 0; y < Height; y++)
+                this[x, y] = values[y];
+        }
+        public void SetXLine(Index y, T[] values) => SetXLine(y.GetOffset(Width), values);
+        public void SetYLine(Index x, T[] values) => SetYLine(x.GetOffset(Height), values);
+
         public Location2D GetUniqueElementLocation(T element)
         {
             for (int x = 0; x < Width; x++)
@@ -152,7 +173,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
                         Values[x, y] = intersection;
         }
 
-        #region Rotation
+        #region Transformations
         public virtual Grid2D<T> FlipHorizontally()
         {
             var result = new Grid2D<T>(Height, Width, default, ValueCounters);
@@ -326,11 +347,25 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
         protected virtual bool IsImpassableObject(T element) => false;
 
-        public override IEnumerator<T> GetEnumerator()
+        public override IEnumerator<T> GetEnumerator() => Values.Cast<T>().GetEnumerator();
+
+        public virtual T this[Range x, Range y]
         {
-            // Is that how it should be done?
-            foreach (T v in Values)
-                yield return v;
+            set
+            {
+                x.GetStartAndEnd(Width, out int startX, out int endX);
+                y.GetStartAndEnd(Height, out int startY, out int endY);
+                this[startX, startY, endX, endY] = value;
+            }
+        }
+        public virtual T this[int startX, int startY, int endX, int endY]
+        {
+            set
+            {
+                for (int x = startX; x < endX; x++)
+                    for (int y = startY; y < endY; y++)
+                        this[x, y] = value;
+            }
         }
 
         public virtual T this[int x, int y]

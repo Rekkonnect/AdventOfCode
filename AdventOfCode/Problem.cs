@@ -8,6 +8,8 @@ namespace AdventOfCode
 {
     public abstract class Problem
     {
+        private const string runPartMethodPrefix = "RunPart";
+
         private int currentTestCase;
 
         protected bool StateLoaded { get; private set; }
@@ -36,21 +38,20 @@ namespace AdventOfCode
         public int Day => GetType().Name["Day".Length..].ParseInt32();
         public int TestCaseFiles => Directory.GetFiles(BaseDirectory).Where(f => f.Replace('\\', '/').Split('/').Last().StartsWith($"{Day}T")).Count();
 
-        public object[] SolveAllParts(bool displayExecutionTimes = true) => SolveAllParts("RunPart", null, displayExecutionTimes);
-        public object[] TestRunAllParts(int testCase, bool displayExecutionTimes = true) => SolveAllParts("TestRunPart", new object[] { testCase }, displayExecutionTimes);
-
-        private object[] SolveAllParts(string methodPrefix, object[] parameters, bool displayExecutionTimes)
+        public object[] SolveAllParts(bool displayExecutionTimes = true) => SolveAllParts(0, displayExecutionTimes);
+        public object[] SolveAllParts(int testCase, bool displayExecutionTimes = true)
         {
-            var methods = GetType().GetMethods().Where(m => m.Name.StartsWith(methodPrefix)).ToArray();
+            var methods = GetType().GetMethods().Where(m => m.Name.StartsWith(runPartMethodPrefix)).ToArray();
             var result = new object[methods.Length];
 
+            CurrentTestCase = testCase;
             DisplayExecutionTimes(displayExecutionTimes, "State loading", EnsureLoadedState);
 
             for (int i = 0; i < result.Length; i++)
             {
                 DisplayExecutionTimes(displayExecutionTimes, $"Part {i + 1}", () =>
                 {
-                    result[i] = methods[i].Invoke(this, parameters);
+                    result[i] = methods[i].Invoke(this, null);
                 });
             }
             return result;
@@ -63,14 +64,6 @@ namespace AdventOfCode
 
             var executionTime = BasicBenchmarking.MeasureExecutionTime(action);
             Console.WriteLine($"{title} execution time: {executionTime.TotalMilliseconds:N2} ms");
-        }
-
-        protected T TestRunPart<T>(Func<T> runner, int testCase)
-        {
-            CurrentTestCase = testCase;
-            T result = runner();
-            CurrentTestCase = 0;
-            return result;
         }
 
         protected virtual void LoadState() { }
@@ -101,7 +94,6 @@ namespace AdventOfCode
 
     public abstract class Problem<T1, T2> : Problem
     {
-        #region Normal Part Running
         public T1 RunPart1()
         {
             EnsureLoadedState();
@@ -115,18 +107,6 @@ namespace AdventOfCode
 
         public abstract T1 SolvePart1();
         public abstract T2 SolvePart2();
-        #endregion
-
-        #region Test Part Running
-        public T1 TestRunPart1(int testCase)
-        {
-            return TestRunPart(RunPart1, testCase);
-        }
-        public T2 TestRunPart2(int testCase)
-        {
-            return TestRunPart(RunPart2, testCase);
-        }
-        #endregion
     }
 
     public abstract class Problem<T> : Problem<T, T> { }
