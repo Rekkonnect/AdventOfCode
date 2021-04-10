@@ -81,7 +81,7 @@ namespace AdventOfCode
             return value;
         }
 
-        private static void RunTodaysProblem()
+        private static void RunTodaysProblem(bool testCases = true)
         {
             var currentDate = DateTime.UtcNow - TimeSpan.FromHours(5);
             var currentYear = currentDate.Year;
@@ -89,7 +89,7 @@ namespace AdventOfCode
 
             try
             {
-                RunProblem(currentYear, currentDay);
+                RunProblem(currentYear, currentDay, testCases);
             }
             catch
             {
@@ -97,15 +97,15 @@ namespace AdventOfCode
             }
         }
 
-        private static void RunThisYearsProblem(int day)
+        private static void RunThisYearsProblem(int day, bool testCases = true)
         {
             var currentDate = DateTime.UtcNow - TimeSpan.FromHours(5);
             var currentYear = currentDate.Year;
-            RunProblem(currentYear, day);
+            RunProblem(currentYear, day, testCases);
         }
-        private static void RunProblem(int year, int day)
+        private static void RunProblem(int year, int day, bool testCases = true)
         {
-            RunProblem(ProblemsIndex.Instance[year, day]);
+            RunProblem(ProblemsIndex.Instance[year, day], testCases);
         }
 
         private static void RunProblem<T>()
@@ -113,20 +113,33 @@ namespace AdventOfCode
         {
             RunProblem(typeof(T));
         }
-        private static void RunProblem(Type problemType)
+        private static void RunProblem(Type problemType, bool testCases = true)
         {
             var instance = problemType.GetConstructor(Type.EmptyTypes).Invoke(null) as Problem;
+            RunProblemWithTestCases(instance, testCases);
+        }
+        private static void RunProblemWithTestCases(Problem instance, bool testCases)
+        {
+            if (testCases)
+                RunProblemTestCases(instance);
+            RunProblem(instance);
+        }
+        private static void RunProblem(Problem instance)
+        {
+            WriteLine("Running problem");
+            foreach (var p in instance.SolveAllParts())
+                WriteLine(p);
+        }
+        private static void RunProblemTestCases(Problem instance)
+        {
             int testCases = instance.TestCaseFiles;
             for (int i = 1; i <= testCases; i++)
             {
                 WriteLine($"Running test case {i}");
-                foreach (var p in instance.TestRunAllParts(i))
+                foreach (var p in instance.SolveAllParts(i))
                     WriteLine(p);
                 WriteLine();
             }
-            WriteLine("Running problem");
-            foreach (var p in instance.SolveAllParts())
-                WriteLine(p);
         }
     }
 }
