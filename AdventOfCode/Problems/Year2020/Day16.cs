@@ -1,9 +1,9 @@
-﻿using AdventOfCode.Utilities.TwoDimensions;
-using Garyon.DataStructures;
+﻿using AdventOfCode.Utilities;
+using AdventOfCode.Utilities.TwoDimensions;
 using Garyon.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2020
 {
@@ -43,7 +43,7 @@ namespace AdventOfCode.Problems.Year2020
 
             var ranges = fileGroups[0].GetLines(false);
             foreach (var r in ranges)
-                ruleSystem.RegisterRule(r);
+                ruleSystem.RegisterRule(ValidFieldRanges.Parse(r));
 
             personalTicket = Ticket.Parse(fileGroups[1].GetLines(false)[1]);
 
@@ -58,7 +58,7 @@ namespace AdventOfCode.Problems.Year2020
 
         private class FieldRuleSystem
         {
-            private FlexibleDictionary<string, ValidFieldRanges> fieldRanges = new();
+            private readonly KeyedObjectDictionary<string, ValidFieldRanges> fieldRanges = new();
             private ValidFieldRanges cachedAllRanges;
 
             private string[] availableNames;
@@ -109,20 +109,9 @@ namespace AdventOfCode.Problems.Year2020
                 candidateSquare = new(availableNames.Length, true);
             }
 
-            public void RegisterRule(string raw)
+            public void RegisterRule(ValidFieldRanges validRanges)
             {
-                var split = raw.Split(": ");
-                var fieldName = split[0];
-
-                var validRanges = new ValidFieldRanges();
-                var splitValidRanges = split[1].Split(" or ");
-                foreach (var range in splitValidRanges)
-                {
-                    var splitRange = range.Split('-').Select(int.Parse).ToArray();
-                    validRanges.Set(splitRange[0], splitRange[1]);
-                }
-
-                fieldRanges[fieldName] = validRanges;
+                fieldRanges.Add(validRanges);
             }
             public void Clear()
             {
@@ -156,11 +145,20 @@ namespace AdventOfCode.Problems.Year2020
 
             public override string ToString() => Fields.Select(f => f.ToString()).Aggregate((a, b) => $"{a}, {b}");
         }
-        private class ValidFieldRanges
+        private class ValidFieldRanges : IKeyedObject<string>
         {
             public const int Length = 1000;
 
-            private bool[] validRanges = new bool[Length];
+            private static readonly Regex rulePattern = new(@"(?'name'[\w ]*)\: (?'ranges'.*)", RegexOptions.Compiled);
+            private static readonly Regex rangePattern = new(@"(?'start'\d*)\-(?'end'\d*)", RegexOptions.Compiled);
+
+            private readonly bool[] validRanges = new bool[Length];
+            
+            public string Name { get; }
+
+            string IKeyedObject<string>.Key => Name;
+
+            public ValidFieldRanges(string name = null) => Name = name;
 
             public void Set(int start, int end, bool value = true)
             {
@@ -168,15 +166,29 @@ namespace AdventOfCode.Problems.Year2020
                     validRanges[i] = value;
             }
 
-            public void Clear()
-            {
-                Array.Clear(validRanges, 0, validRanges.Length);
-            }
-
             public bool this[int index]
             {
                 get => validRanges[index];
                 set => validRanges[index] = value;
+            }
+
+            public static ValidFieldRanges Parse(string raw)
+            {
+                var groups = rulePattern.Match(raw).Groups;
+                var fieldName = groups["name"].Value;
+                var result = new ValidFieldRanges(fieldName);
+
+                var ranges = groups["ranges"].Value;
+
+                foreach (Match range in rangePattern.Matches(ranges))
+                {
+                    var rangeGroups = range.Groups;
+                    int start = rangeGroups["start"].Value.ParseInt32();
+                    int end = rangeGroups["end"].Value.ParseInt32();
+                    result.Set(start, end);
+                }
+
+                return result;
             }
 
             public static ValidFieldRanges Union(IEnumerable<ValidFieldRanges> ranges)

@@ -8,8 +8,10 @@ namespace AdventOfCode.Utilities
     {
         private readonly Dictionary<TKey, TObject> d;
 
-        public ICollection<TObject> Values => d.Values;
         public int Count => d.Count;
+
+        public ICollection<TKey> Keys => d.Keys;
+        public ICollection<TObject> Values => d.Values;
 
         public KeyedObjectDictionary()
         {
