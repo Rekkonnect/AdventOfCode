@@ -23,7 +23,7 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            strings = FileLines.Select(CodeString.Parse).ToArray();
+            strings = ParsedFileLines(CodeString.Parse);
         }
 
         private class CodeString

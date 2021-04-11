@@ -51,7 +51,7 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            gifts = new(FileLines.Select(AuntGifts.Parse).ToArray());
+            gifts = new(ParsedFileLines(AuntGifts.Parse));
         }
 
         private class FamilyGifts

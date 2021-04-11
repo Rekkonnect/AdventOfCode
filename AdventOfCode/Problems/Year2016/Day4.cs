@@ -27,7 +27,7 @@ namespace AdventOfCode.Problems.Year2016
         }
         protected override void LoadState()
         {
-            rooms = FileLines.Select(RoomData.Parse).ToArray();
+            rooms = ParsedFileLines(RoomData.Parse);
         }
 
         private record RoomData(string Name, int SectorID, string Checksum)

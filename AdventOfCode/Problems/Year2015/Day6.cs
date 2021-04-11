@@ -32,7 +32,7 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            instructions = FileLines.Select(Instruction.Parse).ToArray();
+            instructions = ParsedFileLines(Instruction.Parse);
         }
 
         private class UnoptimizedLightGrid

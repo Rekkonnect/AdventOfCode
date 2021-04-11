@@ -1,6 +1,5 @@
 ﻿using AdventOfCode.Utilities.TwoDimensions;
 using Garyon.Extensions;
-using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020
 {
@@ -34,7 +33,7 @@ namespace AdventOfCode.Problems.Year2020
         }
         protected override void LoadState()
         {
-            commands = FileLines.Select(ShipCommand.Parse).ToArray();
+            commands = ParsedFileLines(ShipCommand.Parse);
         }
 
         private class ShipWaypointState : ShipState

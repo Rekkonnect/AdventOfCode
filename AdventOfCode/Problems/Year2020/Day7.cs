@@ -20,7 +20,7 @@ namespace AdventOfCode.Problems.Year2020
 
         protected override void LoadState()
         {
-            var rules = FileLines.Select(Rule.Parse);
+            var rules = ParsedFileLines(Rule.Parse);
             system = new RuleSystem(rules);
         }
         protected override void ResetState()

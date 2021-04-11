@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2016
 {
-    public class Day10 : Problem<int, int>
+    public class Day10 : Problem<int>
     {
         private BotHandlingMachine machine;
 
@@ -31,7 +31,7 @@ namespace AdventOfCode.Problems.Year2016
         }
         protected override void LoadState()
         {
-            machine = new(FileLines.Select(BotInstruction.Parse).ToArray());
+            machine = new(ParsedFileLines(BotInstruction.Parse));
         }
 
         private class BotHandlingMachine
@@ -272,19 +272,6 @@ namespace AdventOfCode.Problems.Year2016
                     int botID = groups["botID"].Value.ParseInt32();
                     return new ValueAssignmentInstruction(value, botID);
                 }
-
-                return default;
-            }
-
-            private static BotInstructionOperation GetInstructionMatch(string raw, out Match match)
-            {
-                match = comparisonPattern.Match(raw);
-                if (match.Success)
-                    return BotInstructionOperation.Comparison;
-
-                match = valueAssignmentPattern.Match(raw);
-                if (match.Success)
-                    return BotInstructionOperation.ValueAssignment;
 
                 return default;
             }

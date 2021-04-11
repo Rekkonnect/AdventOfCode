@@ -1,7 +1,6 @@
 ﻿using AdventOfCode.Functions;
 using Garyon.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -26,16 +25,16 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            reindeerRace = new(FileLines.Select(Reindeer.Parse));
+            reindeerRace = new(ParsedFileLines(Reindeer.Parse));
         }
 
         private class ReindeerRace
         {
             private readonly Reindeer[] reindeer;
 
-            public ReindeerRace(IEnumerable<Reindeer> reindeerCollection)
+            public ReindeerRace(Reindeer[] reindeerCollection)
             {
-                reindeer = reindeerCollection.ToArray();
+                reindeer = reindeerCollection;
             }
 
             public int GetWinningDistance(int seconds)

@@ -14,17 +14,8 @@ namespace AdventOfCode.Problems.Year2020
 
         public override int SolvePart1()
         {
-            // Intentionally left commented out because of the bug occurrence
-            //foodCollection.GetCorrelations();
             var nonAllergen = foodCollection.NonAllergenIngredients;
-
-            int count = 0;
-            foreach (var food in foodCollection)
-                foreach (var ingredient in food.Ingredients)
-                    if (nonAllergen.Contains(ingredient))
-                        count++;
-
-            return count;
+            return foodCollection.SelectMany(f => f.Ingredients).Count(nonAllergen.Contains);
         }
         public override string SolvePart2()
         {
@@ -33,7 +24,7 @@ namespace AdventOfCode.Problems.Year2020
 
         protected override void LoadState()
         {
-            foodCollection = new FoodCollection(FileLines.Select(Food.Parse));
+            foodCollection = new FoodCollection(ParsedFileLinesEnumerable(Food.Parse));
         }
         protected override void ResetState()
         {
@@ -65,15 +56,15 @@ namespace AdventOfCode.Problems.Year2020
 
         private class FoodCollection : IEnumerable<Food>
         {
-            private HashSet<string> associatedIngredients = new();
-            private SortedDictionary<string, string> ingredientAllergenCorrelations = new();
+            private readonly HashSet<string> associatedIngredients = new();
+            private readonly SortedDictionary<string, string> ingredientAllergenCorrelations = new();
 
             public List<Food> Foods { get; init; }
             public int Count => Foods.Count;
 
             public SortedDictionary<string, string> IngredientAllergenCorrelations => ingredientAllergenCorrelations;
 
-            public HashSet<string> AllIngredients => new HashSet<string>(Foods.Select(s => s.Ingredients).Flatten());
+            public HashSet<string> AllIngredients => new(Foods.SelectMany(s => s.Ingredients));
             public HashSet<string> NonAllergenIngredients
             {
                 get

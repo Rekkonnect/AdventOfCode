@@ -1,6 +1,9 @@
 ﻿using AdventOfCode.Functions;
+using AdventOfCode.Utilities;
 using Garyon.Extensions;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -31,12 +34,15 @@ namespace AdventOfCode
         protected string FileContents => GetFileContents(CurrentTestCase);
         protected string NormalizedFileContents => GetFileContents(CurrentTestCase).NormalizeLineEndings();
         protected string[] FileLines => GetFileLines(CurrentTestCase);
-        protected int[] FileNumbersInt32 => FileLines.Select(int.Parse).ToArray();
-        protected long[] FileNumbersInt64 => FileLines.Select(long.Parse).ToArray();
+        protected int[] FileNumbersInt32 => ParsedFileLines(int.Parse);
+        protected long[] FileNumbersInt64 => ParsedFileLines(long.Parse);
 
         public int Year => GetType().Namespace.Split('.').Last()[^4..].ParseInt32();
         public int Day => GetType().Name["Day".Length..].ParseInt32();
         public int TestCaseFiles => Directory.GetFiles(BaseDirectory).Where(f => f.Replace('\\', '/').Split('/').Last().StartsWith($"{Day}T")).Count();
+
+        protected T[] ParsedFileLines<T>(Parser<T> parser) => ParsedFileLinesEnumerable(parser).ToArray();
+        protected IEnumerable<T> ParsedFileLinesEnumerable<T>(Parser<T> parser) => FileLines.Select(new Func<string, T>(parser));
 
         public object[] SolveAllParts(bool displayExecutionTimes = true) => SolveAllParts(0, displayExecutionTimes);
         public object[] SolveAllParts(int testCase, bool displayExecutionTimes = true)

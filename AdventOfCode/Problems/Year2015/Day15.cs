@@ -9,6 +9,7 @@ namespace AdventOfCode.Problems.Year2015
     {
         private IEnumerable<Ingredient> ingredients;
 
+        // Shapes when?
         public override int SolvePart1()
         {
             return new Recipe(ingredients).GetHighestScore();
@@ -24,7 +25,7 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            ingredients = FileLines.Select(Ingredient.Parse).ToArray();
+            ingredients = ParsedFileLines(Ingredient.Parse);
         }
 
         private class CaloriedRecipe : Recipe

@@ -39,7 +39,7 @@ namespace AdventOfCode.Problems.Year2016
         }
         protected override void LoadState()
         {
-            triangles = FileLines.Select(TriangleSides.Parse).ToArray();
+            triangles = ParsedFileLines(TriangleSides.Parse);
         }
 
         private record TriangleSides(int A, int B, int C)

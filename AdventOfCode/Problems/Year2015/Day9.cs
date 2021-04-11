@@ -3,7 +3,6 @@ using Garyon.DataStructures;
 using Garyon.Extensions;
 using Garyon.Objects;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2015
@@ -27,7 +26,7 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            locations = new(FileLines.Select(Trip.Parse));
+            locations = new(ParsedFileLines(Trip.Parse));
         }
 
         private class LocationSystem

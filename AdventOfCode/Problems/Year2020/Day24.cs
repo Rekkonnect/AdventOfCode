@@ -59,7 +59,7 @@ namespace AdventOfCode.Problems.Year2020
 
         protected override void LoadState()
         {
-            directionsList = FileLines.Select(HexTileSetDirections.Parse).ToArray();
+            directionsList = ParsedFileLines(HexTileSetDirections.Parse);
         }
         protected override void ResetState()
         {

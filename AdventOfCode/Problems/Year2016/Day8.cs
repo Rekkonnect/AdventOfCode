@@ -2,7 +2,6 @@
 using AdventOfCode.Utilities.TwoDimensions;
 using Garyon.Extensions;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2016
@@ -28,7 +27,7 @@ namespace AdventOfCode.Problems.Year2016
         }
         protected override void LoadState()
         {
-            instructions = FileLines.Select(PixelAdjustmentInstruction.Parse).ToArray();
+            instructions = ParsedFileLines(PixelAdjustmentInstruction.Parse);
             screen = new Screen();
             screen.ApplyInstructions(instructions);
         }

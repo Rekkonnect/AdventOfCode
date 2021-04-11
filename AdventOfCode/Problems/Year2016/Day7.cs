@@ -26,7 +26,7 @@ namespace AdventOfCode.Problems.Year2016
         }
         protected override void LoadState()
         {
-            ips = FileLines.Select(IPv7.Parse).ToArray();
+            ips = ParsedFileLines(IPv7.Parse);
         }
 
         private record IPv7(IPv7Sequence[] Sequences)

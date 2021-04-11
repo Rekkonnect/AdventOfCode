@@ -29,7 +29,7 @@ namespace AdventOfCode.Problems.Year2020
         }
         protected override void LoadState()
         {
-            passwords = FileLines.Select(PasswordPolicyRule.Parse).ToArray();
+            passwords = ParsedFileLines(PasswordPolicyRule.Parse);
         }
 
         private class PasswordPolicyPart2 : PasswordPolicyBase

@@ -29,7 +29,7 @@ namespace AdventOfCode.Problems.Year2020
 
         protected override void LoadState()
         {
-            seats = FileLines.Select(SeatCode.Parse);
+            seats = ParsedFileLines(SeatCode.Parse);
         }
         protected override void ResetState()
         {

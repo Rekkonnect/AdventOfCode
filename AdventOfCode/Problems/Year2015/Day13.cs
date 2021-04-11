@@ -3,7 +3,6 @@ using Garyon.DataStructures;
 using Garyon.Extensions;
 using Garyon.Objects;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2015
@@ -28,7 +27,7 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            dinnerTable = new(FileLines.Select(SittingArrangementRule.Parse));
+            dinnerTable = new(ParsedFileLines(SittingArrangementRule.Parse));
         }
 
         private class DinnerTable

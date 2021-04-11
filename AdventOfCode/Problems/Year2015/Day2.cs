@@ -23,7 +23,7 @@ namespace AdventOfCode.Problems.Year2015
         }
         protected override void LoadState()
         {
-            presentBoxes = FileLines.Select(PresentBox.Parse).ToArray();
+            presentBoxes = ParsedFileLines(PresentBox.Parse);
         }
 
         private struct PresentBox

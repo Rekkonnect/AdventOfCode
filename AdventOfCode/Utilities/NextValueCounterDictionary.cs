@@ -40,7 +40,7 @@ namespace AdventOfCode.Utilities
                     best = kvp;
                     bestValue = kvp.Value;
                 }
-                else if (comparisonResult == ComparisonResult.Equal)
+                else if (comparisonResult is ComparisonResult.Equal)
                 {
                     // Reset the best kvp to indicate that there is not a single kvp that has the best value
                     best = default;
@@ -50,24 +50,24 @@ namespace AdventOfCode.Utilities
             return best;
         }
 
-        public int GetFilteredCountersNumber(int value, InequalityState inequality = InequalityState.Equal)
+        public int GetFilteredCountersNumber(int value, ComparisonType comparison = ComparisonType.Equal)
         {
-            inequality &= InequalityState.Any;
+            comparison &= ComparisonType.Any;
 
-            if (inequality == InequalityState.Any)
+            if (comparison is ComparisonType.Any)
                 return Count;
 
-            if (inequality == default)
-                ThrowHelper.Throw<InvalidEnumArgumentException>("There provided inequality state is invalid.");
+            if (comparison is ComparisonType.None)
+                ThrowHelper.Throw<InvalidEnumArgumentException>("There provided comparison type is invalid.");
 
-            return Values.Count(v => inequality switch
+            return Values.Count(v => comparison switch
             {
-                InequalityState.Less => v < value,
-                InequalityState.Equal => v == value,
-                InequalityState.Greater => v > value,
-                InequalityState.LessOrEqual => v <= value,
-                InequalityState.GreaterOrEqual => v >= value,
-                InequalityState.Different => v != value,
+                ComparisonType.Less => v < value,
+                ComparisonType.Equal => v == value,
+                ComparisonType.Greater => v > value,
+                ComparisonType.LessOrEqual => v <= value,
+                ComparisonType.GreaterOrEqual => v >= value,
+                ComparisonType.Different => v != value,
             });
         }
     }

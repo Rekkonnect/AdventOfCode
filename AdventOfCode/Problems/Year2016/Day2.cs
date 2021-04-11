@@ -27,7 +27,7 @@ namespace AdventOfCode.Problems.Year2016
         }
         protected override void LoadState()
         {
-            instructionStrings = FileLines.Select(InstructionString.Parse).ToArray();
+            instructionStrings = ParsedFileLines(InstructionString.Parse);
         }
 
         private string GetCode(Func<InstructionString, Location2D> keypadRunner, Func<Location2D, char> keypadCharGetter)

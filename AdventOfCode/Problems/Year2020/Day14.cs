@@ -1,8 +1,6 @@
 ﻿using AdventOfCode.Functions;
 using Garyon.DataStructures;
 using Garyon.Extensions;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -10,7 +8,7 @@ namespace AdventOfCode.Problems.Year2020
 {
     public class Day14 : Problem<ulong>
     {
-        private IEnumerable<MemorySystemCommand> commands;
+        private MemorySystemCommand[] commands;
         private MemorySystem memorySystem;
 
         public override ulong SolvePart1()
@@ -37,13 +35,13 @@ namespace AdventOfCode.Problems.Year2020
         }
         protected override void LoadState()
         {
-            commands = FileLines.Select(MemorySystemCommand.ParseBase);
+            commands = ParsedFileLines(MemorySystemCommand.ParseBase);
         }
 
         #region Memory Systems
         private class MemorySystemVersion2 : MemorySystem
         {
-            public MemorySystemVersion2(IEnumerable<MemorySystemCommand> commands)
+            public MemorySystemVersion2(MemorySystemCommand[] commands)
                 : base(commands) { }
 
             public override void RunCommand(MemorySystemCommand command)
@@ -67,27 +65,16 @@ namespace AdventOfCode.Problems.Year2020
 
             protected Bitmask CurrentMask = new();
 
-            // In the following functions
-
-            // Sum<TSource, TSummable>(this IEnumerable<TSource> source, Func<TSource, TSummable> selector);
-            // Sum<TSource, TSummable>(this IEnumerable<TSource> source, Func<TSource, TSummable?> selector)
-            //     where TSummable : struct;
-
-            // LINQ does not provide overloads when
-            // TSummable: byte, sbyte, short, ushort, uint, ulong
-
-            // What went wrong, Microsoft?
             public ulong MemoryValuesSum => Memory.Sum(kvp => kvp.Value);
 
-            public MemorySystem(IEnumerable<MemorySystemCommand> commands)
+            public MemorySystem(MemorySystemCommand[] commands)
             {
-                memoryCommands = commands.ToArray();
+                memoryCommands = commands;
             }
 
             public void RunAllCommands()
             {
-                foreach (var command in memoryCommands)
-                    RunCommand(command);
+                memoryCommands.ForEach(RunCommand);
             }
             public virtual void RunCommand(MemorySystemCommand command)
             {
@@ -100,11 +87,6 @@ namespace AdventOfCode.Problems.Year2020
                         CurrentMask = maskSetCommand.NewMask;
                         break;
                 }
-            }
-
-            public static MemorySystem Parse(string[] commands)
-            {
-                return new(commands.Select(MemorySystemCommand.ParseBase));
             }
         }
         #endregion
