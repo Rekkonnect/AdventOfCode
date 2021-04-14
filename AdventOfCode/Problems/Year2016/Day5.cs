@@ -1,9 +1,8 @@
 ﻿using AdventOfCode.Functions;
+using AdventOfCode.Problems.Utilities;
 using Garyon.Functions;
 using System;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Problems.Year2016
@@ -102,7 +101,7 @@ namespace AdventOfCode.Problems.Year2016
             }
         }
 
-        private abstract class PasswordHacker
+        private abstract class PasswordHacker : MD5HashBruteForcer
         {
             public event Action<string> PasswordUpdated;
 
@@ -110,7 +109,7 @@ namespace AdventOfCode.Problems.Year2016
             {
                 int current = 1;
                 char[] password = new char[8];
-                for (int foundCharacters = 0; foundCharacters < 8; )
+                for (int foundCharacters = 0; foundCharacters < 8;)
                 {
                     current = FindSuitableHash(secretKey, current, out var hash) + 1;
 
@@ -125,17 +124,9 @@ namespace AdventOfCode.Problems.Year2016
 
             protected abstract bool UpdatePassword(byte[] hash, char[] password, int index);
 
-            private static int FindSuitableHash(string secretKey, int start, out byte[] hash)
-            {
-                var hasher = MD5.Create();
-                for (int current = start; ; current++)
-                {
-                    hash = hasher.ComputeHash(Encoding.UTF8.GetBytes(secretKey + current));
-                    if (DetermineHashValidity(hash))
-                        return current;
-                }
-            }
-            private static bool DetermineHashValidity(byte[] hash)
+            protected override bool DetermineHashValidity(byte[] hash) => ValidHash(hash);
+
+            private static bool ValidHash(byte[] hash)
             {
                 for (int i = 0; i < 2; i++)
                     if (hash[i] > 0)

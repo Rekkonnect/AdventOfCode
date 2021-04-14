@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using AdventOfCode.Problems.Utilities;
 
 namespace AdventOfCode.Problems.Year2015
 {
@@ -55,20 +54,9 @@ namespace AdventOfCode.Problems.Year2015
             }
         }
 
-        private abstract class AdventCoinMiner
+        private abstract class AdventCoinMiner : MD5HashBruteForcer
         {
-            public int FindSuitableHash(string secretKey)
-            {
-                var hasher = MD5.Create();
-                for (int current = 1; ; current++)
-                {
-                    var hash = hasher.ComputeHash(Encoding.UTF8.GetBytes(secretKey + current));
-                    if (DetermineHashValidity(hash))
-                        return current;
-                }
-            }
-
-            protected abstract bool DetermineHashValidity(byte[] hash);
+            public int FindSuitableHash(string secretKey) => FindSuitableHash(secretKey, out _);
         }
     }
 }

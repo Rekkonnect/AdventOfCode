@@ -298,7 +298,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
             return (x0 + x1) / 2;
         }
 
-        public List<Direction> GetShortestPath(Location2D start, Location2D end)
+        public List<Direction> GetShortestPath(Location2D start, Location2D end) => GetShortestPath(start, end, out _);
+        public List<Direction> GetShortestPath(Location2D start, Location2D end, out int[,] distanceGrid)
         {
             var d = new List<Direction>();
             List<Direction> resultingDirections = null;
@@ -310,19 +311,21 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
             AnalyzeGridDepth(start, 0);
 
+            distanceGrid = grid;
             return resultingDirections;
 
             void AnalyzeGridDepth(Location2D location, int depth)
             {
                 if (!IsValidLocation(location))
                     return;
-                if (depth > grid[end.X, end.Y])
+
+                if (depth >= grid[end.X, end.Y])
                     return;
 
                 var (x1, y1) = location;
-                if (!IsImpassableObject(Values[x1, y1]))
+                if (!IsImpassableObject(this[x1, y1]))
                 {
-                    if (grid[x1, y1] < depth)
+                    if (grid[x1, y1] <= depth)
                         return;
 
                     grid[x1, y1] = depth;
@@ -334,7 +337,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
                     for (int i = 0; i < 4; i++)
                     {
                         d.Add(currentDirection.Direction);
-                        AnalyzeGridDepth(location + currentDirection.LocationOffset, depth);
+                        AnalyzeGridDepth(location + currentDirection.LocationOffset, depth + 1);
                         d.RemoveAt(d.Count - 1);
 
                         currentDirection.TurnRight();

@@ -28,6 +28,13 @@ namespace AdventOfCode.Functions
             return s[startingIndex..endIndex].TryParseInt32(out value);
         }
 
+        // Too implementation-specific
+        public static bool ExtractInt32AndFirstChar(this string s, out int value, out char firstChar)
+        {
+            firstChar = s[0];
+            return s.TryParseInt32(out value);
+        }
+
         public static bool ReverseOf(this string a, string b)
         {
             if (a.Length != b.Length)
