@@ -346,6 +346,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
             }
         }
 
+        public bool IsValidLocation(int x, int y) => IsValidLocation((x, y));
         public bool IsValidLocation(Location2D location) => location.IsNonNegative && location.X < Width && location.Y < Height;
 
         protected virtual bool IsImpassableObject(T element) => false;
