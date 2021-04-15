@@ -59,8 +59,20 @@ namespace AdventOfCode.Utilities
                 return false;
 
             var node = GetNode(index);
-            node.Previous.Next = node.Next;
+            return Remove(node);
+        }
+        public bool Remove(CircularLinkedListNode<T> node)
+        {
+            // Just in case this can ever return false
+            if (head == node)
+                Head = node.Next;
+
             HandleRemoval();
+
+            if (Count is 1)
+                node.Previous.SetSelfLoopingHead();
+            else
+                node.Previous.Next = node.Next;
 
             return true;
         }
