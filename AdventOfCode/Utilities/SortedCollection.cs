@@ -13,6 +13,7 @@ namespace AdventOfCode.Utilities
         public int Count => list.Count;
         bool ICollection<T>.IsReadOnly => false;
 
+        #region Constructors
         public SortedCollection()
             : this(16) { }
 
@@ -30,6 +31,17 @@ namespace AdventOfCode.Utilities
 
         public SortedCollection(int capacity, Comparison<T> comparison)
             : this(capacity, Comparer<T>.Create(comparison!)) { }
+
+        public SortedCollection(ICollection<T> elements, IComparer<T>? comparer = null)
+            : this(elements.Count, comparer)
+        {
+            foreach (var e in elements)
+                Add(e);
+        }
+
+        public SortedCollection(ICollection<T> elements, Comparison<T> comparison)
+            : this(elements, Comparer<T>.Create(comparison!)) { }
+        #endregion
 
         public bool Contains(T item)
         {

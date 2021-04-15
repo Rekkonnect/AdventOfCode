@@ -23,6 +23,8 @@ namespace AdventOfCode.Functions
 
             return a | b;
         }
+
+        public static int LCM(int a, int b) => a * b / GCD(a, b);
         public static long LCM(long a, long b) => a * b / GCD(a, b);
 
         public static void SimplifyFraction(ref int nominator, ref int denominator)
