@@ -63,6 +63,10 @@ namespace AdventOfCode.Utilities.TwoDimensions
         #region Constructors
         protected Grid2D(Location2D dimensions, T defaultValue, bool initializeValueCounters)
             : this(dimensions.X, dimensions.Y, defaultValue, initializeValueCounters) { }
+        protected Grid2D(int both, bool initializeValueCounters)
+            : this(both, both, default, initializeValueCounters) { }
+        protected Grid2D(int both, T defaultValue, bool initializeValueCounters)
+            : this(both, both, defaultValue, initializeValueCounters) { }
         protected Grid2D(int width, int height, T defaultValue, bool initializeValueCounters)
         {
             Values = new T[Width = width, Height = height];

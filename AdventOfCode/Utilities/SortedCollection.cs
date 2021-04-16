@@ -14,6 +14,14 @@ namespace AdventOfCode.Utilities
         bool ICollection<T>.IsReadOnly => false;
 
         #region Constructors
+        private SortedCollection(List<T> items, IComparer<T>? itemComparer = null)
+        {
+            list = items;
+            comparer = itemComparer ?? Comparer<T>.Default;
+        }
+        private SortedCollection(List<T> items, Comparison<T> comparison)
+            : this(items, Comparer<T>.Create(comparison!)) { }
+
         public SortedCollection()
             : this(16) { }
 
@@ -24,10 +32,7 @@ namespace AdventOfCode.Utilities
             : this(16, comparer) { }
 
         public SortedCollection(int capacity, IComparer<T>? itemComparer)
-        {
-            list = new(capacity);
-            comparer = itemComparer ?? Comparer<T>.Default;
-        }
+            : this(new List<T>(capacity), itemComparer) { }
 
         public SortedCollection(int capacity, Comparison<T> comparison)
             : this(capacity, Comparer<T>.Create(comparison!)) { }
@@ -108,6 +113,9 @@ namespace AdventOfCode.Utilities
         {
             list.CopyTo(array, arrayIndex);
         }
+
+        public static SortedCollection<T> FromSortedElements(ICollection<T> elements, IComparer<T>? comparer = null) => new(new List<T>(elements), comparer);
+        public static SortedCollection<T> FromSortedElements(ICollection<T> elements, Comparison<T> comparison) => new(new List<T>(elements), comparison);
 
         public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
