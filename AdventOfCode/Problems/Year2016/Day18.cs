@@ -1,11 +1,12 @@
-﻿using Garyon.Extensions.ArrayExtensions;
-using System.Linq;
+﻿using AdventOfCode.Functions;
+using System;
+using UltimateOrb;
 
 namespace AdventOfCode.Problems.Year2016
 {
     public class Day18 : Problem<int>
     {
-        private TileType[] firstTileRow;
+        private TileRow firstTileRow;
 
         public override int SolvePart1()
         {
@@ -18,11 +19,7 @@ namespace AdventOfCode.Problems.Year2016
 
         protected override void LoadState()
         {
-            firstTileRow = ParseFirstTileRow(FileContents);
-        }
-        protected override void ResetState()
-        {
-            firstTileRow = null;
+            firstTileRow = TileRow.Parse(FileContents);
         }
 
         private int GetSafeTileCount(int rows)
@@ -32,39 +29,61 @@ namespace AdventOfCode.Problems.Year2016
             return grid.SafeTiles;
         }
 
-        private static TileType[] ParseFirstTileRow(string contents) => contents.Select(ParseTileType).ToArray();
-        private static TileType ParseTileType(char c) => c switch
+        private struct TileRow
         {
-            '^' => TileType.Trap,
-            _ => TileType.Safe,
-        };
+            private UInt128 bits;
+            public int Length { get; }
 
-        private enum TileType
-        {
-            Safe,
-            Trap,
+            public int TrapCount => bits.PopCount();
+            public int SafeCount => Length - TrapCount;
+
+            private TileRow(int length, UInt128 rowBits)
+            {
+                Length = length;
+                bits = rowBits;
+            }
+
+            public TileRow GetNext()
+            {
+                var mask = GetMask(Length);
+
+                var left = (bits << 1) & mask;
+                var right = bits >> 1;
+
+                return new(Length, left ^ right);
+            }
+
+            public static TileRow Parse(string contents)
+            {
+                int length = contents.Length;
+                UInt128 bits = 0;
+                UInt128 bitMask = 1;
+
+                for (int i = contents.Length - 1; i >= 0; i--, bitMask <<= 1)
+                {
+                    if (contents[i] is '^')
+                        bits |= bitMask;
+                }
+
+                return new(length, bits);
+            }
+
+            private static UInt128 GetMask(int leftLength) => ~(UInt128.MaxValue << leftLength);
         }
 
         private class TrapGrid
         {
-            private bool alternateRow;
-
-            private TileType[] rowA;
-            private TileType[] rowB;
+            private TileRow currentRow;
 
             public int SafeTiles { get; private set; }
 
-            public TileType[] PreviousRow => alternateRow ? rowB : rowA;
-            public TileType[] CurrentRow => alternateRow ? rowA : rowB;
+            public int Length => currentRow.Length;
 
-            public int Length => rowA.Length;
-
-            public TrapGrid(TileType[] firstTileRow)
+            public TrapGrid(TileRow firstRow)
             {
-                rowA = firstTileRow.CopyArray();
-                rowB = new TileType[rowA.Length];
+                currentRow = firstRow;
 
-                SafeTiles += rowA.Count(tile => tile is TileType.Safe);
+                SafeTiles += firstRow.SafeCount;
             }
 
             public void AnalyzeRows(int count)
@@ -75,29 +94,8 @@ namespace AdventOfCode.Problems.Year2016
 
             private void AnalyzeRow()
             {
-                var currentRow = CurrentRow;
-                var previousRow = PreviousRow;
-
-                for (int x = 0; x < Length; x++)
-                {
-                    if ((currentRow[x] = GetTileType(previousRow, x)) is TileType.Safe)
-                        SafeTiles++;
-                }
-
-                alternateRow = !alternateRow;
-            }
-
-            private static TileType GetTileType(TileType[] previousRow, int x)
-            {
-                bool trapLeft  =
-                    x > 0 &&
-                    previousRow[x - 1] is TileType.Trap;
-
-                bool trapRight =
-                    x + 1 < previousRow.Length &&
-                    previousRow[x + 1] is TileType.Trap;
-
-                return (trapLeft ^ trapRight) ? TileType.Trap : TileType.Safe;
+                currentRow = currentRow.GetNext();
+                SafeTiles += currentRow.SafeCount;
             }
         }
     }
