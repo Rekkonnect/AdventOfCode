@@ -68,6 +68,7 @@
     <None Remove="Inputs\2016\20.txt" />
     <None Remove="Inputs\2016\21.txt" />
     <None Remove="Inputs\2016\22.txt" />
+    <None Remove="Inputs\2016\23.txt" />
     <None Remove="Inputs\2016\3.txt" />
     <None Remove="Inputs\2016\4.txt" />
     <None Remove="Inputs\2016\5.txt" />

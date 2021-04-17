@@ -7,6 +7,7 @@ namespace AdventOfCode.Utilities
     {
         public string Mnemonic { get; }
         public int ArgumentCount { get; }
+        public OperatorFunctionalityTypes FunctionalityTypes { get; init; }
 
         public MnemonableInstructionInformationAttribute(string mnemonic, int argumentCount)
         {
