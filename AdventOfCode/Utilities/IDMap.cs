@@ -38,6 +38,15 @@ namespace AdventOfCode.Utilities
             ids.Clear();
         }
 
+        public bool TryAdd(T value, out int id)
+        {
+            int previousCount = Count;
+            id = Add(value);
+            int newCount = Count;
+
+            return newCount > previousCount;
+        }
+
         public bool Contains(T value) => ids.ContainsKey(value);
 
         public int GetID(T element) => ids[element];

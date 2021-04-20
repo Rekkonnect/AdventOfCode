@@ -1,7 +1,9 @@
 ﻿using Garyon.DataStructures;
 using Garyon.Exceptions;
 using Garyon.Extensions;
+using Garyon.Extensions.ArrayExtensions;
 using Garyon.Objects;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +11,7 @@ using System.Linq;
 
 namespace AdventOfCode.Utilities
 {
-    public class NextValueCounterDictionary<T> : ValueCounterDictionary<T>
+    public class NextValueCounterDictionary<T> : ValueCounterDictionary<T>, IEquatable<NextValueCounterDictionary<T>>
     {
         public NextValueCounterDictionary() { }
         public NextValueCounterDictionary(IEnumerable<T> collection, int initial = 1)
@@ -69,6 +71,30 @@ namespace AdventOfCode.Utilities
                 ComparisonType.GreaterOrEqual => v >= value,
                 ComparisonType.Different => v != value,
             });
+        }
+
+        public bool Equals(NextValueCounterDictionary<T> other)
+        {
+            foreach (var kvp in Dictionary)
+                if (!other.Dictionary.TryGetValue(kvp.Key, out int value) || !kvp.Value.Equals(value))
+                    return false;
+
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is NextValueCounterDictionary<T> d && Equals(d);
+        }
+        public override int GetHashCode()
+        {
+            // Clearly a "hack" for 
+            var result = new HashCode();
+            var values = Dictionary.Values.ToArray();
+            var sortedValues = values.Sort();
+            foreach (var value in sortedValues)
+                result.Add(value);
+            return result.ToHashCode();
         }
     }
 }

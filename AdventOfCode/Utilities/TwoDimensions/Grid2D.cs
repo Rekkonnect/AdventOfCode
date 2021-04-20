@@ -115,6 +115,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
         }
         #endregion
 
+        public T AccessibleValueOrDefault(int x, int y) => IsValidLocation(x, y) ? Values[x, y] : default;
+
         public T[] GetXLine(int y)
         {
             var result = new T[Width];
