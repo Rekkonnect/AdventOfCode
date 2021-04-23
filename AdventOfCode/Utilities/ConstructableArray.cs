@@ -62,6 +62,8 @@ namespace AdventOfCode.Utilities
             this[to] = moved;
         }
 
+        public void ResetRotation() => currentRotation = 0;
+
         public void Rotate(int rotation)
         {
             currentRotation = (currentRotation + rotation + Length) % Length;
