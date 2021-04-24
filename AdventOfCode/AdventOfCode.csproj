@@ -91,6 +91,7 @@
     <None Remove="Inputs\2017\10T2.txt" />
     <None Remove="Inputs\2017\11.txt" />
     <None Remove="Inputs\2017\12.txt" />
+    <None Remove="Inputs\2017\13.txt" />
     <None Remove="Inputs\2017\2.txt" />
     <None Remove="Inputs\2017\3.txt" />
     <None Remove="Inputs\2017\3T1.txt" />
