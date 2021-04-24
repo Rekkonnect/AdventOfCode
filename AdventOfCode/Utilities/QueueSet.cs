@@ -3,65 +3,65 @@ using System.Collections.Generic;
 
 namespace AdventOfCode.Utilities
 {
-    public class StackSet<T> : IEnumerable<T>
+    public class QueueSet<T> : IEnumerable<T>
     {
-        private readonly Stack<T> stack;
+        private readonly Queue<T> queue;
         private readonly HashSet<T> set;
 
         public int Count => set.Count;
         public bool IsEmpty => Count == 0;
 
-        public StackSet()
+        public QueueSet()
         {
-            stack = new Stack<T>();
+            queue = new Queue<T>();
             set = new HashSet<T>();
         }
-        public StackSet(int capacity)
+        public QueueSet(int capacity)
         {
-            stack = new Stack<T>(capacity);
-            set = new HashSet<T>();
+            queue = new Queue<T>(capacity);
+            set = new HashSet<T>(capacity);
         }
-        public StackSet(IEqualityComparer<T> comparer)
+        public QueueSet(IEqualityComparer<T> comparer)
         {
-            stack = new Stack<T>();
+            queue = new Queue<T>();
             set = new HashSet<T>(comparer);
         }
-        public StackSet(int capacity, IEqualityComparer<T> comparer)
+        public QueueSet(int capacity, IEqualityComparer<T> comparer)
         {
-            stack = new Stack<T>(capacity);
+            queue = new Queue<T>(capacity);
             set = new HashSet<T>(comparer);
         }
 
         public bool Contains(T item) => set.Contains(item);
 
-        public bool Push(T item)
+        public bool Enqueue(T item)
         {
             if (!set.Add(item))
                 return false;
 
-            stack.Push(item);
+            queue.Enqueue(item);
             return true;
         }
-        public T Pop()
+        public T Dequeue()
         {
-            var item = stack.Pop();
+            var item = queue.Dequeue();
             set.Remove(item);
             return item;
         }
         public T Peek()
         {
-            return stack.Peek();
+            return queue.Peek();
         }
 
         public void Clear()
         {
             set.Clear();
-            stack.Clear();
+            queue.Clear();
         }
 
-        public void CopyTo(T[] array, int arrayIndex) => stack.CopyTo(array, arrayIndex);
+        public void CopyTo(T[] array, int arrayIndex) => queue.CopyTo(array, arrayIndex);
 
-        public IEnumerator<T> GetEnumerator() => stack.GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => queue.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
