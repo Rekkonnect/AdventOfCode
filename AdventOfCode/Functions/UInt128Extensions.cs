@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using Garyon.Extensions;
+using System.Numerics;
 using UltimateOrb;
 
 namespace AdventOfCode.Functions
@@ -15,5 +16,6 @@ namespace AdventOfCode.Functions
 
             return BitOperations.PopCount(hiu) + BitOperations.PopCount(lou);
         }
+        public static string GetBinaryRepresentation(this UInt128 value) => $"{value.HiInt64Bits.GetBinaryRepresentation()}{value.LoInt64Bits.GetBinaryRepresentation()}";
     }
 }

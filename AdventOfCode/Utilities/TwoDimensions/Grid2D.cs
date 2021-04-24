@@ -285,6 +285,41 @@ namespace AdventOfCode.Utilities.TwoDimensions
         }
         #endregion
 
+        public int[,] GetRegionMap(T value, out int regionCount)
+        {
+            var map = new int[Width, Height];
+            
+            for (int x = 0; x < Width; x++)
+                for (int y = 0; y < Width; y++)
+                    map[x, y] = Values[x, y].Equals(value) ? -1 : 0;
+
+            int currentRegionIndex = 1;
+
+            for (int x = 0; x < Width; x++)
+                for (int y = 0; y < Width; y++)
+                    if (EnumerateRegion(x, y))
+                        currentRegionIndex++;
+
+            regionCount = currentRegionIndex - 1;
+            return map;
+
+            bool EnumerateRegion(int x0, int y0)
+            {
+                if (!IsValidLocation(x0, y0))
+                    return false;
+
+                if (map[x0, y0] > -1)
+                    return false;
+
+                map[x0, y0] = currentRegionIndex;
+                EnumerateRegion(x0 - 1, y0);
+                EnumerateRegion(x0 + 1, y0);
+                EnumerateRegion(x0, y0 - 1);
+                EnumerateRegion(x0, y0 + 1);
+                return true;
+            }
+        }
+
         public int GetMedianXOfFirstRegion(int y, T regionValue)
         {
             int x0 = -1;

@@ -67,7 +67,7 @@ namespace AdventOfCode.Utilities
         public void Rotate(int rotation)
         {
             currentRotation = (currentRotation + rotation + Length) % Length;
-#if DEBUG
+#if DEBUG_ROTATION
             Console.WriteLine($"Current Rotation {currentRotation}");
 #endif
         }
