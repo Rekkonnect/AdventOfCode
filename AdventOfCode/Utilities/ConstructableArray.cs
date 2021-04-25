@@ -11,13 +11,14 @@ namespace AdventOfCode.Utilities
         // Rotations are handled in such a way that there is no
         // actual operation performed before fully constructing the array
 
-        private readonly T[] array;
         private int currentRotation;
 
-        public int Length => array.Length;
+        protected readonly T[] Array;
 
-        public ConstructableArray(T[] initial) => array = initial.CopyArray();
-        public ConstructableArray(int length) => array = new T[length];
+        public int Length => Array.Length;
+
+        public ConstructableArray(T[] initial) => Array = initial.CopyArray();
+        public ConstructableArray(int length) => Array = new T[length];
 
         public void SwapPosition(int x, int y)
         {
@@ -80,7 +81,7 @@ namespace AdventOfCode.Utilities
             return -1;
         }
 
-        public T[] ConstuctArray()
+        public T[] ConstructArray()
         {
             T[] result = new T[Length];
 
@@ -94,11 +95,11 @@ namespace AdventOfCode.Utilities
 
         public T this[int index]
         {
-            get => array[OffsetIndex(index)];
-            set => array[OffsetIndex(index)] = value;
+            get => Array[OffsetIndex(index)];
+            set => Array[OffsetIndex(index)] = value;
         }
 
-        public IEnumerator<T> GetEnumerator() => array.AsEnumerable().GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => Array.AsEnumerable().GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

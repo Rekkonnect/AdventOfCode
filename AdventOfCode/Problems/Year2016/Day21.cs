@@ -52,12 +52,12 @@ namespace AdventOfCode.Problems.Year2016
 #endif
                     operation.Operate(constructable);
 #if DEBUG
-                    Console.WriteLine(new string(constructable.ConstuctArray()));
+                    Console.WriteLine(new string(constructable.ConstructArray()));
                     Console.WriteLine();
 #endif
                 }
 
-                return new(constructable.ConstuctArray());
+                return new(constructable.ConstructArray());
             }
             public string Unscramble(string scrambled)
             {
@@ -76,12 +76,12 @@ namespace AdventOfCode.Problems.Year2016
 #endif
                     operation.OperateReverse(constructable);
 #if DEBUG
-                    Console.WriteLine(new string(constructable.ConstuctArray()));
+                    Console.WriteLine(new string(constructable.ConstructArray()));
                     Console.WriteLine();
 #endif
                 }
 
-                return new(constructable.ConstuctArray());
+                return new(constructable.ConstructArray());
             }
         }
 
