@@ -44,6 +44,7 @@ namespace AdventOfCode.Problems.Year2017
             {
                 var result = new ProgramArrangement();
                 var arrangements = new FlexibleDictionary<ulong, int?>();
+                var roundArrangements = new FlexibleDictionary<int, ulong>();
 
                 for (int i = 0; i < danceCount; i++)
                 {
@@ -54,14 +55,15 @@ namespace AdventOfCode.Problems.Year2017
                     if (arrangements[arrangementCode] is int firstOccurrence)
                     {
                         // Skip remaining moves
-                        int remainingDances = danceCount - i;
                         int loopSize = firstOccurrence - i;
-                        int skip = remainingDances / loopSize * loopSize;
-                        i += skip;
+                        int offset = firstOccurrence - loopSize;
+                        int finalLoopedIndex = (danceCount - offset) % loopSize - 1;
+                        return ProgramArrangement.FromArrangementCode(roundArrangements[finalLoopedIndex]);
                     }
                     else
                     {
                         arrangements[arrangementCode] = i;
+                        roundArrangements[i] = arrangementCode;
                     }
 #if DEBUG
                     if (i % 1000 is 0)
@@ -101,6 +103,19 @@ namespace AdventOfCode.Problems.Year2017
             }
 
             public string GetCurrentArrangementString() => new(ConstructArray());
+
+            public static string FromArrangementCode(ulong arrangementCode)
+            {
+                var result = new char[ProgramCount];
+
+                for (int i = 0; i < ProgramCount; i++)
+                {
+                    result[^(i + 1)] = (char)((int)(arrangementCode & 0xF) + 'a');
+                    arrangementCode >>= 4;
+                }
+
+                return new(result);
+            }
         }
         
         private sealed record ExchangeMove(int X, int Y) : DanceMove
