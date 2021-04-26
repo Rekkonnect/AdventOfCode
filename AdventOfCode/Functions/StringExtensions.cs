@@ -34,6 +34,11 @@ namespace AdventOfCode.Functions
             firstChar = s[0];
             return s.TryParseInt32(out value);
         }
+        public static bool ExtractInt64AndFirstChar(this string s, out long value, out char firstChar)
+        {
+            firstChar = s[0];
+            return s.TryParseInt64(out value);
+        }
 
         public static bool ReverseOf(this string a, string b)
         {

@@ -8,14 +8,14 @@
         {
             computer.ResetRegisters();
             computer.RunProgram();
-            return computer.GetRegisterValue('a');
+            return (int)computer.GetRegisterValue('a');
         }
         public override int SolvePart2()
         {
             computer.ResetRegisters();
             computer.SetRegisterValue('c', 1);
             computer.RunProgram();
-            return computer.GetRegisterValue('a');
+            return (int)computer.GetRegisterValue('a');
         }
 
         protected override void LoadState()

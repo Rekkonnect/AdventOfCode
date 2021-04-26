@@ -41,7 +41,7 @@ namespace AdventOfCode.Problems.Year2016
             computer.ResetRegisters();
             computer.SetRegisterValue('a', initialRegisterValue);
             computer.RunProgram();
-            return computer.GetRegisterValue('a');
+            return (int)computer.GetRegisterValue('a');
         }
     }
 }
