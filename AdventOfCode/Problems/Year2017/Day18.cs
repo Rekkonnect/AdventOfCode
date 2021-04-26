@@ -1,6 +1,4 @@
-﻿using AdventOfCode.Functions;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AdventOfCode.Problems.Year2017
 {
