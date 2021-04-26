@@ -1,7 +1,7 @@
 ﻿using Garyon.Exceptions;
 using Garyon.Extensions;
+using Garyon.Objects;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace AdventOfCode.Functions
 {
@@ -53,6 +53,34 @@ namespace AdventOfCode.Functions
             return (T)array.GetValue(offsets);
         }
 
+        public static int MaxIndex<T>(this T[] source)
+            where T : IComparable<T>
+        {
+            return ExtremumIndex(source, ComparisonResult.Greater);
+        }
+        public static int MinIndex<T>(this T[] source)
+            where T : IComparable<T>
+        {
+            return ExtremumIndex(source, ComparisonResult.Less);
+        }
+
+        public static int ExtremumIndex<T>(this T[] source, ComparisonResult targetResult)
+        where T : IComparable<T>
+        {
+            int index = 0;
+            T extremum = source[0];
+            for (int i = 1; i < source.Length; i++)
+            {
+                if (source[i].MatchesComparisonResult(extremum, targetResult))
+                {
+                    extremum = source[i];
+                    index = i;
+                }
+            }
+
+            return index;
+        }
+
         public static T[] RotateRight<T>(this T[] source, int rotation)
         {
             int length = source.Length;
@@ -65,7 +93,7 @@ namespace AdventOfCode.Functions
 
             return result;
         }
-        public static T[] Rotateleft<T>(this T[] source, int rotation)
+        public static T[] RotateLeft<T>(this T[] source, int rotation)
         {
             int length = source.Length;
             rotation %= length;
