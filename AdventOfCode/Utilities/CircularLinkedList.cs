@@ -18,9 +18,9 @@ namespace AdventOfCode.Utilities
             private set
             {
                 head = value;
-                if (Count == 1)
+                if (Count is 1)
                     head.SetSelfLoopingHead();
-                if (lastIndexedNode == null)
+                if (lastIndexedNode is null)
                     InitializeIndexedNode();
             }
         }
@@ -33,19 +33,25 @@ namespace AdventOfCode.Utilities
         bool ICollection<T>.IsReadOnly => false;
 
         public CircularLinkedList() { }
+        public CircularLinkedList(params T[] values)
+            : this((IEnumerable<T>)values) { }
         public CircularLinkedList(IEnumerable<T> values)
         {
-            var first = values.First();
-            Count++;
-            Head = new(first);
-            AddRange(values.Skip(1));
+            AddRange(values);
         }
 
         #region Insertion/Removal
         public void Add(T item)
         {
-            head.Previous = new(item, head.Previous, head);
-            HandleInsertion();
+            if (head is null)
+            {
+                Count++;
+                Head = new(item);
+            }
+            else
+            {
+                InsertBefore(head, item);
+            }
         }
         public void AddRange(IEnumerable<T> items)
         {
@@ -75,6 +81,21 @@ namespace AdventOfCode.Utilities
                 node.Previous.Next = node.Next;
 
             return true;
+        }
+
+        public CircularLinkedListNode<T> GetPrevious(CircularLinkedListNode<T> node, int skip) => node.GetPrevious(skip % Count);
+        public CircularLinkedListNode<T> GetNext(CircularLinkedListNode<T> node, int skip) => node.GetNext(skip % Count);
+
+        public void InsertBefore(CircularLinkedListNode<T> node, T insertedValue)
+        {
+            node.Previous = new CircularLinkedListNode<T>(insertedValue, node.Previous, node);
+            HandleInsertion();
+        }
+
+        public void InsertAfter(CircularLinkedListNode<T> node, T insertedValue)
+        {
+            node.Next = new CircularLinkedListNode<T>(insertedValue, node, node.Next);
+            HandleInsertion();
         }
 
         public void Insert(int index, T item)

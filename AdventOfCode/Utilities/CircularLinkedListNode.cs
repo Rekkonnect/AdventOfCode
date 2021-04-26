@@ -66,6 +66,21 @@ namespace AdventOfCode.Utilities
             previous = next = this;
         }
 
+        public CircularLinkedListNode<T> GetPrevious(int skip)
+        {
+            var current = this;
+            for (int i = 0; i < skip; i++)
+                current = current.previous;
+            return current;
+        }
+        public CircularLinkedListNode<T> GetNext(int skip)
+        {
+            var current = this;
+            for (int i = 0; i < skip; i++)
+                current = current.next;
+            return current;
+        }
+
         public override string ToString() => Value.ToString();
     }
 }
