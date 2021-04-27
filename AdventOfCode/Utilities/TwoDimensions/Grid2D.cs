@@ -115,6 +115,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
         }
         #endregion
 
+        protected virtual Grid2D<T> InitializeClone() => new(Height, Width, default, ValueCounters);
+
         public T AccessibleValueOrDefault(int x, int y) => IsValidLocation(x, y) ? Values[x, y] : default;
 
         public T[] GetXLine(int y)
@@ -182,7 +184,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
         #region Transformations
         public virtual Grid2D<T> FlipHorizontally()
         {
-            var result = new Grid2D<T>(Height, Width, default, ValueCounters);
+            var result = InitializeClone();
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
                     result[^(x + 1), y] = Values[x, y];
@@ -190,14 +192,14 @@ namespace AdventOfCode.Utilities.TwoDimensions
         }
         public virtual Grid2D<T> FlipVertically()
         {
-            var result = new Grid2D<T>(Height, Width, default, ValueCounters);
+            var result = InitializeClone();
             for (int x = 0; x < Width; x++)
                 for (int y = 0; y < Height; y++)
                     result[x, ^(y + 1)] = Values[x, y];
             return result;
         }
 
-        public virtual Grid2D<T> RotateClockwise(int turns)
+        public virtual Grid2D<T> RotateClockwise(int turns = 1)
         {
             turns %= 4;
 
@@ -207,7 +209,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
             if (turns < 0)
                 return RotateCounterClockwise(-turns);
 
-            var result = new Grid2D<T>(Height, Width, default, ValueCounters);
+            var result = InitializeClone();
 
             switch (turns)
             {
@@ -232,7 +234,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
             return result;
         }
-        public virtual Grid2D<T> RotateCounterClockwise(int turns)
+        public virtual Grid2D<T> RotateCounterClockwise(int turns = 1)
         {
             return RotateClockwise(4 - turns % 4);
         }

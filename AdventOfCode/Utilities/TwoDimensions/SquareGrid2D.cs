@@ -27,9 +27,15 @@ namespace AdventOfCode.Utilities.TwoDimensions
             : base(other, dimensions, offset) { }
         #endregion
 
-        public override SquareGrid2D<T> RotateClockwise(int turns) => new(base.RotateClockwise(turns));
-        public override SquareGrid2D<T> RotateCounterClockwise(int turns) => new(base.RotateCounterClockwise(turns));
-        public override SquareGrid2D<T> FlipHorizontally() => new(base.FlipHorizontally());
-        public override SquareGrid2D<T> FlipVertically() => new(base.FlipVertically());
+        protected override SquareGrid2D<T> InitializeClone()
+        {
+            return new(Size, default, ValueCounters);
+        }
+
+        // "peak" keyword please
+        public override SquareGrid2D<T> RotateClockwise(int turns = 1) => base.RotateClockwise(turns) as SquareGrid2D<T>;
+        public override SquareGrid2D<T> RotateCounterClockwise(int turns = 1) => base.RotateCounterClockwise(turns) as SquareGrid2D<T>;
+        public override SquareGrid2D<T> FlipHorizontally() => base.FlipHorizontally() as SquareGrid2D<T>;
+        public override SquareGrid2D<T> FlipVertically() => base.FlipVertically() as SquareGrid2D<T>;
     }
 }

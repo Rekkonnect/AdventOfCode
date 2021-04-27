@@ -1,5 +1,6 @@
 ﻿using Garyon.Exceptions;
 using Garyon.Extensions;
+using Garyon.Extensions.ArrayExtensions;
 using Garyon.Objects;
 using System;
 
@@ -53,6 +54,27 @@ namespace AdventOfCode.Functions
             return (T)array.GetValue(offsets);
         }
 
+        public static TResult[] SelectArray<TSource, TResult>(this TSource[] source, Func<TSource, TResult> selector)
+        {
+            var result = new TResult[source.Length];
+
+            for (int i = 0; i < result.Length; i++)
+                result[i] = selector(source[i]);
+
+            return result;
+        }
+        public static TResult[,] SelectArray<TSource, TResult>(this TSource[,] source, Func<TSource, TResult> selector)
+        {
+            var lengths = source.GetDimensionLengths();
+            var result = new TResult[lengths[0], lengths[1]];
+
+            for (int i = 0; i < lengths[0]; i++)
+                for (int j = 0; j < lengths[1]; j++)
+                    result[i, j] = selector(source[i, j]);
+
+            return result;
+        }
+
         public static int MaxIndex<T>(this T[] source)
             where T : IComparable<T>
         {
@@ -65,7 +87,7 @@ namespace AdventOfCode.Functions
         }
 
         public static int ExtremumIndex<T>(this T[] source, ComparisonResult targetResult)
-        where T : IComparable<T>
+            where T : IComparable<T>
         {
             int index = 0;
             T extremum = source[0];
