@@ -53,6 +53,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
         public Direction TurnLeft(int times) => Turn(4 - times);
         public Direction TurnRight(int times) => Turn(times);
 
+        public Direction TurnAround() => Turn(2);
+
         private Direction Turn(int indexAdjustment)
         {
             directionIndex = (directionIndex + indexAdjustment) % 4;
