@@ -6,6 +6,7 @@ namespace AdventOfCode.Problems
     public class GenericComputer
     {
         private ComputerProgram program;
+        private readonly ValueCounterDictionary<ComputerOperator> operatorInvocationCount = new();
 
         private int instructionIndex;
 
@@ -13,7 +14,11 @@ namespace AdventOfCode.Problems
 
         public ComputerInstruction[] Instructions
         {
-            set => program.Instructions = value;
+            set
+            {
+                program.Instructions = value;
+                Reset();
+            }
         }
 
         public event ExecutionOutputHandler OutputHandler;
@@ -31,9 +36,10 @@ namespace AdventOfCode.Problems
             RunProgram();
         }
 
-        public void ResetRegisters()
+        public void Reset()
         {
             Registers.Clear();
+            operatorInvocationCount.Clear();
         }
 
         public void RunProgram()
@@ -48,6 +54,8 @@ namespace AdventOfCode.Problems
             while (!HaltRequested && instructionIndex < program.Length);
         }
 
+        public int GetInvocationCount(ComputerOperator op) => operatorInvocationCount[op];
+        
         private void ExecuteInstruction(ComputerInstruction instruction)
         {
             var arg0 = ExtractArgumentInfo(instruction, 0);
@@ -55,6 +63,7 @@ namespace AdventOfCode.Problems
 
             int instructionOffset = 1;
 
+            operatorInvocationCount.Add(instruction.Operator);
             RunInstruction(instruction, arg0, arg1, ref instructionOffset);
 
             JumpToOffset(instructionOffset);

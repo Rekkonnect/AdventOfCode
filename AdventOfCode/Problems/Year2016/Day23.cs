@@ -38,7 +38,7 @@ namespace AdventOfCode.Problems.Year2016
         private int RunProgram(int initialRegisterValue)
         {
             computer.Instructions = instructions;
-            computer.ResetRegisters();
+            computer.Reset();
             computer.SetRegisterValue('a', initialRegisterValue);
             computer.RunProgram();
             return (int)computer.GetRegisterValue('a');

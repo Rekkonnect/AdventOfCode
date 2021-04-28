@@ -12,7 +12,7 @@
         }
         public override int SolvePart2()
         {
-            computer.ResetRegisters();
+            computer.Reset();
             computer.SetRegisterValue('a', 1);
             computer.RunProgram();
             return (int)computer.GetRegisterValue('b');

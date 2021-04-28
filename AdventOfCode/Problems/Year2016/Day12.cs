@@ -6,13 +6,13 @@
 
         public override int SolvePart1()
         {
-            computer.ResetRegisters();
+            computer.Reset();
             computer.RunProgram();
             return (int)computer.GetRegisterValue('a');
         }
         public override int SolvePart2()
         {
-            computer.ResetRegisters();
+            computer.Reset();
             computer.SetRegisterValue('c', 1);
             computer.RunProgram();
             return (int)computer.GetRegisterValue('a');
