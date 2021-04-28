@@ -2,6 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2017
 {
+    [SolutionInfo(SolutionFlags.Part2WIP)]
     public class Day23 : Problem<int, int>
     {
         private ComputerInstruction[] instructions;
