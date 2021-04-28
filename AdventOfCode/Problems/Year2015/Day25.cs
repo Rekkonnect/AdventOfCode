@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2015
 {
-    public class Day25 : Problem<ulong, string>
+    public class Day25 : FinalDay<ulong>
     {
         private CodeGridLocation gridLocation;
 
@@ -16,10 +16,6 @@ namespace AdventOfCode.Problems.Year2015
                 resultingCode = resultingCode * 252533 % 33554393;
 
             return resultingCode;
-        }
-        public override string SolvePart2()
-        {
-            return "Congratulations on completing all of AoC 2015!";
         }
 
         protected override void LoadState()

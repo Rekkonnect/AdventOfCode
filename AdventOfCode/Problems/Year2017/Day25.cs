@@ -5,17 +5,13 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2017
 {
-    public class Day25 : Problem<int, string>
+    public class Day25 : FinalDay<int>
     {
         private TuringMachine turingMachine;
 
         public override int SolvePart1()
         {
             return turingMachine.GetChecksum();
-        }
-        public override string SolvePart2()
-        {
-            return "Congratulations on completing all of AoC 2017!";
         }
 
         protected override void LoadState()

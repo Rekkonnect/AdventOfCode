@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2020
 {
-    public class Day25 : Problem<ulong>
+    public class Day25 : FinalDay<ulong>
     {
         private PublicKey cardKey;
         private PublicKey doorKey;
@@ -13,11 +13,6 @@ namespace AdventOfCode.Problems.Year2020
             var transformer = new SubjectNumberTransformer(doorKey.Key);
             transformer.Transform(loopSize);
             return transformer.CurrentValue;
-        }
-        public override ulong SolvePart2()
-        {
-            // D20P2
-            return default;
         }
 
         protected override void LoadState()
