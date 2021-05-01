@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using Garyon.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using static AdventOfCode.Functions.MathFunctions;
 using static System.Math;
 
@@ -21,6 +22,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
         public int ValueSum => X + Y;
         public int ValueProduct => X * Y;
+        public long ValueProduct64 => (long)X * Y;
+
         public int ManhattanDistanceFromCenter => Absolute.ValueSum;
 
         public Location2D Absolute => (Abs(X), Abs(Y));
@@ -141,6 +144,19 @@ namespace AdventOfCode.Utilities.TwoDimensions
             for (int x = start.X; x <= end.X; x++)
                 for (int y = start.Y; y <= end.Y; y++)
                     yield return (x, y);
+        }
+
+        public static Location2D GetLocationSpace(IEnumerable<Location2D> locations) => GetLocationSpace(locations, out _);
+        public static Location2D GetLocationSpace(IEnumerable<Location2D> locations, out Location2D offset)
+        {
+            var list = locations.ToList();
+
+            var minmaxX = list.MinMax(l => l.X);
+            var minmaxY = list.MinMax(l => l.Y);
+
+            offset = (minmaxX.Min, minmaxY.Min);
+
+            return (minmaxX.Max - minmaxX.Min + 1, minmaxY.Max - minmaxY.Min + 1);
         }
 
         public static implicit operator Location2D((int X, int Y) point) => new Location2D(point);

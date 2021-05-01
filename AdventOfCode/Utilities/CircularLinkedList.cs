@@ -86,16 +86,18 @@ namespace AdventOfCode.Utilities
         public CircularLinkedListNode<T> GetPrevious(CircularLinkedListNode<T> node, int skip) => node.GetPrevious(skip % Count);
         public CircularLinkedListNode<T> GetNext(CircularLinkedListNode<T> node, int skip) => node.GetNext(skip % Count);
 
-        public void InsertBefore(CircularLinkedListNode<T> node, T insertedValue)
+        public CircularLinkedListNode<T> InsertBefore(CircularLinkedListNode<T> node, T insertedValue)
         {
-            node.Previous = new CircularLinkedListNode<T>(insertedValue, node.Previous, node);
+            var inserted = node.Previous = new CircularLinkedListNode<T>(insertedValue, node.Previous, node);
             HandleInsertion();
+            return inserted;
         }
 
-        public void InsertAfter(CircularLinkedListNode<T> node, T insertedValue)
+        public CircularLinkedListNode<T> InsertAfter(CircularLinkedListNode<T> node, T insertedValue)
         {
-            node.Next = new CircularLinkedListNode<T>(insertedValue, node, node.Next);
+            var inserted = node.Next = new CircularLinkedListNode<T>(insertedValue, node, node.Next);
             HandleInsertion();
+            return inserted;
         }
 
         public void Insert(int index, T item)

@@ -14,10 +14,16 @@ namespace AdventOfCode.Utilities.TwoDimensions
             printableCharacters = GetPrintableCharacters();
         }
 
-        public PrintableGrid2D(int both) : this(both, both, default) { }
-        public PrintableGrid2D(int both, T defaultValue) : this(both, both, defaultValue) { }
-        public PrintableGrid2D(int width, int height) : this(width, height, default) { }
-        public PrintableGrid2D(int width, int height, T defaultValue) : this(width, height, defaultValue, true) { }
+        public PrintableGrid2D(int both)
+            : this(both, both, default) { }
+        public PrintableGrid2D(int both, T defaultValue)
+            : this(both, both, defaultValue) { }
+        public PrintableGrid2D(int width, int height)
+            : this(width, height, default) { }
+        public PrintableGrid2D(int width, int height, T defaultValue)
+            : this(width, height, defaultValue, true) { }
+        public PrintableGrid2D(Location2D dimensions)
+            : this(dimensions.X, dimensions.Y) { }
         public PrintableGrid2D(PrintableGrid2D<T> other)
             : base(other)
         {
