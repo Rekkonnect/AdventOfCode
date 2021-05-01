@@ -4,63 +4,20 @@ using System.Linq;
 
 namespace AdventOfCode.Utilities
 {
-    public abstract class LevelNetworkNode<TValue, TLevelNetworkNode, TLevelNetwork> : INode<TValue, TLevelNetworkNode, TLevelNetwork>
+    public abstract class LevelNetworkNode<TValue, TLevelNetworkNode, TLevelNetwork> : NetworkNodeBase<TValue, TLevelNetworkNode, TLevelNetwork>
         where TLevelNetworkNode : LevelNetworkNode<TValue, TLevelNetworkNode, TLevelNetwork>
         where TLevelNetwork : LevelNetwork<TValue, TLevelNetworkNode, TLevelNetwork>
     {
-        private readonly HashSet<TLevelNetworkNode> previousNodes = new();
-        private readonly HashSet<TLevelNetworkNode> nextNodes = new();
-
-        public IReadOnlySet<TLevelNetworkNode> PreviousNodes => previousNodes;
-        public IReadOnlySet<TLevelNetworkNode> NextNodes => nextNodes;
-
-        public TLevelNetworkNode This => this as TLevelNetworkNode;
-
-        public TValue Value { get; }
         public int Level { get; }
 
         protected LevelNetworkNode(int level, TValue value = default)
+            : base(value)
         {
             Level = level;
-            Value = value;
-        }
-
-        public bool AddNext(TLevelNetworkNode next)
-        {
-            if (next == this)
-                return false;
-
-            if (previousNodes.Contains(next))
-                return false;
-
-            next.previousNodes.Add(This);
-            return nextNodes.Add(next);
-        }
-        public bool RemoveNext(TLevelNetworkNode next) => nextNodes.Remove(next);
-
-        public bool AddPrevious(TLevelNetworkNode previous)
-        {
-            if (previous == this)
-                return false;
-
-            if (previousNodes.Contains(previous))
-                return false;
-
-            previous.nextNodes.Add(This);
-            return previousNodes.Add(previous);
-        }
-        public bool RemovePrevious(TLevelNetworkNode previous) => previousNodes.Remove(previous);
-
-        public bool IsConnectedTo(TLevelNetworkNode other) => nextNodes.Contains(other) || previousNodes.Contains(other);
-
-        public void Isolate()
-        {
-            nextNodes.Clear();
-            previousNodes.Clear();
         }
     }
 
-    public abstract class LevelNetwork<TValue, TLevelNetworkNode, TLevelNetwork> : INodedStructure<TValue, TLevelNetworkNode, TLevelNetwork>
+    public abstract class LevelNetwork<TValue, TLevelNetworkNode, TLevelNetwork> : NetworkBase<TValue, TLevelNetworkNode, TLevelNetwork>
         where TLevelNetworkNode : LevelNetworkNode<TValue, TLevelNetworkNode, TLevelNetwork>
         where TLevelNetwork : LevelNetwork<TValue, TLevelNetworkNode, TLevelNetwork>
     {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using static AdventOfCode.Functions.MathFunctions;
 using static System.Math;
 
@@ -132,6 +134,13 @@ namespace AdventOfCode.Utilities.TwoDimensions
         {
             x = X;
             y = Y;
+        }
+
+        public static IEnumerable<Location2D> EnumerateRectangleLocations(Location2D start, Location2D end)
+        {
+            for (int x = start.X; x <= end.X; x++)
+                for (int y = start.Y; y <= end.Y; y++)
+                    yield return (x, y);
         }
 
         public static implicit operator Location2D((int X, int Y) point) => new Location2D(point);

@@ -10,12 +10,25 @@ namespace AdventOfCode.Utilities
 
         public int Count => elements.Count;
 
+        public IEnumerable<KeyValuePair<int, T>> ValuesByID => elements;
+
         public IDMap()
             : this(16) { }
         public IDMap(int capacity)
         {
             elements = new(capacity);
             ids = new(capacity);
+        }
+        public IDMap(IEnumerable<T> values)
+            : this()
+        {
+            AddRange(values);
+        }
+
+        public void AddRange(IEnumerable<T> values)
+        {
+            foreach (var value in values)
+                Add(value);
         }
 
         /// <summary>Adds the given value to the ID map, assigning it the next available ID. If the value already exists in the map, nothing happens.</summary>

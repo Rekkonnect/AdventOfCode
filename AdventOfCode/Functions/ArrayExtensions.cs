@@ -78,19 +78,35 @@ namespace AdventOfCode.Functions
         public static int MaxIndex<T>(this T[] source)
             where T : IComparable<T>
         {
-            return ExtremumIndex(source, ComparisonResult.Greater);
+            return MaxIndex(source, out _);
         }
         public static int MinIndex<T>(this T[] source)
             where T : IComparable<T>
         {
-            return ExtremumIndex(source, ComparisonResult.Less);
+            return MinIndex(source, out _);
         }
-
         public static int ExtremumIndex<T>(this T[] source, ComparisonResult targetResult)
             where T : IComparable<T>
         {
+            return ExtremumIndex(source, targetResult, out _);
+        }
+
+        public static int MaxIndex<T>(this T[] source, out T max)
+            where T : IComparable<T>
+        {
+            return ExtremumIndex(source, ComparisonResult.Greater, out max);
+        }
+        public static int MinIndex<T>(this T[] source, out T min)
+            where T : IComparable<T>
+        {
+            return ExtremumIndex(source, ComparisonResult.Less, out min);
+        }
+
+        public static int ExtremumIndex<T>(this T[] source, ComparisonResult targetResult, out T extremum)
+            where T : IComparable<T>
+        {
             int index = 0;
-            T extremum = source[0];
+            extremum = source[0];
             for (int i = 1; i < source.Length; i++)
             {
                 if (source[i].MatchesComparisonResult(extremum, targetResult))

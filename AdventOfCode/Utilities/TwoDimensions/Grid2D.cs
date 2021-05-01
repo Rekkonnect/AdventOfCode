@@ -16,6 +16,9 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
         public readonly int Width, Height;
 
+        // TODO: Abstract in BaseGrid
+        public int TotalElements => Width * Height;
+
         public override Location2D Dimensions => (Width, Height);
         public override Location2D Center => Dimensions / 2;
 
@@ -133,8 +136,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
                 result[y] = Values[x, y];
             return result;
         }
-        public T[] GetXLine(Index y) => GetXLine(y.GetOffset(Width));
-        public T[] GetYLine(Index x) => GetYLine(x.GetOffset(Height));
+        public T[] GetXLine(Index y) => GetXLine(y.GetOffset(Height));
+        public T[] GetYLine(Index x) => GetYLine(x.GetOffset(Width));
 
         public void SetXLine(int y, T[] values)
         {
@@ -388,6 +391,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
                 }
             }
         }
+
+        public IEnumerable<Location2D> EnumerateWholeGridLocations() => Location2D.EnumerateRectangleLocations((0, 0), Dimensions - (1, 1));
 
         public bool IsValidLocation(int x, int y) => IsValidLocation((x, y));
         public bool IsValidLocation(Location2D location) => location.IsNonNegative && location.X < Width && location.Y < Height;
