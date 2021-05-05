@@ -20,6 +20,8 @@ namespace AdventOfCode.Utilities.TwoDimensions
         };
         private static Dictionary<Direction, int> orderedDirectionsIndices;
 
+        public static IEnumerable<Location2D> LocationOffsets { get; } = locations.Values;
+
         private int directionIndex;
 
         public Direction Direction

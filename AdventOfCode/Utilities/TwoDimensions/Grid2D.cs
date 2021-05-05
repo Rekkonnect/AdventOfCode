@@ -394,6 +394,17 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
         public IEnumerable<Location2D> EnumerateWholeGridLocations() => Location2D.EnumerateRectangleLocations((0, 0), Dimensions - (1, 1));
 
+        public bool TryGetValue(int x, int y, out T value)
+        {
+            bool valid = IsValidLocation(x, y);
+            value = valid ? this[x, y] : default;
+            return valid;
+        }
+        public bool TryGetValue(Location2D location, out T value)
+        {
+            return TryGetValue(location.X, location.Y, out value);
+        }
+
         public bool IsValidLocation(int x, int y) => IsValidLocation((x, y));
         public bool IsValidLocation(Location2D location) => location.IsNonNegative && location.X < Width && location.Y < Height;
 

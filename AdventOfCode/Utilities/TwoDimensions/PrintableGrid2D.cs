@@ -6,7 +6,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
 {
     public abstract class PrintableGrid2D<T> : Grid2D<T>, IPrintableGrid<T>
     {
-        private Dictionary<T, char> printableCharacters;
+        private IDictionary<T, char> printableCharacters;
 
         private PrintableGrid2D(int width, int height, T defaultValue, bool initializeValueCounters)
             : base(width, height, defaultValue, initializeValueCounters)
@@ -32,7 +32,7 @@ namespace AdventOfCode.Utilities.TwoDimensions
 
         public virtual void PrintGrid() => Console.WriteLine(ToString());
 
-        protected abstract Dictionary<T, char> GetPrintableCharacters();
+        protected abstract IDictionary<T, char> GetPrintableCharacters();
         protected virtual string FinalizeResultingString(StringBuilder builder) => builder.ToString();
 
         public sealed override string ToString()

@@ -13,6 +13,21 @@ namespace AdventOfCode.Utilities
 
         bool ICollection<T>.IsReadOnly => false;
 
+        public FlexibleList()
+            : this(16) { }
+        public FlexibleList(int capacity)
+        {
+            list = new(capacity);
+        }
+        public FlexibleList(IEnumerable<T> elements)
+        {
+            list = new(elements);
+        }
+        public FlexibleList(FlexibleList<T> other)
+        {
+            list = new(other.list);
+        }
+
         public bool Contains(T item) => list.Contains(item);
 
         public int IndexOf(T item) => list.IndexOf(item);
