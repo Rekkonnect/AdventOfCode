@@ -83,8 +83,8 @@ namespace AdventOfCode.Utilities
             return true;
         }
 
-        public CircularLinkedListNode<T> GetPrevious(CircularLinkedListNode<T> node, int skip) => node.GetPrevious(skip % Count);
-        public CircularLinkedListNode<T> GetNext(CircularLinkedListNode<T> node, int skip) => node.GetNext(skip % Count);
+        public CircularLinkedListNode<T> GetPrevious(CircularLinkedListNode<T> node, int steps) => node.GetPrevious(steps % Count);
+        public CircularLinkedListNode<T> GetNext(CircularLinkedListNode<T> node, int steps) => node.GetNext(steps % Count);
 
         public CircularLinkedListNode<T> InsertBefore(CircularLinkedListNode<T> node, T insertedValue)
         {

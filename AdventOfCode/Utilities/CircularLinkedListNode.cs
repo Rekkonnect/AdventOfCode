@@ -66,17 +66,17 @@ namespace AdventOfCode.Utilities
             previous = next = this;
         }
 
-        public CircularLinkedListNode<T> GetPrevious(int skip)
+        public CircularLinkedListNode<T> GetPrevious(int steps)
         {
             var current = this;
-            for (int i = 0; i < skip; i++)
+            for (int i = 0; i < steps; i++)
                 current = current.previous;
             return current;
         }
-        public CircularLinkedListNode<T> GetNext(int skip)
+        public CircularLinkedListNode<T> GetNext(int steps)
         {
             var current = this;
-            for (int i = 0; i < skip; i++)
+            for (int i = 0; i < steps; i++)
                 current = current.next;
             return current;
         }

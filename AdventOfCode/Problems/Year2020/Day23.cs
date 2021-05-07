@@ -1,6 +1,7 @@
 ﻿using AdventOfCode.Utilities;
 using Garyon.DataStructures;
 using Garyon.Extensions;
+using Garyon.Extensions.ArrayExtensions;
 using System;
 using System.Linq;
 using System.Text;
@@ -281,7 +282,7 @@ namespace AdventOfCode.Problems.Year2020
             public override string ToString()
             {
                 char[] chars = new char[3 * CupCount];
-                Array.Fill(chars, ' ');
+                chars.Fill(' ');
 
                 for (int i = 0; i < CupCount; i++)
                     chars[i * 3 + 1] = (char)(this[i] + '0');

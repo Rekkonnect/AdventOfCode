@@ -63,7 +63,7 @@ namespace AdventOfCode.Problems
 
                 int instructionCount = -jumpOffset;
                 var replacedInstructions = new ComputerInstruction[instructionCount];
-                Array.Fill(replacedInstructions, ComputerInstruction.NoOperation);
+                replacedInstructions.Fill(ComputerInstruction.NoOperation);
 
                 bool validOptimization = true;
 

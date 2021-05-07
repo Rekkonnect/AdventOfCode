@@ -1,6 +1,7 @@
 ﻿using AdventOfCode.Functions;
 using Garyon.DataStructures;
 using Garyon.Extensions;
+using Garyon.Extensions.ArrayExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -255,7 +256,7 @@ namespace AdventOfCode.Problems.Year2018
             {
                 int length = max - min + 1;
                 char[] result = new char[length];
-                Array.Fill(result, '.');
+                result.Fill('.');
 
                 var currentNode = pots.First;
                 while (currentNode.Value.Index < min)

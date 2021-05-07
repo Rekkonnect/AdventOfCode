@@ -28,7 +28,7 @@ namespace AdventOfCode.Problems.Year2018
 
         public struct GridSquare
         {
-            public static GridSquare LeastPowerful = new(Location2D.Zero, 0, int.MinValue);
+            public static readonly GridSquare LeastPowerful = new(Location2D.Zero, 0, int.MinValue);
 
             public Location2D TopLeftLocation { get; }
             public int Size { get; }
