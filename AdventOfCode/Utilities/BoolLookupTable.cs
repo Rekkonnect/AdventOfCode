@@ -1,39 +1,31 @@
 ﻿namespace AdventOfCode.Utilities
 {
-    // TODO: Rename
-    public class BoolDictionary
+    public class BoolLookupTable : LookupTable<bool>
     {
-        private int offset;
-        private bool[] values;
-
         public int Count { get; private set; }
 
-        public BoolDictionary(int start, int end)
-        {
-            offset = start;
-            values = new bool[end - start + 1];
-        }
+        public BoolLookupTable(int start, int end)
+            : base(start, end) { }
 
         public void Unset(int index) => this[index] = false;
         public void Set(int index) => this[index] = true;
 
         public void Reset()
         {
-            for (int i = 0; i < values.Length; i++)
-                values[i] = false;
+            for (int i = 0; i < Values.Length; i++)
+                Values[i] = false;
             Count = 0;
         }
 
-        public bool this[int index]
+        public override bool this[int index]
         {
-            get => values[index - offset];
             set
             {
                 var old = this[index];
                 if (old == value)
                     return;
 
-                values[index - offset] = value;
+                Values[index - Offset] = value;
 
                 if (old && !value)
                     Count--;
