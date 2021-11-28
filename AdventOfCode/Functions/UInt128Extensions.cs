@@ -9,12 +9,8 @@ namespace AdventOfCode.Functions
         // Next time I should develop my own numeric structure
         public static unsafe int PopCount(this UInt128 value)
         {
-            long hi = value.HiInt64Bits;
-            long lo = value.LoInt64Bits;
-            ulong hiu = *(ulong*)&hi;
-            ulong lou = *(ulong*)&lo;
-
-            return BitOperations.PopCount(hiu) + BitOperations.PopCount(lou);
+            var valuePtr = (ulong*)&value;
+            return BitOperations.PopCount(valuePtr[0]) + BitOperations.PopCount(valuePtr[1]);
         }
         public static string GetBinaryRepresentation(this UInt128 value) => $"{value.HiInt64Bits.GetBinaryRepresentation()}{value.LoInt64Bits.GetBinaryRepresentation()}";
     }

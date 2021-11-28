@@ -11,9 +11,9 @@ namespace AdventOfCode.Utilities
     {
         public Enum ValidFlagsMask { get; }
 
-        public ValidFlagsMaskAttribute(Enum validVFlagsMask)
+        public ValidFlagsMaskAttribute(Enum validFlagsMask)
         {
-            ValidFlagsMask = validVFlagsMask;
+            ValidFlagsMask = validFlagsMask;
         }
     }
 }
