@@ -1,4 +1,5 @@
 ﻿using Garyon.DataStructures;
+using Garyon.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,8 +34,8 @@ namespace AdventOfCode.Problems
             }
         }
 
-        public ISet<int> GetAvailableYears() => problemDictionary.Where(kvp => kvp.Value.Any()).Select(kvp => kvp.Key).ToHashSet();
-        public ISet<int> GetAvailableDays(int year) => problemDictionary[year].Where(kvp => kvp.Value is not null).Select(kvp => kvp.Key).ToHashSet();
+        public ISet<int> GetAvailableYears() => problemDictionary.Where(kvp => kvp.Value.Any()).Select(Selectors.KeyReturner).ToHashSet();
+        public ISet<int> GetAvailableDays(int year) => problemDictionary[year].Where(kvp => kvp.Value is not null).Select(Selectors.KeyReturner).ToHashSet();
 
         public Type this[int year, int day] => problemDictionary[year][day];
     }

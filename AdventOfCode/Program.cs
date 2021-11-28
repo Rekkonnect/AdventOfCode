@@ -93,7 +93,7 @@ namespace AdventOfCode
             }
             catch
             {
-                WriteLine("Today's problem has no solution class. Get back to development you lazy fucking ass.");
+                WriteLine("Today's problem has no solution class.\nGet back to development you lazy fucking ass.");
             }
         }
 

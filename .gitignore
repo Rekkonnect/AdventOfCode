@@ -2,6 +2,8 @@
 Maintenance.cs
 AdventOfCode/Problems/SolutionTemplate.cs
 AdventOfCode.Benchmarks
+AdventOfCode/Secrets.cs
+AdventOfCode/secrets.txt
 
 ## --- Generated stuff
 ## Ignore Visual Studio temporary files, build results, and

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AdventOfCode.Utilities
 {
@@ -60,11 +59,10 @@ namespace AdventOfCode.Utilities
         }
         public bool Remove(T item)
         {
-            int index = IndexOf(item);
-            if (index == -1)
+            var node = NodeOf(item);
+            if (node is null)
                 return false;
 
-            var node = GetNode(index);
             return Remove(node);
         }
         public bool Remove(CircularLinkedListNode<T> node)
@@ -125,8 +123,14 @@ namespace AdventOfCode.Utilities
             if (HandleRemovalForLowCount())
                 return;
 
-            // This does not look finished?
-            head = head.Next;
+            var next = head.Next;
+
+            if (Count is 2)
+                next.SetSelfLoopingHead();
+            else
+                next.Previous = head.Previous;
+
+            head = next;
             HandleRemoval();
         }
         // Add RemoveLast too whenever it has to be implemented

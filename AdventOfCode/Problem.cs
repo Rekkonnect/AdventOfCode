@@ -1,14 +1,16 @@
 ﻿using AdventOfCode.Functions;
 using AdventOfCode.Utilities;
 using Garyon.Extensions;
+using Garyon.Functions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 
 namespace AdventOfCode
 {
+    // This class should be split into containing the problem logic and the running logic
     public abstract class Problem
     {
         private const string runPartMethodPrefix = "RunPart";
@@ -37,14 +39,14 @@ namespace AdventOfCode
         protected int[] FileNumbersInt32 => ParsedFileLines(int.Parse);
         protected long[] FileNumbersInt64 => ParsedFileLines(long.Parse);
 
-        public int Year => GetType().Namespace.Split('.').Last()[^4..].ParseInt32();
+        public int Year => GetType().Namespace[^4..].ParseInt32();
         public int Day => GetType().Name["Day".Length..].ParseInt32();
-        public int TestCaseFiles => Directory.GetFiles(BaseDirectory).Where(f => f.Replace('\\', '/').Split('/').Last().StartsWith($"{Day}T")).Count();
+        public int TestCaseFiles => Directory.GetFiles(BaseDirectory).Count(f => Path.GetFileName(f).StartsWith($"{Day}T"));
 
         protected T[] ParsedFileLines<T>(Parser<T> parser) => ParsedFileLinesEnumerable(parser).ToArray();
         protected T[] ParsedFileLines<T>(Parser<T> parser, int skipFirst, int skipLast) => ParsedFileLinesEnumerable(parser, skipFirst, skipLast).ToArray();
         protected IEnumerable<T> ParsedFileLinesEnumerable<T>(Parser<T> parser) => ParsedFileLinesEnumerable(parser, 0, 0);
-        protected IEnumerable<T> ParsedFileLinesEnumerable<T>(Parser<T> parser, int skipFirst, int skipLast) => FileLines.Skip(skipFirst).SkipLast(skipLast).Select(new Func<string, T>(parser));
+        protected IEnumerable<T> ParsedFileLinesEnumerable<T>(Parser<T> parser, int skipFirst, int skipLast) => FileLines.RemoveEmptyElements().Skip(skipFirst).SkipLast(skipLast).Select(new Func<string, T>(parser));
 
         public object[] SolveAllParts(bool displayExecutionTimes = true) => SolveAllParts(0, displayExecutionTimes);
         public object[] SolveAllParts(int testCase, bool displayExecutionTimes = true)
@@ -94,10 +96,49 @@ namespace AdventOfCode
             StateLoaded = targetStateLoadedStatus;
         }
 
-        private string GetFileContents(int testCase) => File.ReadAllText(GetFileLocation(testCase));
+        private string GetFileContents(int testCase)
+        {
+            var input = File.ReadAllText(GetFileLocation(testCase));
+
+            // Only download the input if it's the main input case
+            if (testCase > 0)
+                return input;
+
+            if (input.Length > 0)
+                return input;
+
+            return DownloadInput();
+        }
         private string[] GetFileLines(int testCase) => GetFileContents(testCase).GetLines();
 
         private string GetFileLocation(int testCase) => $"{BaseDirectory}/{Day}{(testCase > 0 ? $"T{testCase}" : "")}.txt";
+
+        private string DownloadInput()
+        {
+            using var client = new HttpClient();
+
+            while (true)
+            {
+                try
+                {
+                    Console.WriteLine("Downloading input from the website...");
+                    var inputURI = GetProblemInputURI();
+                    client.DefaultRequestHeaders.Add("cookie", Secrets.Instance.ToString());
+                    var response = client.GetAsync(inputURI).Result;
+                    var responseString = response.Content.ReadAsStringAsync().Result;
+                    File.WriteAllText(GetFileLocation(0), responseString);
+                    Console.WriteLine("Input downloaded");
+                    return responseString;
+                }
+                catch (HttpRequestException requestException)
+                {
+                    ConsoleUtilities.WriteExceptionInfo(requestException);
+                }
+                // Other exceptions are not to be handled
+            }
+        }
+        private string GetProblemInputURI() => $"https://adventofcode.com/{Year}/day/{Day}/input";
+        private string GetProblemURI() => $"https://adventofcode.com/{Year}/day/{Day}";
     }
 
     public abstract class Problem<T1, T2> : Problem
