@@ -1,7 +1,6 @@
-﻿namespace AdventOfCode.Utilities
+﻿namespace AdventOfCode.Utilities;
+
+public interface IKeyedObject<T>
 {
-    public interface IKeyedObject<T>
-    {
-        T Key { get; }
-    }
+    T Key { get; }
 }

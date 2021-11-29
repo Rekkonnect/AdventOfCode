@@ -1,10 +1,9 @@
-﻿namespace AdventOfCode.Problems
+﻿namespace AdventOfCode.Problems;
+
+public abstract class FinalDay<T> : Problem<T, string>
 {
-    public abstract class FinalDay<T> : Problem<T, string>
+    public sealed override string SolvePart2()
     {
-        public sealed override string SolvePart2()
-        {
-            return $"Congratulations on completing all of AoC {Year}!";
-        }
+        return $"Congratulations on completing all of AoC {Year}!";
     }
 }

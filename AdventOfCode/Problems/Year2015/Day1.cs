@@ -1,61 +1,60 @@
-﻿namespace AdventOfCode.Problems.Year2015
+﻿namespace AdventOfCode.Problems.Year2015;
+
+public class Day1 : Problem<int>
 {
-    public class Day1 : Problem<int>
+    private InstructionString instructionString;
+
+    public override int SolvePart1()
     {
-        private InstructionString instructionString;
+        return instructionString.FinalFloor;
+    }
+    public override int SolvePart2()
+    {
+        return instructionString.BasementEntranceInstructionPosition;
+    }
 
-        public override int SolvePart1()
+    protected override void ResetState()
+    {
+        instructionString = null;
+    }
+    protected override void LoadState()
+    {
+        instructionString = new(FileContents);
+    }
+
+    private class InstructionString
+    {
+        // Analyzed data
+        public int FinalFloor { get; private set; }
+        public int BasementEntranceInstructionPosition { get; private set; }
+
+        public string Instructions { get; }
+
+        public InstructionString(string instructions)
         {
-            return instructionString.FinalFloor;
+            Instructions = instructions;
+            Analyze();
         }
-        public override int SolvePart2()
-        {
-            return instructionString.BasementEntranceInstructionPosition;
-        }
 
-        protected override void ResetState()
+        private void Analyze()
         {
-            instructionString = null;
-        }
-        protected override void LoadState()
-        {
-            instructionString = new(FileContents);
-        }
-
-        private class InstructionString
-        {
-            // Analyzed data
-            public int FinalFloor { get; private set; }
-            public int BasementEntranceInstructionPosition { get; private set; }
-
-            public string Instructions { get; }
-
-            public InstructionString(string instructions)
+            int current = 0;
+            for (int i = 0; i < Instructions.Length; i++)
             {
-                Instructions = instructions;
-                Analyze();
-            }
-
-            private void Analyze()
-            {
-                int current = 0;
-                for (int i = 0; i < Instructions.Length; i++)
+                char instruction = Instructions[i];
+                current += instruction switch
                 {
-                    char instruction = Instructions[i];
-                    current += instruction switch
-                    {
-                        '(' => 1,
-                        ')' => -1,
-                    };
+                    '(' => 1,
+                    ')' => -1,
+                };
 
-                    if (BasementEntranceInstructionPosition > 0)
-                        continue;
+                if (BasementEntranceInstructionPosition > 0)
+                    continue;
 
-                    if (current == -1)
-                        BasementEntranceInstructionPosition = i + 1;
-                }
-                FinalFloor = current;
+                if (current == -1)
+                    BasementEntranceInstructionPosition = i + 1;
             }
+            FinalFloor = current;
         }
     }
 }

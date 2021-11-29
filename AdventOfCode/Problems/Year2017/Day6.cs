@@ -6,107 +6,106 @@ using System.Diagnostics;
 using System.Linq;
 using UltimateOrb;
 
-namespace AdventOfCode.Problems.Year2017
+namespace AdventOfCode.Problems.Year2017;
+
+public class Day6 : Problem<int>
 {
-    public class Day6 : Problem<int>
+    private Memory memory;
+
+    public override int SolvePart1()
     {
-        private Memory memory;
+        return memory.RedistributionCyclesUntilLoop;
+    }
+    public override int SolvePart2()
+    {
+        return memory.LoopStart;
+    }
 
-        public override int SolvePart1()
+    protected override void LoadState()
+    {
+        memory = new(FileContents.Split('\t').Select(int.Parse).ToArray());
+        memory.RedistributeUntilLoop();
+    }
+    protected override void ResetState()
+    {
+        memory = null;
+    }
+
+    private class Memory
+    {
+        private int[] banks;
+
+        public int BankCount => banks.Length;
+
+        public int RedistributionCyclesUntilLoop { get; private set; }
+        public int LoopStart { get; private set; }
+
+        public Memory(IEnumerable<int> bankBlockCount)
         {
-            return memory.RedistributionCyclesUntilLoop;
+            banks = bankBlockCount.ToArray();
         }
-        public override int SolvePart2()
+        public Memory(Memory other)
+            : this(other.banks) { }
+
+        public void RedistributeUntilLoop()
         {
-            return memory.LoopStart;
-        }
+            var seenConfigurations = new IDMap<UInt128> { GetStateCode() };
 
-        protected override void LoadState()
-        {
-            memory = new(FileContents.Split('\t').Select(int.Parse).ToArray());
-            memory.RedistributeUntilLoop();
-        }
-        protected override void ResetState()
-        {
-            memory = null;
-        }
-
-        private class Memory
-        {
-            private int[] banks;
-
-            public int BankCount => banks.Length;
-
-            public int RedistributionCyclesUntilLoop { get; private set; }
-            public int LoopStart { get; private set; }
-
-            public Memory(IEnumerable<int> bankBlockCount)
+            while (true)
             {
-                banks = bankBlockCount.ToArray();
-            }
-            public Memory(Memory other)
-                : this(other.banks) { }
+                Redistribute();
 
-            public void RedistributeUntilLoop()
-            {
-                var seenConfigurations = new IDMap<UInt128> { GetStateCode() };
-
-                while (true)
+                if (!seenConfigurations.TryAdd(GetStateCode(), out int loopStart))
                 {
-                    Redistribute();
+                    RedistributionCyclesUntilLoop = seenConfigurations.Count;
+                    LoopStart = RedistributionCyclesUntilLoop - loopStart;
 
-                    if (!seenConfigurations.TryAdd(GetStateCode(), out int loopStart))
-                    {
-                        RedistributionCyclesUntilLoop = seenConfigurations.Count;
-                        LoopStart = RedistributionCyclesUntilLoop - loopStart;
-
-                        return;
-                    }
+                    return;
                 }
             }
+        }
 
-            private void Redistribute()
+        private void Redistribute()
+        {
+            int max = banks[0];
+            int maxIndex = 0;
+
+            for (int i = 1; i < BankCount; i++)
             {
-                int max = banks[0];
-                int maxIndex = 0;
+                if (banks[i] <= max)
+                    continue;
 
-                for (int i = 1; i < BankCount; i++)
-                {
-                    if (banks[i] <= max)
-                        continue;
-
-                    max = banks[i];
-                    maxIndex = i;
-                }
+                max = banks[i];
+                maxIndex = i;
+            }
 
 #if DEBUG
-                int totalBlocks = TotalBlockCount();
+            int totalBlocks = TotalBlockCount();
 #endif
 
-                banks[maxIndex] = 0;
+            banks[maxIndex] = 0;
 
-                int distribution = Math.DivRem(max, BankCount, out int remaining);
+            int distribution = Math.DivRem(max, BankCount, out int remaining);
 
-                for (int i = 0; i < BankCount; i++)
-                {
-                    int rotatedIndex = (i + BankCount - maxIndex - 1) % BankCount;
-                    banks[i] += distribution + Convert.ToInt32(rotatedIndex < remaining);
-                }
+            for (int i = 0; i < BankCount; i++)
+            {
+                int rotatedIndex = (i + BankCount - maxIndex - 1) % BankCount;
+                banks[i] += distribution + Convert.ToInt32(rotatedIndex < remaining);
+            }
 
 #if DEBUG
-                Debug.Assert(totalBlocks == TotalBlockCount());
+            Debug.Assert(totalBlocks == TotalBlockCount());
 #endif
-            }
+        }
 
-            private int TotalBlockCount() => banks.Sum();
+        private int TotalBlockCount() => banks.Sum();
 
-            private UInt128 GetStateCode()
-            {
-                UInt128 result = 0;
-                for (int i = 0; i < BankCount; i++)
-                    result |= (UInt128)banks[i] << (i * 8);
-                return result;
-            }
+        private UInt128 GetStateCode()
+        {
+            UInt128 result = 0;
+            for (int i = 0; i < BankCount; i++)
+                result |= (UInt128)banks[i] << (i * 8);
+            return result;
         }
     }
 }

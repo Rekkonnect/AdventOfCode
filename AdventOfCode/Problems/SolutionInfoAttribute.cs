@@ -1,15 +1,14 @@
 ﻿using System;
 
-namespace AdventOfCode.Problems
-{
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public sealed class SolutionInfoAttribute : Attribute
-    {
-        public SolutionFlags SolutionFlags { get; }
+namespace AdventOfCode.Problems;
 
-        public SolutionInfoAttribute(SolutionFlags flags)
-        {
-            SolutionFlags = flags;
-        }
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+public sealed class SolutionInfoAttribute : Attribute
+{
+    public SolutionFlags SolutionFlags { get; }
+
+    public SolutionInfoAttribute(SolutionFlags flags)
+    {
+        SolutionFlags = flags;
     }
 }

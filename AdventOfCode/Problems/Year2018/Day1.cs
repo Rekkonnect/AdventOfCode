@@ -1,38 +1,37 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace AdventOfCode.Problems.Year2018
-{
-    public class Day1 : Problem<int>
-    {
-        private int[] numbers;
+namespace AdventOfCode.Problems.Year2018;
 
-        public override int SolvePart1()
+public class Day1 : Problem<int>
+{
+    private int[] numbers;
+
+    public override int SolvePart1()
+    {
+        return numbers.Sum();
+    }
+    public override int SolvePart2()
+    {
+        var frequencies = new HashSet<int> { 0 };
+        int currentSum = 0;
+        while (true)
         {
-            return numbers.Sum();
-        }
-        public override int SolvePart2()
-        {
-            var frequencies = new HashSet<int> { 0 };
-            int currentSum = 0;
-            while (true)
+            foreach (var n in numbers)
             {
-                foreach (var n in numbers)
-                {
-                    currentSum += n;
-                    if (!frequencies.Add(currentSum))
-                        return currentSum;
-                }
+                currentSum += n;
+                if (!frequencies.Add(currentSum))
+                    return currentSum;
             }
         }
+    }
 
-        protected override void LoadState()
-        {
-            numbers = FileNumbersInt32;
-        }
-        protected override void ResetState()
-        {
-            numbers = null;
-        }
+    protected override void LoadState()
+    {
+        numbers = FileNumbersInt32;
+    }
+    protected override void ResetState()
+    {
+        numbers = null;
     }
 }

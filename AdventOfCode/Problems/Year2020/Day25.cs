@@ -1,71 +1,70 @@
 ﻿using Garyon.Extensions;
 
-namespace AdventOfCode.Problems.Year2020
+namespace AdventOfCode.Problems.Year2020;
+
+public class Day25 : FinalDay<ulong>
 {
-    public class Day25 : FinalDay<ulong>
+    private PublicKey cardKey;
+    private PublicKey doorKey;
+
+    public override ulong SolvePart1()
     {
-        private PublicKey cardKey;
-        private PublicKey doorKey;
+        int loopSize = cardKey.GetLoopSize();
+        var transformer = new SubjectNumberTransformer(doorKey.Key);
+        transformer.Transform(loopSize);
+        return transformer.CurrentValue;
+    }
 
-        public override ulong SolvePart1()
+    protected override void LoadState()
+    {
+        var lines = FileLines;
+        // The ordering is not specified, but it does not matter either
+        // Due to the symmetric properties of the encryption method
+        cardKey = PublicKey.Parse(lines[0]);
+        doorKey = PublicKey.Parse(lines[1]);
+    }
+
+    private record PublicKey(ulong Key)
+    {
+        public int GetLoopSize()
         {
-            int loopSize = cardKey.GetLoopSize();
-            var transformer = new SubjectNumberTransformer(doorKey.Key);
-            transformer.Transform(loopSize);
-            return transformer.CurrentValue;
+            return new SubjectNumberTransformer(7).TransformUntil(Key);
         }
 
-        protected override void LoadState()
+        public static PublicKey Parse(string key) => new(key.ParseUInt64());
+    }
+    private class SubjectNumberTransformer
+    {
+        private const ulong dividend = 20201227;
+
+        public ulong SubjectNumber { get; }
+        public ulong CurrentValue { get; set; } = 1;
+
+        public SubjectNumberTransformer(ulong subjectNumber)
         {
-            var lines = FileLines;
-            // The ordering is not specified, but it does not matter either
-            // Due to the symmetric properties of the encryption method
-            cardKey = PublicKey.Parse(lines[0]);
-            doorKey = PublicKey.Parse(lines[1]);
+            SubjectNumber = subjectNumber;
         }
 
-        private record PublicKey(ulong Key)
+        public void Transform()
         {
-            public int GetLoopSize()
-            {
-                return new SubjectNumberTransformer(7).TransformUntil(Key);
-            }
-
-            public static PublicKey Parse(string key) => new(key.ParseUInt64());
+            CurrentValue *= SubjectNumber;
+            CurrentValue %= dividend;
         }
-        private class SubjectNumberTransformer
+        public void Transform(int times)
         {
-            private const ulong dividend = 20201227;
+            for (int i = 0; i < times; i++)
+                Transform();
+        }
 
-            public ulong SubjectNumber { get; }
-            public ulong CurrentValue { get; set; } = 1;
-
-            public SubjectNumberTransformer(ulong subjectNumber)
+        public int TransformUntil(ulong target)
+        {
+            int count = 0;
+            while (CurrentValue != target)
             {
-                SubjectNumber = subjectNumber;
+                Transform();
+                count++;
             }
-
-            public void Transform()
-            {
-                CurrentValue *= SubjectNumber;
-                CurrentValue %= dividend;
-            }
-            public void Transform(int times)
-            {
-                for (int i = 0; i < times; i++)
-                    Transform();
-            }
-
-            public int TransformUntil(ulong target)
-            {
-                int count = 0;
-                while (CurrentValue != target)
-                {
-                    Transform();
-                    count++;
-                }
-                return count;
-            }
+            return count;
         }
     }
 }

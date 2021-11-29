@@ -1,16 +1,15 @@
-﻿namespace AdventOfCode.Utilities.TwoDimensions
-{
-    public enum Quadrant
-    {
-        I,
-        II,
-        III,
-        IV,
+﻿namespace AdventOfCode.Utilities.TwoDimensions;
 
-        // Imagine standards
-        TopRight = I,
-        TopLeft = II,
-        BottomLeft = III,
-        BottomRight = IV,
-    }
+public enum Quadrant
+{
+    I,
+    II,
+    III,
+    IV,
+
+    // Imagine standards
+    TopRight = I,
+    TopLeft = II,
+    BottomLeft = III,
+    BottomRight = IV,
 }

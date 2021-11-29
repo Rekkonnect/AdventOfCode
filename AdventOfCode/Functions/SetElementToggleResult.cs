@@ -1,8 +1,7 @@
-﻿namespace AdventOfCode.Functions
+﻿namespace AdventOfCode.Functions;
+
+public enum SetElementToggleResult
 {
-    public enum SetElementToggleResult
-    {
-        Added,
-        Removed,
-    }
+    Added,
+    Removed,
 }

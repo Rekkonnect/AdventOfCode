@@ -1,12 +1,11 @@
-﻿namespace AdventOfCode.Utilities.TwoDimensions
+﻿namespace AdventOfCode.Utilities.TwoDimensions;
+
+public enum HorizontalHexSide
 {
-    public enum HorizontalHexSide
-    {
-        South,
-        SouthEast,
-        SouthWest,
-        North,
-        NorthWest,
-        NorthEast,
-    }
+    South,
+    SouthEast,
+    SouthWest,
+    North,
+    NorthWest,
+    NorthEast,
 }

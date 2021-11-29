@@ -1,9 +1,8 @@
-﻿namespace AdventOfCode.Utilities
-{
-    public interface IHasW
-    {
-        int W { get; set; }
+﻿namespace AdventOfCode.Utilities;
 
-        IHasW InvertW { get; }
-    }
+public interface IHasW
+{
+    int W { get; set; }
+
+    IHasW InvertW { get; }
 }

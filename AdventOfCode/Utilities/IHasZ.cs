@@ -1,9 +1,8 @@
-﻿namespace AdventOfCode.Utilities
-{
-    public interface IHasZ
-    {
-        int Z { get; set; }
+﻿namespace AdventOfCode.Utilities;
 
-        IHasZ InvertZ { get; }
-    }
+public interface IHasZ
+{
+    int Z { get; set; }
+
+    IHasZ InvertZ { get; }
 }

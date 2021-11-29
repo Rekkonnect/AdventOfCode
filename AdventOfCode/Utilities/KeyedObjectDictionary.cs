@@ -1,72 +1,71 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace AdventOfCode.Utilities
+namespace AdventOfCode.Utilities;
+
+public class KeyedObjectDictionary<TKey, TObject> : IEnumerable<TObject>
+    where TObject : IKeyedObject<TKey>
 {
-    public class KeyedObjectDictionary<TKey, TObject> : IEnumerable<TObject>
-        where TObject : IKeyedObject<TKey>
+    private readonly Dictionary<TKey, TObject> d;
+
+    public int Count => d.Count;
+
+    public ICollection<TKey> Keys => d.Keys;
+    public ICollection<TObject> Values => d.Values;
+
+    public KeyedObjectDictionary()
     {
-        private readonly Dictionary<TKey, TObject> d;
+        d = new();
+    }
+    public KeyedObjectDictionary(int capacity)
+    {
+        d = new(capacity);
+    }
+    public KeyedObjectDictionary(IEnumerable<TObject> objects)
+        : this()
+    {
+        AddRange(objects);
+    }
+    public KeyedObjectDictionary(KeyedObjectDictionary<TKey, TObject> other)
+    {
+        d = new(other.d);
+    }
 
-        public int Count => d.Count;
-
-        public ICollection<TKey> Keys => d.Keys;
-        public ICollection<TObject> Values => d.Values;
-
-        public KeyedObjectDictionary()
+    public bool TryAddPreserve(TObject value) => TryAddPreserve(value, out _);
+    public bool TryAddPreserve(TObject value, out TObject resultingValue)
+    {
+        var key = value.Key;
+        if (ContainsKey(key))
         {
-            d = new();
-        }
-        public KeyedObjectDictionary(int capacity)
-        {
-            d = new(capacity);
-        }
-        public KeyedObjectDictionary(IEnumerable<TObject> objects)
-            : this()
-        {
-            AddRange(objects);
-        }
-        public KeyedObjectDictionary(KeyedObjectDictionary<TKey, TObject> other)
-        {
-            d = new(other.d);
-        }
-
-        public bool TryAddPreserve(TObject value) => TryAddPreserve(value, out _);
-        public bool TryAddPreserve(TObject value, out TObject resultingValue)
-        {
-            var key = value.Key;
-            if (ContainsKey(key))
-            {
-                resultingValue = d[key];
-                return false;
-            }
-
-            d.Add(key, resultingValue = value);
-            return true;
+            resultingValue = d[key];
+            return false;
         }
 
-        public void Add(TObject value) => d.Add(value.Key, value);
-        public bool Remove(TKey key) => d.Remove(key);
-        public void Clear() => d.Clear();
+        d.Add(key, resultingValue = value);
+        return true;
+    }
 
-        public void AddRange(IEnumerable<TObject> objects)
-        {
-            foreach (var o in objects)
-                Add(o);
-        }
+    public void Add(TObject value) => d.Add(value.Key, value);
+    public bool Remove(TKey key) => d.Remove(key);
+    public void Clear() => d.Clear();
 
-        public bool Contains(TObject item) => d.ContainsKey(item.Key);
-        public bool ContainsKey(TKey key) => d.ContainsKey(key);
+    public void AddRange(IEnumerable<TObject> objects)
+    {
+        foreach (var o in objects)
+            Add(o);
+    }
 
-        public bool TryGetValue(TKey key, out TObject value) => d.TryGetValue(key, out value);
+    public bool Contains(TObject item) => d.ContainsKey(item.Key);
+    public bool ContainsKey(TKey key) => d.ContainsKey(key);
 
-        public IEnumerator<TObject> GetEnumerator() => d.Values.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    public bool TryGetValue(TKey key, out TObject value) => d.TryGetValue(key, out value);
 
-        public TObject this[TKey key]
-        {
-            get => d[key];
-            set => d[key] = value;
-        }
+    public IEnumerator<TObject> GetEnumerator() => d.Values.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    public TObject this[TKey key]
+    {
+        get => d[key];
+        set => d[key] = value;
     }
 }

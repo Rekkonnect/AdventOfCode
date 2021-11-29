@@ -1,26 +1,25 @@
 ﻿using System;
 
-namespace AdventOfCode.Utilities
+namespace AdventOfCode.Utilities;
+
+public interface ILocation
 {
-    public interface ILocation
-    {
-        bool IsPositive { get; }
-        bool IsNonNegative { get; }
-        bool IsCenter { get; }
-        bool IsNonPositive { get; }
-        bool IsNegative { get; }
+    bool IsPositive { get; }
+    bool IsNonNegative { get; }
+    bool IsCenter { get; }
+    bool IsNonPositive { get; }
+    bool IsNegative { get; }
 
-        int ValueSum { get; }
-        int ValueProduct { get; }
-        int ManhattanDistanceFromCenter { get; }
-    }
+    int ValueSum { get; }
+    int ValueProduct { get; }
+    int ManhattanDistanceFromCenter { get; }
+}
 
-    public interface ILocation<T> : ILocation, IEquatable<T>
-    {
-        T Absolute { get; }
-        T Invert { get; }
+public interface ILocation<T> : ILocation, IEquatable<T>
+{
+    T Absolute { get; }
+    T Invert { get; }
 
-        int ManhattanDistance(T other);
-        T SignedDifferenceFrom(T other);
-    }
+    int ManhattanDistance(T other);
+    T SignedDifferenceFrom(T other);
 }

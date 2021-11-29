@@ -1,37 +1,36 @@
-﻿namespace AdventOfCode.Utilities
+﻿namespace AdventOfCode.Utilities;
+
+public class BoolLookupTable : LookupTable<bool>
 {
-    public class BoolLookupTable : LookupTable<bool>
+    public int Count { get; private set; }
+
+    public BoolLookupTable(int start, int end)
+        : base(start, end) { }
+
+    public void Unset(int index) => this[index] = false;
+    public void Set(int index) => this[index] = true;
+
+    public void Reset()
     {
-        public int Count { get; private set; }
+        for (int i = 0; i < Values.Length; i++)
+            Values[i] = false;
+        Count = 0;
+    }
 
-        public BoolLookupTable(int start, int end)
-            : base(start, end) { }
-
-        public void Unset(int index) => this[index] = false;
-        public void Set(int index) => this[index] = true;
-
-        public void Reset()
+    public override bool this[int index]
+    {
+        set
         {
-            for (int i = 0; i < Values.Length; i++)
-                Values[i] = false;
-            Count = 0;
-        }
+            var old = this[index];
+            if (old == value)
+                return;
 
-        public override bool this[int index]
-        {
-            set
-            {
-                var old = this[index];
-                if (old == value)
-                    return;
+            Values[index - Offset] = value;
 
-                Values[index - Offset] = value;
-
-                if (old && !value)
-                    Count--;
-                if (!old && value)
-                    Count++;
-            }
+            if (old && !value)
+                Count--;
+            if (!old && value)
+                Count++;
         }
     }
 }

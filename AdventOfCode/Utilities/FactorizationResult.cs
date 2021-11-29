@@ -1,76 +1,74 @@
 ﻿using Garyon.Mathematics;
 using System.Collections.Generic;
-using System.Globalization;
 
-namespace AdventOfCode.Utilities
+namespace AdventOfCode.Utilities;
+
+public class FactorizationResult
 {
-    public class FactorizationResult
+    private readonly List<Factor> factors = new();
+
+    public int FactorCount
     {
-        private List<Factor> factors = new();
-
-        public int FactorCount
+        get
         {
-            get
-            {
-                int count = 1;
-                foreach (var f in factors)
-                    count *= f.Exponent + 1;
-                return count;
-            }
+            int count = 1;
+            foreach (var f in factors)
+                count *= f.Exponent + 1;
+            return count;
         }
+    }
 
-        public void AddFactor(int prime, int exponent)
+    public void AddFactor(int prime, int exponent)
+    {
+        if (exponent == 0)
+            return;
+
+        factors.Add(new(prime, exponent));
+    }
+
+    public IEnumerable<int> GetAllDivisors()
+    {
+        yield return 1;
+
+        int[] exponents = new int[factors.Count];
+        exponents[0] = 1;
+
+        bool alive = true;
+        while (alive)
         {
-            if (exponent == 0)
-                return;
+            // Calculate and yield result
+            int result = 1;
+            for (int i = 0; i < exponents.Length; i++)
+                result *= GeneralMath.Power(factors[i].Prime, exponents[i]);
 
-            factors.Add(new(prime, exponent));
-        }
+            yield return result;
 
-        public IEnumerable<int> GetAllDivisors()
-        {
-            yield return 1;
-
-            int[] exponents = new int[factors.Count];
-            exponents[0] = 1;
-
-            bool alive = true;
-            while (alive)
+            // Advance exponents
+            int index = 0;
+            while (true)
             {
-                // Calculate and yield result
-                int result = 1;
-                for (int i = 0; i < exponents.Length; i++)
-                    result *= GeneralMath.Power(factors[i].Prime, exponents[i]);
-                
-                yield return result;
+                exponents[index]++;
 
-                // Advance exponents
-                int index = 0;
-                while (true)
+                if (exponents[index] <= factors[index].Exponent)
+                    break;
+
+                if (index == exponents.Length - 1)
                 {
-                    exponents[index]++;
-
-                    if (exponents[index] <= factors[index].Exponent)
-                        break;
-
-                    if (index == exponents.Length - 1)
-                    {
-                        alive = false;
-                        break;
-                    }
-
-                    exponents[index] = 0;
-                    index++;
+                    alive = false;
+                    break;
                 }
+
+                exponents[index] = 0;
+                index++;
             }
         }
+    }
 
-        private struct Factor
-        {
-            public int Prime { get; }
-            public int Exponent { get; }
+    private struct Factor
+    {
+        public int Prime { get; }
+        public int Exponent { get; }
 
-            public Factor(int prime, int exponent) => (Prime, Exponent) = (prime, exponent);
-        }
+        public Factor(int prime, int exponent) => (Prime, Exponent) = (prime, exponent);
     }
 }

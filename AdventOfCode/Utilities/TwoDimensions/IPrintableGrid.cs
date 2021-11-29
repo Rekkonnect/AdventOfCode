@@ -1,7 +1,6 @@
-﻿namespace AdventOfCode.Utilities.TwoDimensions
+﻿namespace AdventOfCode.Utilities.TwoDimensions;
+
+public interface IPrintableGrid<T>
 {
-    public interface IPrintableGrid<T>
-    {
-        public void PrintGrid();
-    }
+    public void PrintGrid();
 }

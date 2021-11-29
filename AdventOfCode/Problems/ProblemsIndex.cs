@@ -6,37 +6,36 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace AdventOfCode.Problems
+namespace AdventOfCode.Problems;
+
+using ProblemDictionary = FlexibleInitializableValueDictionary<int, FlexibleDictionary<int, Type>>;
+
+public class ProblemsIndex
 {
-    using ProblemDictionary = FlexibleInitializableValueDictionary<int, FlexibleDictionary<int, Type>>;
+    private readonly ProblemDictionary problemDictionary = new();
 
-    public class ProblemsIndex
+    public static ProblemsIndex Instance { get; } = new();
+
+    private ProblemsIndex()
     {
-        private readonly ProblemDictionary problemDictionary = new();
+        var regex = new Regex(@"Year(\d*)\.Day(\d*)$", RegexOptions.Compiled);
 
-        public static ProblemsIndex Instance { get; } = new();
-
-        private ProblemsIndex()
+        var allClasses = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && !t.IsAbstract);
+        foreach (var c in allClasses)
         {
-            var regex = new Regex(@"Year(\d*)\.Day(\d*)$", RegexOptions.Compiled);
+            var match = regex.Match(c.FullName);
+            if (!match.Success)
+                continue;
 
-            var allClasses = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass && !t.IsAbstract);
-            foreach (var c in allClasses)
-            {
-                var match = regex.Match(c.FullName);
-                if (!match.Success)
-                    continue;
+            int year = int.Parse(match.Groups[1].Value);
+            int day = int.Parse(match.Groups[2].Value);
 
-                int year = int.Parse(match.Groups[1].Value);
-                int day = int.Parse(match.Groups[2].Value);
-
-                problemDictionary[year][day] = c;
-            }
+            problemDictionary[year][day] = c;
         }
-
-        public ISet<int> GetAvailableYears() => problemDictionary.Where(kvp => kvp.Value.Any()).Select(Selectors.KeyReturner).ToHashSet();
-        public ISet<int> GetAvailableDays(int year) => problemDictionary[year].Where(kvp => kvp.Value is not null).Select(Selectors.KeyReturner).ToHashSet();
-
-        public Type this[int year, int day] => problemDictionary[year][day];
     }
+
+    public ISet<int> GetAvailableYears() => problemDictionary.Where(kvp => kvp.Value.Any()).Select(Selectors.KeyReturner).ToHashSet();
+    public ISet<int> GetAvailableDays(int year) => problemDictionary[year].Where(kvp => kvp.Value is not null).Select(Selectors.KeyReturner).ToHashSet();
+
+    public Type this[int year, int day] => problemDictionary[year][day];
 }

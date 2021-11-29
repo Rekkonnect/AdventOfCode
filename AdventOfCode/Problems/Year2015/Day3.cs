@@ -2,91 +2,90 @@
 using Garyon.DataStructures;
 using System.Linq;
 
-namespace AdventOfCode.Problems.Year2015
+namespace AdventOfCode.Problems.Year2015;
+
+public class Day3 : Problem<int>
 {
-    public class Day3 : Problem<int>
+    private DeliveryDirections directions;
+    private AssistedDeliveryDirections assistedDirections;
+
+    public override int SolvePart1()
     {
-        private DeliveryDirections directions;
-        private AssistedDeliveryDirections assistedDirections;
+        return directions.PresentedHouses;
+    }
+    public override int SolvePart2()
+    {
+        return assistedDirections.PresentedHouses;
+    }
 
-        public override int SolvePart1()
-        {
-            return directions.PresentedHouses;
-        }
-        public override int SolvePart2()
-        {
-            return assistedDirections.PresentedHouses;
-        }
+    protected override void ResetState()
+    {
+        directions = null;
+    }
+    protected override void LoadState()
+    {
+        directions = new(FileContents);
+        assistedDirections = new(FileContents);
+    }
 
-        protected override void ResetState()
-        {
-            directions = null;
-        }
-        protected override void LoadState()
-        {
-            directions = new(FileContents);
-            assistedDirections = new(FileContents);
-        }
+    private class AssistedDeliveryDirections : DeliveryDirections
+    {
+        public AssistedDeliveryDirections(string s)
+            : base(s) { }
 
-        private class AssistedDeliveryDirections : DeliveryDirections
+        protected override void AnalyzeDirections()
         {
-            public AssistedDeliveryDirections(string s)
-                : base(s) { }
+            Location2D santaLocation = (0, 0);
+            Location2D roboLocation = (0, 0);
 
-            protected override void AnalyzeDirections()
+            GivenPresents.Add(santaLocation);
+            for (int i = 0; i < Directions.Length; i += 2)
             {
-                Location2D santaLocation = (0, 0);
-                Location2D roboLocation = (0, 0);
+                var santaDirection = Directions[i];
+                var roboDirection = Directions[i + 1];
+
+                santaLocation.Forward(santaDirection);
+                roboLocation.Forward(roboDirection);
 
                 GivenPresents.Add(santaLocation);
-                for (int i = 0; i < Directions.Length; i += 2)
-                {
-                    var santaDirection = Directions[i];
-                    var roboDirection = Directions[i + 1];
+                GivenPresents.Add(roboLocation);
+            }
+        }
+    }
 
-                    santaLocation.Forward(santaDirection);
-                    roboLocation.Forward(roboDirection);
+    private class DeliveryDirections
+    {
+        protected Direction[] Directions;
+        protected ValueCounterDictionary<Location2D> GivenPresents = new();
 
-                    GivenPresents.Add(santaLocation);
-                    GivenPresents.Add(roboLocation);
-                }
+        public int PresentedHouses => GivenPresents.Count;
+
+        public DeliveryDirections(string s)
+        {
+            Directions = s.Select(ParseDirection).ToArray();
+            AnalyzeDirections();
+        }
+
+        protected virtual void AnalyzeDirections()
+        {
+            Location2D location = (0, 0);
+            GivenPresents.Add(location);
+            foreach (var d in Directions)
+            {
+                location.Forward(d);
+                GivenPresents.Add(location);
             }
         }
 
-        private class DeliveryDirections
+        private static Direction ParseDirection(char c)
         {
-            protected Direction[] Directions;
-            protected ValueCounterDictionary<Location2D> GivenPresents = new();
-
-            public int PresentedHouses => GivenPresents.Count;
-
-            public DeliveryDirections(string s)
+            return c switch
             {
-                Directions = s.Select(ParseDirection).ToArray();
-                AnalyzeDirections();
-            }
-
-            protected virtual void AnalyzeDirections()
-            {
-                Location2D location = (0, 0);
-                GivenPresents.Add(location);
-                foreach (var d in Directions)
-                {
-                    location.Forward(d);
-                    GivenPresents.Add(location);
-                }
-            }
-
-            private static Direction ParseDirection(char c)
-            {
-                return c switch
-                {
-                    '<' => Direction.Left,
-                    '^' => Direction.Up,
-                    '>' => Direction.Right,
-                    'v' => Direction.Down,
-                };
-            }
+                '<' => Direction.Left,
+                '^' => Direction.Up,
+                '>' => Direction.Right,
+                'v' => Direction.Down,
+            };
         }
     }
 }
