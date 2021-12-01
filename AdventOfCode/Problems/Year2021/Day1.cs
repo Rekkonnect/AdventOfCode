@@ -4,32 +4,17 @@ public class Day1 : Problem<int>
 {
     private int[] numbers;
 
-    public override int SolvePart1()
+    public override int SolvePart1() => CountIncreasedMeasurements(1);
+    public override int SolvePart2() => CountIncreasedMeasurements(3);
+
+    private int CountIncreasedMeasurements(int indexDifference)
     {
-        int increasedMeasurements = 0;
-        for (int i = 1; i < numbers.Length; i++)
-            if (numbers[i] > numbers[i - 1])
-                increasedMeasurements++;
+        int count = 0;
+        for (int i = indexDifference; i < numbers.Length; i++)
+            if (numbers[i] > numbers[i - indexDifference])
+                count++;
 
-        return increasedMeasurements;
-    }
-    public override int SolvePart2()
-    {
-        int increasedMeasurements = 0;
-        int currentMeasurementSum = numbers[0] + numbers[1];
-        int previousMeasurementSum = int.MaxValue;
-        for (int i = 2; i < numbers.Length; i++)
-        {
-            currentMeasurementSum += numbers[i];
-
-            if (currentMeasurementSum > previousMeasurementSum)
-                increasedMeasurements++;
-
-            previousMeasurementSum = currentMeasurementSum;
-            currentMeasurementSum -= numbers[i - 2];
-        }
-
-        return increasedMeasurements;
+        return count;
     }
 
     protected override void LoadState()
