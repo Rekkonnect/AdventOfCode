@@ -47,7 +47,7 @@ public static class Program
         const int minDay = 1;
         int maxDay = 25;
 
-        var currentDate = DateTime.UtcNow - TimeSpan.FromHours(5);
+        var currentDate = ServerClock.Now;
         var currentYear = currentDate.Year;
         var currentMonth = currentDate.Month;
         var currentDay = currentDate.Day;
@@ -200,7 +200,7 @@ public static class Program
 
     private static void RunTodaysProblem(bool testCases = true)
     {
-        var currentDate = DateTime.UtcNow - TimeSpan.FromHours(5);
+        var currentDate = ServerClock.Now;
         var currentYear = currentDate.Year;
         var currentDay = currentDate.Day;
 
@@ -216,7 +216,7 @@ public static class Program
 
     private static void RunThisYearsProblem(int day, bool testCases = true)
     {
-        var currentDate = DateTime.UtcNow - TimeSpan.FromHours(5);
+        var currentDate = ServerClock.Now;
         var currentYear = currentDate.Year;
         RunProblem(currentYear, day, testCases);
     }
