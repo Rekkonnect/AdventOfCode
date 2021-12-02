@@ -15,18 +15,17 @@ public class Day20 : Problem<int>
     [PartSolution(PartSolutionStatus.Unoptimized)]
     public override int SolvePart1()
     {
-        int targetSum = targetPresents / 10;
-        return SolvePart(targetSum, null);
+        return SolvePart(10, null);
     }
     [PartSolution(PartSolutionStatus.Unoptimized)]
     public override int SolvePart2()
     {
-        int targetSum = targetPresents / 11;
-        return SolvePart(targetSum, (n, divisor) => n / divisor <= 50);
+        return SolvePart(11, (n, divisor) => n / divisor <= 50);
     }
 
-    private int SolvePart(int targetSum, DivisorPredicate divisorPredicate)
+    private int SolvePart(int targetSumDivisor, DivisorPredicate divisorPredicate)
     {
+        int targetSum = targetPresents / targetSumDivisor;
         long lcm = 1;
         for (int n = 2; lcm < targetSum / 5; n++)
             lcm = MathFunctions.LCM(lcm, n);
