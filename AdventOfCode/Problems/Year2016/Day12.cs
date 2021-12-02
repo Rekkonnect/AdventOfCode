@@ -2,7 +2,7 @@
 
 public class Day12 : Problem<int>
 {
-    private GenericComputer computer = new();
+    private GenericComputer computer;
 
     public override int SolvePart1()
     {
@@ -20,6 +20,6 @@ public class Day12 : Problem<int>
 
     protected override void LoadState()
     {
-        computer.Instructions = ParsedFileLines(s => ComputerInstruction.Parse(s));
+        computer = new(ParsedFileLines(s => ComputerInstruction.Parse(s)));
     }
 }

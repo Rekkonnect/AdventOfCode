@@ -10,10 +10,12 @@ public class Day17 : Problem<int>
 {
     private WaterSystem system;
 
+    [PartSolution(PartSolutionStatus.Uninitialized)]
     public override int SolvePart1()
     {
         return -1;
     }
+    [PartSolution(PartSolutionStatus.Uninitialized)]
     public override int SolvePart2()
     {
         return -1;

@@ -9,8 +9,6 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2016;
 
-// WIP forever?
-[SolutionInfo(SolutionFlags.Part2WIP)]
 public class Day22 : Problem<int>
 {
     private StorageCluster cluster;
@@ -19,6 +17,8 @@ public class Day22 : Problem<int>
     {
         return cluster.GetViablePairCount();
     }
+    // WIP forever?
+    [PartSolution(PartSolutionStatus.Uninitialized)]
     public override int SolvePart2()
     {
         // I don't like this

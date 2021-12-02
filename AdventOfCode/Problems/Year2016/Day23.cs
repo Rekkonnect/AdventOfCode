@@ -6,7 +6,7 @@ namespace AdventOfCode.Problems.Year2016;
 public class Day23 : Problem<int>
 {
     private ComputerInstruction[] instructions;
-    private GenericComputer computer = new();
+    private GenericComputer computer;
     private int constant;
 
     public override int SolvePart1()
@@ -21,6 +21,7 @@ public class Day23 : Problem<int>
     protected override void LoadState()
     {
         instructions = ParsedFileLines(i => ComputerInstruction.Parse(i));
+        computer = new(instructions);
         int result = RunProgram(7);
         constant = result - RunFactorial(7);
     }

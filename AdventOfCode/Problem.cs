@@ -13,7 +13,8 @@ namespace AdventOfCode;
 // This class should be split into containing the problem logic and the running logic
 public abstract class Problem
 {
-    private const string runPartMethodPrefix = "RunPart";
+    public const string RunPartMethodPrefix = "RunPart";
+    public const string SolvePartMethodPrefix = "SolvePart";
 
     private int currentTestCase;
 
@@ -32,7 +33,7 @@ public abstract class Problem
         }
     }
 
-    protected string BaseDirectory => $@"Inputs\{Year}";
+    protected string BaseDirectory => $@"{Maintenance.BaseCodePath}Inputs\{Year}";
     protected string FileContents => GetFileContents(CurrentTestCase);
     protected string NormalizedFileContents => GetFileContents(CurrentTestCase).NormalizeLineEndings();
     protected string[] FileLines => GetFileLines(CurrentTestCase);
@@ -51,7 +52,7 @@ public abstract class Problem
     public object[] SolveAllParts(bool displayExecutionTimes = true) => SolveAllParts(0, displayExecutionTimes);
     public object[] SolveAllParts(int testCase, bool displayExecutionTimes = true)
     {
-        var methods = GetType().GetMethods().Where(m => m.Name.StartsWith(runPartMethodPrefix)).ToArray();
+        var methods = GetType().GetMethods().Where(m => m.Name.StartsWith(RunPartMethodPrefix)).ToArray();
         var result = new object[methods.Length];
 
         CurrentTestCase = testCase;
@@ -98,8 +99,13 @@ public abstract class Problem
 
     private string GetFileContents(int testCase)
     {
-        var input = File.ReadAllText(GetFileLocation(testCase));
+        var fileLocation = GetFileLocation(testCase);
+        if (!File.Exists(fileLocation))
+            return DownloadInput();
 
+        var input = File.ReadAllText(fileLocation);
+
+        // TODO: Fix this logic
         // Only download the input if it's the main input case
         if (testCase > 0)
             return input;
@@ -111,7 +117,8 @@ public abstract class Problem
     }
     private string[] GetFileLines(int testCase) => GetFileContents(testCase).GetLines();
 
-    private string GetFileLocation(int testCase) => $"{BaseDirectory}/{Day}{(testCase > 0 ? $"T{testCase}" : "")}.txt";
+    private string GetFileLocation(int testCase) => $@"{BaseDirectory}\{Day}{GetTestInputFileSuffix(testCase)}.txt";
+    private static string GetTestInputFileSuffix(int testCase) => testCase > 0 ? $"T{testCase}" : null;
 
     private string DownloadInput()
     {

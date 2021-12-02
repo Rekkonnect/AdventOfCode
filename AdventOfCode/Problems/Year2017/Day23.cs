@@ -2,7 +2,6 @@
 
 namespace AdventOfCode.Problems.Year2017;
 
-[SolutionInfo(SolutionFlags.Part2WIP)]
 public class Day23 : Problem<int, int>
 {
     private ComputerInstruction[] instructions;
@@ -13,6 +12,7 @@ public class Day23 : Problem<int, int>
         computer.RunProgram();
         return computer.GetInvocationCount(ComputerOperator.Multiply);
     }
+    [PartSolution(PartSolutionStatus.Uninitialized)]
     public override int SolvePart2()
     {
         // Requires the optimization thing that is "WIP"

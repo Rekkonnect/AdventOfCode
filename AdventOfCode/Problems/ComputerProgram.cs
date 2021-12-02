@@ -13,7 +13,7 @@ public class ComputerProgram
     {
         set
         {
-            sourceInstructions = value.CopyArray();
+            sourceInstructions = value?.CopyArray();
             ResetOptimizations();
             // TODO: Uncomment this when the optimization system is set
             //ReoptimizeInstructions();
@@ -25,7 +25,7 @@ public class ComputerProgram
 
     public void ResetOptimizations()
     {
-        optimizedInstructions = sourceInstructions.CopyArray();
+        optimizedInstructions = sourceInstructions?.CopyArray();
     }
     public void ReoptimizeInstructions()
     {

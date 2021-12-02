@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace AdventOfCode.Problems.Year2015;
 
-[SolutionInfo(SolutionFlags.BothUnoptimized)]
 public class Day20 : Problem<int>
 {
     private int targetPresents;
@@ -13,11 +12,13 @@ public class Day20 : Problem<int>
     // I'm so sad by the fact that I don't know enough arithmetic analysis to optimally solve this
     // Take the 20+ seconds and see me another day
 
+    [PartSolution(PartSolutionStatus.Unoptimized)]
     public override int SolvePart1()
     {
         int targetSum = targetPresents / 10;
         return SolvePart(targetSum, null);
     }
+    [PartSolution(PartSolutionStatus.Unoptimized)]
     public override int SolvePart2()
     {
         int targetSum = targetPresents / 11;

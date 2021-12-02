@@ -46,6 +46,7 @@ public class Day20 : Problem<ulong, int>
             product *= (ulong)c.TileID;
         return product;
     }
+    [PartSolution(PartSolutionStatus.WIP)]
     public override int SolvePart2()
     {
         tiles.ConnectTiles();

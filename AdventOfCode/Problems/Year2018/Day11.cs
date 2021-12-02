@@ -3,7 +3,6 @@ using Garyon.Extensions;
 
 namespace AdventOfCode.Problems.Year2018;
 
-[SolutionInfo(SolutionFlags.Part2Unoptimized)]
 public class Day11 : Problem<Location2D, Day11.GridSquare>
 {
     private FuelGrid grid;
@@ -12,6 +11,7 @@ public class Day11 : Problem<Location2D, Day11.GridSquare>
     {
         return grid.GetMostPowerfulSquare(3).TopLeftLocation;
     }
+    [PartSolution(PartSolutionStatus.Unoptimized)]
     public override GridSquare SolvePart2()
     {
         return grid.GetMostPowerfulSquareAnySize();
