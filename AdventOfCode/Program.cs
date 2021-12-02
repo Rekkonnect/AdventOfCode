@@ -210,7 +210,11 @@ public static class Program
         }
         catch
         {
-            WriteLine("Today's problem has no solution class.\nGet back to development you lazy fucking ass.");
+            WriteLine($@"
+It seems today's problem has no solution class
+Focus on development, you lazy fucking ass
+              --A happy AoC solver, to himself
+");
         }
     }
 
