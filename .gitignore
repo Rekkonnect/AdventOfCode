@@ -1,6 +1,5 @@
 ## Custom files that should not be included in the repo
 Maintenance.cs
-AdventOfCode/Problems/SolutionTemplate.cs
 AdventOfCode.Benchmarks
 AdventOfCode/Secrets.cs
 AdventOfCode/secrets.txt
