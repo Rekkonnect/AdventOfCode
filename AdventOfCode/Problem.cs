@@ -33,7 +33,7 @@ public abstract class Problem
         }
     }
 
-    protected string BaseDirectory => $@"{Maintenance.GetBaseCodePath()}Inputs\{Year}";
+    protected string BaseDirectory => $@"{Input.GetBaseCodePath()}Inputs\{Year}";
     protected string FileContents => GetFileContents(CurrentTestCase);
     protected string NormalizedFileContents => GetFileContents(CurrentTestCase).NormalizeLineEndings();
     protected string[] FileLines => GetFileLines(CurrentTestCase);
