@@ -1,5 +1,6 @@
 ﻿using AdventOfCode.Utilities;
 using Garyon.Extensions;
+using Garyon.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -27,11 +28,12 @@ public class Day16 : Problem<int>
 
     static Day16()
     {
+        // TODO: Explore better syntax for replacing these values
         receivedGiftsPart2 = new(receivedGiftsPart1);
-        receivedGiftsPart2["cats"] = receivedGiftsPart2["cats"] with { ComparisonType = ComparisonType.Greater };
-        receivedGiftsPart2["trees"] = receivedGiftsPart2["trees"] with { ComparisonType = ComparisonType.Greater };
-        receivedGiftsPart2["pomeranians"] = receivedGiftsPart2["pomeranians"] with { ComparisonType = ComparisonType.Less };
-        receivedGiftsPart2["goldfish"] = receivedGiftsPart2["goldfish"] with { ComparisonType = ComparisonType.Less };
+        receivedGiftsPart2["cats"] = receivedGiftsPart2["cats"] with { ComparisonKinds = ComparisonKinds.Greater };
+        receivedGiftsPart2["trees"] = receivedGiftsPart2["trees"] with { ComparisonKinds = ComparisonKinds.Greater };
+        receivedGiftsPart2["pomeranians"] = receivedGiftsPart2["pomeranians"] with { ComparisonKinds = ComparisonKinds.Less };
+        receivedGiftsPart2["goldfish"] = receivedGiftsPart2["goldfish"] with { ComparisonKinds = ComparisonKinds.Less };
     }
 
     private FamilyGifts gifts;

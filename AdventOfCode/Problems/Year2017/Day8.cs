@@ -1,6 +1,7 @@
 ﻿using AdventOfCode.Utilities;
 using Garyon.DataStructures;
 using Garyon.Extensions;
+using Garyon.Objects;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -84,7 +85,7 @@ public class Day8 : Problem<int>
         public int GetRegister(string s) => registers[s];
     }
 
-    private record Condition(string LeftRegister, ComparisonType Comparison, int RightValue)
+    private record Condition(string LeftRegister, ComparisonKinds Comparison, int RightValue)
     {
         private static readonly Regex conditionPattern = new(@"(?'register'\w*) (?'comparison'\W*) (?'value'[-\d]*)", RegexOptions.Compiled);
 
@@ -94,22 +95,22 @@ public class Day8 : Problem<int>
         {
             var groups = conditionPattern.Match(raw).Groups;
             var register = groups["register"].Value;
-            var comparison = ParseComparisonType(groups["comparison"].Value);
+            var comparison = ParseComparisonKinds(groups["comparison"].Value);
             int value = groups["value"].Value.ParseInt32();
             return new(register, comparison, value);
         }
 
-        private static ComparisonType ParseComparisonType(string raw)
+        private static ComparisonKinds ParseComparisonKinds(string raw)
         {
             return raw switch
             {
-                "<" => ComparisonType.Less,
-                "<=" => ComparisonType.LessOrEqual,
-                "==" => ComparisonType.Equal,
-                ">=" => ComparisonType.GreaterOrEqual,
-                ">" => ComparisonType.Greater,
-                "!=" => ComparisonType.Different,
-                _ => ComparisonType.None,
+                "<" => ComparisonKinds.Less,
+                "<=" => ComparisonKinds.LessOrEqual,
+                "==" => ComparisonKinds.Equal,
+                ">=" => ComparisonKinds.GreaterOrEqual,
+                ">" => ComparisonKinds.Greater,
+                "!=" => ComparisonKinds.Different,
+                _ => ComparisonKinds.None,
             };
         }
     }

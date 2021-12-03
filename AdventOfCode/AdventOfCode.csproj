@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Garyon" Version="0.2.5" />
+    <PackageReference Include="Garyon" Version="0.2.6.1" />
     <PackageReference Include="UltimateOrb.Int128" Version="1.0.8" />
   </ItemGroup>
 </Project>

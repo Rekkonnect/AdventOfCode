@@ -25,13 +25,10 @@ public static class SecretsStorage
 
     private static Cookies? GetCookies()
     {
-        // Do NOT you worry my friend, Garyon 0.2.6 is on its way:tm:
-        var cookiesClasses = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(assembly => assembly.GetTypes())
-            .Where(type => type.IsClass && !type.IsAbstract && type.Inherits<Cookies>());
+        var cookiesClasses = AppDomainCache.Current.AllNonAbstractClasses.Where(TypeExtensions.Inherits<Cookies>);
 
         return cookiesClasses
-                  .FirstOrDefault(Utilities.MemberInfoExtensions.HasCustomAttribute<SecretsContainerAttribute>)
+                  .FirstOrDefault(MemberInfoExtensions.HasCustomAttribute<SecretsContainerAttribute>)
                  ?.InitializeInstance<Cookies>();
     }
 }

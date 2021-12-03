@@ -1,12 +1,13 @@
 ﻿using Garyon.Extensions;
+using Garyon.Objects;
 using System;
 
 namespace AdventOfCode.Utilities;
 
-public record ValueComparison<T>(T Value, ComparisonType ComparisonType)
+public record ValueComparison<T>(T Value, ComparisonKinds ComparisonKinds)
     where T : IComparable<T>
 {
-    public bool MatchesComparison(T value) => ComparisonType.Matches(value.GetComparisonResult(Value));
+    public bool MatchesComparison(T other) => Value.SatisfiesComparison(other, ComparisonKinds);
 
-    public static implicit operator ValueComparison<T>(T value) => new(value, ComparisonType.Equal);
+    public static implicit operator ValueComparison<T>(T value) => new(value, ComparisonKinds.Equal);
 }

@@ -52,25 +52,17 @@ public class NextValueCounterDictionary<T> : ValueCounterDictionary<T>, IEquatab
         return best;
     }
 
-    public int GetFilteredCountersNumber(int value, ComparisonType comparison = ComparisonType.Equal)
+    public int GetFilteredCountersNumber(int value, ComparisonKinds comparison = ComparisonKinds.Equal)
     {
-        comparison &= ComparisonType.Any;
+        comparison &= ComparisonKinds.All;
 
-        if (comparison is ComparisonType.Any)
+        if (comparison is ComparisonKinds.All)
             return Count;
 
-        if (comparison is ComparisonType.None)
+        if (comparison is ComparisonKinds.None)
             ThrowHelper.Throw<InvalidEnumArgumentException>("There provided comparison type is invalid.");
 
-        return Values.Count(v => comparison switch
-        {
-            ComparisonType.Less => v < value,
-            ComparisonType.Equal => v == value,
-            ComparisonType.Greater => v > value,
-            ComparisonType.LessOrEqual => v <= value,
-            ComparisonType.GreaterOrEqual => v >= value,
-            ComparisonType.Different => v != value,
-        });
+        return Values.Count(v => v.SatisfiesComparison(value, comparison));
     }
 
     public bool Equals(NextValueCounterDictionary<T> other)
