@@ -10,7 +10,7 @@ public class Day3 : Problem<uint>
 
     public override uint SolvePart1()
     {
-        return report.RatesProduct;
+        return report.PowerConsumption;
     }
     public override uint SolvePart2()
     {
@@ -37,22 +37,26 @@ public class Day3 : Problem<uint>
 
     private record DiagnosticReport(string[] Numbers)
     {
+        private uint gammaRate = 0;
+
         public int NumberBits = Numbers[0].Length;
 
         public uint GammaRate
         {
             get
             {
-                uint rate = 0;
-                for (int i = 0; i < NumberBits; i++)
-                    rate |= new BitCounts(Numbers, ^(i + 1)).MostCommonBit << i;
+                if (gammaRate is not 0)
+                    return gammaRate;
 
-                return rate;
+                for (int i = 0; i < NumberBits; i++)
+                    gammaRate |= new BitCounts(Numbers, ^(i + 1)).MostCommonBit << i;
+
+                return gammaRate;
             }
         }
         public uint EpsilonRate => ~GammaRate & ~(uint.MaxValue << NumberBits);
 
-        public uint RatesProduct => GammaRate * EpsilonRate;
+        public uint PowerConsumption => GammaRate * EpsilonRate;
 
         public uint OxygenGeneratorRating => GetUInt32Rating(ValueRarity.MostCommon);
         public uint CO2ScrubberRating => GetUInt32Rating(ValueRarity.LeastCommon);
