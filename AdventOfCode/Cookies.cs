@@ -1,57 +1,23 @@
 ﻿#nullable enable
 
-using Garyon.Reflection;
-using System;
-using System.Linq;
+using System.Net.Http;
 
 namespace AdventOfCode;
 
-public static class SecretsStorage
-{
-    private static bool searchedCookies = false;
-    private static Cookies? cookies;
-
-    public static Cookies? Cookies
-    {
-        get
-        {
-            if (searchedCookies)
-                return cookies;
-
-            searchedCookies = true;
-            return cookies = GetCookies();
-        }
-    }
-
-    private static Cookies? GetCookies()
-    {
-        var cookiesClasses = AppDomainCache.Current.AllNonAbstractClasses.Where(TypeExtensions.Inherits<Cookies>);
-
-        return cookiesClasses
-                  .FirstOrDefault(MemberInfoExtensions.HasCustomAttribute<SecretsContainerAttribute>)
-                 ?.InitializeInstance<Cookies>();
-    }
-}
-
-/// <summary>Decorates a class to denote that it acts as a container for secrets.</summary>
-public interface ISecretsContainer { }
-
 /// <summary>Represents an uninitialized cookie container for performing input requests.</summary>
 /// <remarks>WARNING: Do not eat! Santa will be sad!</remarks>
-public abstract class Cookies
+public abstract class Cookies : ISecretsContainer
 {
     public abstract string GA { get; }
     public abstract string Session { get; }
+
+    public void AddToDefaultRequestHeaders(HttpClient client)
+    {
+        client.DefaultRequestHeaders.Add("cookie", ToString());
+    }
 
     public override string ToString()
     {
         return $"_ga={GA}; session={Session}";
     }
-}
-
-/// <summary>Marks a class as a secrets container from which information should be retrieved.</summary>
-/// <remarks>It is important that the marked class implements the <seealso cref="ISecretsContainer"/> interface.</remarks>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-public class SecretsContainerAttribute : Attribute
-{
 }
