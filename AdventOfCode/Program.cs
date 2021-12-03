@@ -12,9 +12,7 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        //EnterMainMenu();
-        RunProblem(2015, 25);
-        RunProblem(2017, 25);
+        RunTodaysProblem();
     }
 
     private static void EnterMainMenu()

@@ -104,11 +104,11 @@ public abstract class Problem
             {
                 Console.WriteLine("Downloading input from the website...");
                 var inputURI = GetProblemInputURI();
-                client.DefaultRequestHeaders.Add("cookie", Secrets.Instance.ToString());
+                client.DefaultRequestHeaders.Add("cookie", SecretsStorage.Cookies.ToString());
                 var response = client.GetAsync(inputURI).Result;
                 var responseString = response.Content.ReadAsStringAsync().Result;
                 File.WriteAllText(GetFileLocation(0), responseString);
-                Console.WriteLine("Input downloaded");
+                Console.WriteLine("Input downloaded\n");
                 return responseString;
             }
             catch (HttpRequestException requestException)

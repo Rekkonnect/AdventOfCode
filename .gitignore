@@ -1,8 +1,7 @@
 ## Custom files that should not be included in the repo
 Maintenance.cs
 AdventOfCode.Benchmarks
-AdventOfCode/Secrets.cs
-AdventOfCode/secrets.txt
+AdventOfCode/MyCookies.cs
 
 ## --- Generated stuff
 ## Ignore Visual Studio temporary files, build results, and
