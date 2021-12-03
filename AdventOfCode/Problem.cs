@@ -1,5 +1,4 @@
-﻿using AdventOfCode.Functions;
-using AdventOfCode.Utilities;
+﻿using AdventOfCode.Utilities;
 using Garyon.Extensions;
 using Garyon.Functions;
 using System;
@@ -10,17 +9,18 @@ using System.Net.Http;
 
 namespace AdventOfCode;
 
-// This class should be split into containing the problem logic and the running logic
+/*
+ * This class should be split into:
+ * - Input loading and providing
+ * - Running
+ * - Solving
+ */
 public abstract class Problem
 {
-    public const string RunPartMethodPrefix = "RunPart";
-    public const string SolvePartMethodPrefix = "SolvePart";
-
+    private bool stateLoaded;
     private int currentTestCase;
 
-    protected bool StateLoaded { get; private set; }
-
-    protected int CurrentTestCase
+    public int CurrentTestCase
     {
         get => currentTestCase;
         set
@@ -49,77 +49,51 @@ public abstract class Problem
     protected IEnumerable<T> ParsedFileLinesEnumerable<T>(Parser<T> parser) => ParsedFileLinesEnumerable(parser, 0, 0);
     protected IEnumerable<T> ParsedFileLinesEnumerable<T>(Parser<T> parser, int skipFirst, int skipLast) => FileLines.RemoveEmptyElements().Skip(skipFirst).SkipLast(skipLast).Select(new Func<string, T>(parser));
 
-    public object[] SolveAllParts(bool displayExecutionTimes = true) => SolveAllParts(0, displayExecutionTimes);
-    public object[] SolveAllParts(int testCase, bool displayExecutionTimes = true)
-    {
-        var methods = GetType().GetMethods().Where(m => m.Name.StartsWith(RunPartMethodPrefix)).ToArray();
-        var result = new object[methods.Length];
-
-        CurrentTestCase = testCase;
-        DisplayExecutionTimes(displayExecutionTimes, "State loading", EnsureLoadedState);
-
-        for (int i = 0; i < result.Length; i++)
-        {
-            DisplayExecutionTimes(displayExecutionTimes, $"Part {i + 1}", () =>
-            {
-                result[i] = methods[i].Invoke(this, null);
-            });
-        }
-        return result;
-    }
-
-    private static void DisplayExecutionTimes(bool displayExecutionTimes, string title, Action action)
-    {
-        if (!displayExecutionTimes)
-            return;
-
-        var executionTime = BasicBenchmarking.MeasureExecutionTime(action);
-        Console.WriteLine($"{title} execution time: {executionTime.TotalMilliseconds:N2} ms");
-    }
-
     protected virtual void LoadState() { }
     protected virtual void ResetState() { }
 
-    protected void EnsureLoadedState()
+    public void EnsureLoadedState()
     {
         HandleStateLoading(true, LoadState);
     }
-    private void ResetLoadedState()
+    public void ResetLoadedState()
     {
         HandleStateLoading(false, ResetState);
     }
 
     private void HandleStateLoading(bool targetStateLoadedStatus, Action stateHandler)
     {
-        if (StateLoaded == targetStateLoadedStatus)
+        if (stateLoaded == targetStateLoadedStatus)
             return;
         stateHandler();
-        StateLoaded = targetStateLoadedStatus;
+        stateLoaded = targetStateLoadedStatus;
     }
 
     private string GetFileContents(int testCase)
     {
         var fileLocation = GetFileLocation(testCase);
         if (!File.Exists(fileLocation))
-            return DownloadInput();
+            return DownloadInputIfMainInput(testCase);
 
         var input = File.ReadAllText(fileLocation);
-
-        // TODO: Fix this logic
-        // Only download the input if it's the main input case
-        if (testCase > 0)
-            return input;
 
         if (input.Length > 0)
             return input;
 
-        return DownloadInput();
+        return DownloadInputIfMainInput(testCase);
     }
     private string[] GetFileLines(int testCase) => GetFileContents(testCase).GetLines();
 
     private string GetFileLocation(int testCase) => $@"{BaseDirectory}\{Day}{GetTestInputFileSuffix(testCase)}.txt";
     private static string GetTestInputFileSuffix(int testCase) => testCase > 0 ? $"T{testCase}" : null;
 
+    private string DownloadInputIfMainInput(int testCase)
+    {
+        if (testCase is not 0)
+            return "";
+
+        return DownloadInput();
+    }
     private string DownloadInput()
     {
         using var client = new HttpClient();

@@ -43,7 +43,7 @@ public class ProblemsIndex
     }
     private static PartSolutionStatus GetPartSolutionStatus(ProblemType type, int index)
     {
-        var runnerMethod = type.ProblemClass.GetMethod($"{Problem.SolvePartMethodPrefix}{index}")!;
+        var runnerMethod = type.ProblemClass.GetMethod($"{ProblemRunner.SolvePartMethodPrefix}{index}")!;
         var partSolutionAttribute = runnerMethod.GetCustomAttribute<PartSolutionAttribute>();
         if (partSolutionAttribute is null)
             return PartSolutionStatus.Valid;
@@ -53,6 +53,8 @@ public class ProblemsIndex
 
     public GlobalYearSummary GetGlobalYearSummary() => problemDictionary.GlobalYearSummary;
     public YearProblemInfo GetYearProblemInfo(int year) => problemDictionary[year];
+
+    public bool DetermineLastDayPart2Availability(int year) => problemDictionary[year].IsLastDayPart2Available;
 
     public ProblemInfo? this[int year, int day] => problemDictionary[year]?[day] ?? ProblemInfo.Empty(year, day);
 }
@@ -125,11 +127,13 @@ public sealed class YearProblemInfo : IEnumerable<ProblemInfo>
 {
     private readonly ProblemInfoTable summaryTable = new();
 
-    public ProblemInfo? LastDay
+    public ProblemInfo LastDay
     {
         get => this[25];
         private set => this[25] = value;
     }
+
+    public bool IsLastDayPart2Available => LastDay.Part2Status is not PartSolutionStatus.UnavailableFreeStar;
 
     public YearProblemInfo() { }
     public YearProblemInfo(IEnumerable<ProblemInfo> problemInfos)
@@ -147,9 +151,9 @@ public sealed class YearProblemInfo : IEnumerable<ProblemInfo>
             SetD25P2Unavailable();
     }
 
-    private void SetD25P2Unavailable() => LastDay = LastDay?.WithUnavailablePart2Star;
+    private void SetD25P2Unavailable() => LastDay = LastDay.WithUnavailablePart2Star;
 
-    public ProblemInfo? this[int day]
+    public ProblemInfo this[int day]
     {
         get => summaryTable[day] ?? ProblemInfo.Empty(0, day);
         set => summaryTable[day] = value;

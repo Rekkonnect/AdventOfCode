@@ -12,7 +12,9 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        EnterMainMenu();
+        //EnterMainMenu();
+        RunProblem(2015, 25);
+        RunProblem(2017, 25);
     }
 
     private static void EnterMainMenu()
@@ -251,19 +253,26 @@ Focus on development, you lazy fucking ass
     }
     private static void RunProblem(Problem instance)
     {
-        WriteLine("Running problem");
-        foreach (var p in instance.SolveAllParts())
-            WriteLine(p);
+        RunProblemCase(instance, 0);
     }
     private static void RunProblemTestCases(Problem instance)
     {
         int testCases = instance.TestCaseFiles;
         for (int i = 1; i <= testCases; i++)
+            RunProblemCase(instance, i);
+    }
+
+    private static void RunProblemCase(Problem instance, int testCase)
+    {
+        WriteLine(testCase switch
         {
-            WriteLine($"Running test case {i}");
-            foreach (var p in instance.SolveAllParts(i))
-                WriteLine(p);
-            WriteLine();
-        }
+            0 => "Running problem\n",
+            _ => $"Running test case {testCase}\n",
+        });
+        var parts = new ProblemRunner(instance).SolveAllParts(testCase);
+        WriteLine();
+        foreach (var part in parts)
+            WriteLine(part);
+        WriteLine();
     }
 }
