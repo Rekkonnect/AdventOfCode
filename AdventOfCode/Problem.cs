@@ -47,7 +47,7 @@ public abstract class Problem
     protected T[] ParsedFileLines<T>(Parser<T> parser) => ParsedFileLinesEnumerable(parser).ToArray();
     protected T[] ParsedFileLines<T>(Parser<T> parser, int skipFirst, int skipLast) => ParsedFileLinesEnumerable(parser, skipFirst, skipLast).ToArray();
     protected IEnumerable<T> ParsedFileLinesEnumerable<T>(Parser<T> parser) => ParsedFileLinesEnumerable(parser, 0, 0);
-    protected IEnumerable<T> ParsedFileLinesEnumerable<T>(Parser<T> parser, int skipFirst, int skipLast) => FileLines.RemoveEmptyElements().Skip(skipFirst).SkipLast(skipLast).Select(new Func<string, T>(parser));
+    protected IEnumerable<T> ParsedFileLinesEnumerable<T>(Parser<T> parser, int skipFirst, int skipLast) => FileLines.Skip(skipFirst).SkipLast(skipLast).Select(new Func<string, T>(parser));
 
     protected virtual void LoadState() { }
     protected virtual void ResetState() { }
@@ -82,7 +82,7 @@ public abstract class Problem
 
         return DownloadInputIfMainInput(testCase);
     }
-    private string[] GetFileLines(int testCase) => GetFileContents(testCase).GetLines();
+    private string[] GetFileLines(int testCase) => GetFileContents(testCase).Trim().GetLines();
 
     private string GetFileLocation(int testCase) => $@"{BaseDirectory}\{Day}{GetTestInputFileSuffix(testCase)}.txt";
     private static string GetTestInputFileSuffix(int testCase) => testCase > 0 ? $"T{testCase}" : null;
