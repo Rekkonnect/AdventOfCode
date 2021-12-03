@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Garyon.Objects;
+using System;
 
 namespace AdventOfCode.Utilities;
 
