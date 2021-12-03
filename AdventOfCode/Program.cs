@@ -48,16 +48,14 @@ public static class Program
         int maxDay = 25;
 
         var currentDate = ServerClock.Now;
-        var currentYear = currentDate.Year;
-        var currentMonth = currentDate.Month;
-        var currentDay = currentDate.Day;
 
-        if (selectedYear == currentYear && currentMonth == 12)
-            maxDay = currentDay;
+        if (selectedYear == currentDate.Year && currentDate.Month == 12)
+            maxDay = currentDate.Day;
 
         WriteLine("\nAvailable Days:");
-        var yearProblemInfo = ProblemsIndex.Instance.GetYearProblemInfo(selectedYear);
         var (leftOffset, topOffset) = GetCursorPosition();
+
+        var yearProblemInfo = ProblemsIndex.Instance.GetYearProblemInfo(selectedYear);
         for (int day = minDay; day <= maxDay; day++)
         {
             int column = Math.DivRem(day - 1, 5, out int line);
@@ -66,6 +64,8 @@ public static class Program
             WriteProblemInfo(selectedYear, day);
         }
 
+        // Useful to ensure the cursor goes in its place
+        // after finishing writing the final non-25th day
         SetCursorPosition(0, topOffset + Math.Min(maxDay, 5) + 1);
         return ReadConditionalValue(IsValidDay, "Day  ");
 
@@ -76,18 +76,19 @@ public static class Program
     {
         return available ? ConsoleColor.Cyan : ConsoleColor.DarkGray;
     }
-    private static int ReadConditionalValue(Predicate<int> verifier, string requestMessage = null)
+    private static int ReadConditionalValue(Predicate<int> validator, string requestMessage = null)
     {
         Write(requestMessage);
-        var initialPosition = GetCursorPosition();
+        var (left, top) = GetCursorPosition();
+
         while (true)
         {
-            ClearUntilCursorReposition(initialPosition.Left, initialPosition.Top);
+            ClearUntilCursorReposition(left, top);
 
             if (!int.TryParse(ReadLineWithColor(ConsoleColor.Cyan), out int value))
                 continue;
 
-            if (verifier(value))
+            if (validator(value))
                 return value;
         }
     }
@@ -204,11 +205,7 @@ public static class Program
         var currentYear = currentDate.Year;
         var currentDay = currentDate.Day;
 
-        try
-        {
-            RunProblem(currentYear, currentDay, testCases);
-        }
-        catch
+        if (!RunProblem(currentYear, currentDay, testCases))
         {
             WriteLine($@"
 It seems today's problem has no solution class
@@ -218,30 +215,34 @@ Focus on development, you lazy fucking ass
         }
     }
 
-    private static void RunThisYearsProblem(int day, bool testCases = true)
+    private static bool RunThisYearsProblem(int day, bool testCases = true)
     {
         var currentDate = ServerClock.Now;
         var currentYear = currentDate.Year;
-        RunProblem(currentYear, day, testCases);
+        return RunProblem(currentYear, day, testCases);
     }
-    private static void RunProblem(int year, int day, bool testCases = true)
+    private static bool RunProblem(int year, int day, bool testCases = true)
     {
-        RunProblem(ProblemsIndex.Instance[year, day], testCases);
+        return RunProblem(ProblemsIndex.Instance[year, day], testCases);
     }
 
-    private static void RunProblem<T>()
+    private static bool RunProblem<T>()
         where T : Problem, new()
     {
-        RunProblem(typeof(T));
+        return RunProblem(typeof(T));
     }
-    private static void RunProblem(ProblemInfo problemInfo, bool testCases = true)
+    private static bool RunProblem(ProblemInfo problemInfo, bool testCases = true)
     {
-        RunProblem(problemInfo.ProblemType.ProblemClass, testCases);
+        return RunProblem(problemInfo.ProblemType.ProblemClass, testCases);
     }
-    private static void RunProblem(Type problemType, bool testCases = true)
+    private static bool RunProblem(Type problemType, bool testCases = true)
     {
-        var instance = problemType.GetConstructor(Type.EmptyTypes).Invoke(null) as Problem;
+        var instance = problemType?.GetConstructor(Type.EmptyTypes).Invoke(null) as Problem;
+        if (instance is null)
+            return false;
+
         RunProblemWithTestCases(instance, testCases);
+        return true;
     }
     private static void RunProblemWithTestCases(Problem instance, bool testCases)
     {
