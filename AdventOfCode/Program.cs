@@ -1,6 +1,7 @@
 ﻿using AdventOfCode.Problems;
 using AdventOfCode.Utilities;
 using Garyon.Extensions.ArrayExtensions;
+using Garyon.Reflection;
 using System;
 using System.Linq;
 using static Garyon.Functions.ConsoleUtilities;
@@ -13,6 +14,32 @@ public static class Program
     public static void Main(string[] args)
     {
         RunTodaysProblem();
+    }
+
+    private static void ValidateAllSolutions()
+    {
+        var allProblems = ProblemsIndex.Instance.AllProblems();
+        foreach (var problem in allProblems)
+        {
+            var instance = problem.ProblemType.ProblemClass?.InitializeInstance<Problem>();
+            if (instance is null)
+                continue;
+
+            var runner = new ProblemRunner(instance);
+
+            WriteLine($"Validating Year {problem.Year} Day {problem.Day}");
+            ValidatePart(1);
+            ValidatePart(2);
+            WriteLine();
+
+            void ValidatePart(int part)
+            {
+                if (problem.StatusForPart(part) is not PartSolutionStatus.Valid)
+                    return;
+                if (!runner.ValidatePart(part))
+                    WriteLineWithColor($"Part {part} yielded an invalid answer", ConsoleColor.Red);
+            }
+        }
     }
 
     private static void EnterMainMenu()
@@ -263,6 +290,7 @@ Focus on development, you lazy fucking ass
 
     private static void RunProblemCase(Problem instance, int testCase)
     {
+        WriteLine($"Year {instance.Year} Day {instance.Day}");
         WriteLine(testCase switch
         {
             0 => "Running problem\n",
@@ -271,7 +299,7 @@ Focus on development, you lazy fucking ass
         var parts = new ProblemRunner(instance).SolveAllParts(testCase);
         WriteLine();
         foreach (var part in parts)
-            WriteLine(part);
+            WriteLine(AnswerStringConversion.Convert(part));
         WriteLine();
     }
 }

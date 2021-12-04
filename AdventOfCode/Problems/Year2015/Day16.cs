@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2015;
 
-using GiftDictionary = Dictionary<string, ValueComparison<int>>;
+using GiftDictionary = Dictionary<string, OpenRange<int>>;
 
 public class Day16 : Problem<int>
 {

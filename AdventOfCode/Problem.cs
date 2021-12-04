@@ -1,5 +1,6 @@
 ﻿using AdventOfCode.Utilities;
 using Garyon.Extensions;
+using Garyon.Functions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,15 +32,17 @@ public abstract class Problem
         }
     }
 
-    protected string BaseInputDirectory => BaseStreamDirectory(ProblemStreamKind.Input);
     protected string FileContents => GetInputFileContents(CurrentTestCase);
     protected string NormalizedFileContents => GetInputFileContents(CurrentTestCase).NormalizeLineEndings();
-    protected string[] FileLines => GetFileLines(CurrentTestCase);
+    protected string[] UntrimmedFileLines => FileContents.GetLines();
+    protected string[] FileLines => FileContents.Trim().GetLines();
     protected int[] FileNumbersInt32 => ParsedFileLines(int.Parse);
     protected long[] FileNumbersInt64 => ParsedFileLines(long.Parse);
 
     public int Year => GetType().Namespace[^4..].ParseInt32();
     public int Day => GetType().Name["Day".Length..].ParseInt32();
+
+    protected string BaseInputDirectory => BaseProblemFileDirectory(ProblemFileKind.Input);
     public int TestCaseFiles => Directory.GetFiles(BaseInputDirectory).Count(f => Path.GetFileName(f).StartsWith($"{Day}T"));
 
     protected T[] ParsedFileLines<T>(Parser<T> parser) => ParsedFileLinesEnumerable(parser).ToArray();
@@ -67,36 +70,34 @@ public abstract class Problem
         stateLoaded = targetStateLoadedStatus;
     }
 
-    // TODO: Introduce a property in the input handler that toggles performing the download if unavailable input
-    private string GetInputFileContents(int testCase, bool performDownload = false)
-    {
-        var fileLocation = GetInputFileLocation(testCase);
-        if (!File.Exists(fileLocation))
-            return DownloadInputIfMainInput(testCase, performDownload);
+    private string BaseProblemFileDirectory(ProblemFileKind kind) => $@"{ProblemFiles.GetBaseCodePath()}{kind}s\{Year}";
 
-        var input = File.ReadAllText(fileLocation);
-
-        if (input.Length > 0)
-            return input;
-
-        return DownloadInputIfMainInput(testCase, performDownload);
-    }
-    private string[] GetFileLines(int testCase) => GetInputFileContents(testCase).Trim().GetLines();
-
-    private string BaseStreamDirectory(ProblemStreamKind kind) => $@"{Input.GetBaseCodePath()}{kind}s\{Year}";
-
-    private string GetInputFileLocation(int testCase) => GetFileLocation(ProblemStreamKind.Input, testCase);
-    private string GetOutputFileLocation(int testCase) => GetFileLocation(ProblemStreamKind.Output, testCase);
-    private string GetFileLocation(ProblemStreamKind streamKind, int testCase) => $@"{BaseStreamDirectory(streamKind)}\{Day}{GetTestInputFileSuffix(testCase)}.txt";
+    private string GetInputFileLocation(int testCase) => GetFileLocation(ProblemFileKind.Input, testCase);
+    private string GetOutputFileLocation(int testCase) => GetFileLocation(ProblemFileKind.Output, testCase);
+    private string GetFileLocation(ProblemFileKind fileKind, int testCase) => $@"{BaseProblemFileDirectory(fileKind)}\{Day}{GetTestInputFileSuffix(testCase)}.txt";
 
     private static string GetTestInputFileSuffix(int testCase) => testCase > 0 ? $"T{testCase}" : null;
 
-    private string DownloadInputIfMainInput(int testCase, bool performDownload)
+    // TODO: Introduce a property in the input handler that toggles performing the download if unavailable input
+    private string GetInputFileContents(int testCase, bool performDownload = true)
     {
-        if (testCase is 0 && performDownload)
-            return DownloadSaveInput();
+        return GetProblemFileContents<string>(ProblemFileKind.Input, testCase, performDownload);
+    }
 
-        return "";
+    public ProblemOutput GetOutputFileContents(int testCase, bool performDownload = true)
+    {
+        return GetProblemFileContents<ProblemOutput>(ProblemFileKind.Output, testCase, performDownload);
+    }
+
+    private TContent GetProblemFileContents<TContent>(ProblemFileKind fileKind, int testCase, bool performDownload)
+    {
+        var getter = BaseProblemContentGetter.GetInstance(fileKind) as BaseProblemContentGetter<TContent>;
+        return getter.GetProblemFileContents(this, testCase, performDownload);
+    }
+
+    private string DownloadInputIfMainCase(int testCase, bool performDownload)
+    {
+        return DownloadContentIfMainCase(testCase, performDownload, DownloadSaveInput, "");
     }
     private string DownloadSaveInput()
     {
@@ -105,6 +106,10 @@ public abstract class Problem
         return input;
     }
 
+    private ProblemOutput DownloadOutputIfMainCase(int testCase, bool performDownload)
+    {
+        return DownloadContentIfMainCase(testCase, performDownload, DownloadSaveCorrectOutput, ProblemOutput.Empty);
+    }
     private ProblemOutput DownloadSaveCorrectOutput()
     {
         var output = WebsiteScraping.DownloadAnsweredCorrectOutputs(Year, Day);
@@ -112,11 +117,78 @@ public abstract class Problem
         return output;
     }
 
-    private enum ProblemStreamKind
+    private static TContent DownloadContentIfMainCase<TContent>(int testCase, bool performDownload, Func<TContent> contentDownloader, TContent empty)
+    {
+        if (testCase is 0 && performDownload)
+            return contentDownloader();
+
+        return empty;
+    }
+
+    private abstract class BaseProblemContentGetter
+    {
+        protected abstract ProblemFileKind ContentKind { get; }
+
+        public static BaseProblemContentGetter GetInstance(ProblemFileKind contentKind)
+        {
+            return contentKind switch
+            {
+                ProblemFileKind.Input => ProblemInputGetter.Instance,
+                ProblemFileKind.Output => ProblemOutputGetter.Instance,
+            };
+        }
+    }
+    private abstract class BaseProblemContentGetter<TContent> : BaseProblemContentGetter
+    {
+        protected abstract ContentDownloader<TContent> GetContentDownloader(Problem problem);
+        protected abstract Func<string, TContent> GetContentParser(Problem problem);
+
+        public TContent GetProblemFileContents(Problem problem, int testCase, bool performDownload)
+        {
+            var fileLocation = problem.GetFileLocation(ContentKind, testCase);
+            if (!File.Exists(fileLocation))
+                return DownloadContent();
+
+            var input = File.ReadAllText(fileLocation);
+
+            if (input.Length > 0)
+                return GetContentParser(problem)(input);
+
+            return DownloadContent();
+
+            TContent DownloadContent()
+            {
+                return GetContentDownloader(problem)(testCase, performDownload);
+            }
+        }
+    }
+
+    private sealed class ProblemInputGetter : BaseProblemContentGetter<string>
+    {
+        public static ProblemInputGetter Instance { get; } = new();
+
+        protected override ProblemFileKind ContentKind => ProblemFileKind.Input;
+
+        protected override ContentDownloader<string> GetContentDownloader(Problem problem) => problem.DownloadInputIfMainCase;
+        protected override Func<string, string> GetContentParser(Problem problem) => Selectors.SelfObjectReturner;
+    }
+    private sealed class ProblemOutputGetter : BaseProblemContentGetter<ProblemOutput>
+    {
+        public static ProblemOutputGetter Instance { get; } = new();
+
+        protected override ProblemFileKind ContentKind => ProblemFileKind.Output;
+
+        protected override ContentDownloader<ProblemOutput> GetContentDownloader(Problem problem) => problem.DownloadOutputIfMainCase;
+        protected override Func<string, ProblemOutput> GetContentParser(Problem problem) => ProblemOutput.Parse;
+    }
+
+    private enum ProblemFileKind
     {
         Input,
         Output,
     }
+
+    private delegate TContent ContentDownloader<TContent>(int testCase, bool performDownload);
 }
 
 public abstract class Problem<T1, T2> : Problem

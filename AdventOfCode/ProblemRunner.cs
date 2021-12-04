@@ -29,12 +29,26 @@ public sealed class ProblemRunner
     {
         var methods = new[] { Problem.GetType().GetMethod(RunPartMethodName(part)) };
         return SolveParts(testCase, methods, displayExecutionTimes)[0];
+    }
 
+    public bool ValidatePart(int part) => ValidatePart(part, 0);
+    public bool ValidatePart(int part, int testCase)
+    {
+        var contents = Problem.GetOutputFileContents(testCase, true);
+        var expectedPartOutput = contents.ForPart(part);
+        if (expectedPartOutput is null)
+            return true;
+
+        return ValidatePart(part, testCase, expectedPartOutput);
+    }
+    private bool ValidatePart(int part, int testCase, string expected)
+    {
+        return expected.Equals(AnswerStringConversion.Convert(SolvePart(part, testCase)), StringComparison.OrdinalIgnoreCase);
     }
 
     private string SolvePartMethodName(int part) => ExecutePartMethodName(SolvePartMethodPrefix, part);
     private string RunPartMethodName(int part) => ExecutePartMethodName(RunPartMethodPrefix, part);
-    private string ExecutePartMethodName(string prefix, int part) => $"{prefix}{part}";
+    private static string ExecutePartMethodName(string prefix, int part) => $"{prefix}{part}";
 
     private object[] SolveParts(int testCase, MethodInfo[] solutionMethods, bool displayExecutionTimes)
     {
@@ -45,7 +59,7 @@ public sealed class ProblemRunner
 
         for (int i = 0; i < result.Length; i++)
         {
-            DisplayExecutionTimes(displayExecutionTimes, $"Part {i + 1}", SolveAssignResult);
+            DisplayExecutionTimes(displayExecutionTimes, $"Part {solutionMethods[i].Name.Last()}", SolveAssignResult);
 
             void SolveAssignResult()
             {

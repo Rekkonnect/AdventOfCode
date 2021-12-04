@@ -105,7 +105,7 @@ public class Day14 : Problem<ulong>
     }
     private class MemoryWriteCommand : MemorySystemCommand
     {
-        private static readonly Regex commandPattern = new(@"mem\[(?'addr'\d*)\] = (?'val'[01]*)", RegexOptions.Compiled);
+        private static readonly Regex commandPattern = new(@"mem\[(?'addr'\d*)\] = (?'val'\d*)", RegexOptions.Compiled);
 
         public ulong MemoryAddress { get; }
         public ulong NewValue { get; }

@@ -1,4 +1,6 @@
-﻿using AdventOfCode.Functions;
+﻿#if DEBUG
+using AdventOfCode.Functions;
+#endif
 using Garyon.DataStructures;
 using Garyon.Extensions;
 using Garyon.Extensions.ArrayExtensions;
@@ -187,8 +189,7 @@ public class Day12 : Problem<int, long>
 
         private PotRow(IEnumerable<bool> initialPlants)
         {
-            // Kinda anticipating the bugfix to be released
-            pots = new(initialPlants.WithIndex().Select(value => new Pot(value.Index - 1, value.Current)));
+            pots = new(initialPlants.WithIndex().Select(value => new Pot(value.Index, value.Current)));
         }
         public PotRow(PotRow row)
         {

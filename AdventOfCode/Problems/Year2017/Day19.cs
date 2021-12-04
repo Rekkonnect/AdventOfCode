@@ -19,7 +19,7 @@ public class Day19 : Problem<string, int>
 
     protected override void LoadState()
     {
-        diagram = PathDiagram.Parse(FileLines);
+        diagram = PathDiagram.Parse(UntrimmedFileLines);
         pathString = diagram.GetPathString(out steps);
     }
     protected override void ResetState()

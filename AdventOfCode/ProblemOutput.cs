@@ -7,6 +7,8 @@ namespace AdventOfCode;
 
 public record ProblemOutput(string? Part1, string? Part2)
 {
+    public static ProblemOutput Empty { get; } = new(null, null);
+
     public string GetFileString()
     {
         if (Part1 is null)
@@ -17,6 +19,12 @@ public record ProblemOutput(string? Part1, string? Part2)
 
         return $"{Part1}\n{Part2}";
     }
+
+    public string? ForPart(int part) => part switch
+    {
+        1 => Part1,
+        2 => Part2,
+    };
 
     public static ProblemOutput Parse(string fileString)
     {

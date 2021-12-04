@@ -23,3 +23,18 @@ public interface ILocation<T> : ILocation, IEquatable<T>
     int ManhattanDistance(T other);
     T SignedDifferenceFrom(T other);
 }
+
+public static class ILocationExtensions
+{
+    public static int? GetAtDimension(this ILocation location, int dimension)
+    {
+        return dimension switch
+        {
+            0 => (location as IHasX)?.X,
+            1 => (location as IHasY)?.Y,
+            2 => (location as IHasZ)?.Z,
+            3 => (location as IHasW)?.W,
+            _ => null,
+        };
+    }
+}

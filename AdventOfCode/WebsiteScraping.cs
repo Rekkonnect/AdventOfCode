@@ -10,17 +10,31 @@ namespace AdventOfCode;
 
 public static class WebsiteScraping
 {
-    private static readonly Regex puzzleAnswerPattern = new(@"Your puzzle answer was <code>(?'answer'.*)</code>");
+    private static readonly Regex puzzleAnswerPattern = new(@"Your puzzle answer was <code>(?'answer'.*?)</code>");
 
     public static string DownloadInput(int year, int day, bool outputLog = false)
     {
         var inputURI = GetProblemInputURI(year, day);
-        return DownloadContent(inputURI, outputLog);
+        return DownloadContent(inputURI, "input", outputLog);
     }
+
+    public static ProblemOutput DownloadAnsweredCorrectOutputs(int year, int day, bool outputLog = false)
+    {
+        var inputURI = GetProblemURI(year, day);
+        var content = DownloadContent(inputURI, "correct output", outputLog);
+        return ParseAnsweredCorrectOutputs(content);
+    }
+
+    private static ProblemOutput ParseAnsweredCorrectOutputs(string siteContents)
+    {
+        var matches = puzzleAnswerPattern.Matches(siteContents);
+        return ProblemOutput.Parse(matches.Select(match => match.Groups["answer"].Value).ToArray());
+    }
+
     public static string GetProblemInputURI(int year, int day) => $"{GetProblemURI(year, day)}/input";
     public static string GetProblemURI(int year, int day) => $"https://adventofcode.com/{year}/day/{day}";
 
-    private static string DownloadContent(string targetURI, bool outputLog = false)
+    private static string DownloadContent(string targetURI, string contentKind, bool outputLog)
     {
         if (SecretsStorage.Cookies is null)
             throw new InvalidOperationException("No cookie container class to use during input retrieval has been specified.");
@@ -33,13 +47,13 @@ public static class WebsiteScraping
             try
             {
                 if (outputLog)
-                    Console.WriteLine("Downloading input from the website...");
+                    Console.WriteLine($"Downloading {contentKind} from the website...");
 
                 var response = client.GetAsync(targetURI).Result;
                 var responseString = response.Content.ReadAsStringAsync().Result;
 
                 if (outputLog)
-                    Console.WriteLine("Input downloaded\n");
+                    Console.WriteLine($"Successfully downloaded {contentKind}\n");
 
                 return responseString;
             }
@@ -50,18 +64,5 @@ public static class WebsiteScraping
             }
             // Other exceptions are not to be handled
         }
-    }
-
-    public static ProblemOutput DownloadAnsweredCorrectOutputs(int year, int day)
-    {
-        var inputURI = GetProblemURI(year, day);
-        var content = DownloadContent(inputURI, false);
-        return ParseAnsweredCorrectOutputs(content);
-    }
-
-    private static ProblemOutput ParseAnsweredCorrectOutputs(string siteContents)
-    {
-        var matches = puzzleAnswerPattern.Matches(siteContents);
-        return ProblemOutput.Parse(matches.Select(match => match.Groups["answer"].Value).ToArray());
     }
 }

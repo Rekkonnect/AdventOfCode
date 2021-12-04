@@ -17,6 +17,8 @@ public enum PartSolutionStatus
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     UnavailableFreeStar,
+
+    Broken = WIP,
 }
 
 public static class PartSolutionStatusExtensions

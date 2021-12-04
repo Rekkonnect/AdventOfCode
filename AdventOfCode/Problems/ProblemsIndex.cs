@@ -1,6 +1,7 @@
 ﻿using AdventOfCode.Utilities;
 using Garyon.DataStructures;
 using Garyon.Extensions;
+using Garyon.Functions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -50,6 +51,8 @@ public class ProblemsIndex
 
         return partSolutionAttribute.Status;
     }
+
+    public IEnumerable<ProblemInfo> AllProblems() => problemDictionary.SelectMany(Selectors.ValueReturner);
 
     public GlobalYearSummary GetGlobalYearSummary() => problemDictionary.GlobalYearSummary;
     public YearProblemInfo GetYearProblemInfo(int year) => problemDictionary[year];
@@ -201,6 +204,12 @@ public sealed record ProblemInfo(ProblemType ProblemType, PartSolutionStatus Par
     public bool HasBothValidSolutions => Part2Status.IsValidSolution() && Part1Status.IsValidSolution();
 
     public ProblemInfo WithUnavailablePart2Star => this with { Part2Status = PartSolutionStatus.UnavailableFreeStar };
+
+    public PartSolutionStatus StatusForPart(int part) => part switch
+    {
+        1 => Part1Status,
+        2 => Part2Status,
+    };
 
     public static ProblemInfo Empty(int year, int day) => new(ProblemType.Mock(year, day), PartSolutionStatus.Uninitialized, PartSolutionStatus.Uninitialized);
 }
