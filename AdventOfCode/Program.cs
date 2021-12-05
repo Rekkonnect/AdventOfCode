@@ -13,7 +13,7 @@ public static class Program
 {
     public static void Main(string[] args)
     {
-        RunTodaysProblem();
+        EnterMainMenu();
     }
 
     private static void ValidateAllSolutions()
@@ -46,19 +46,31 @@ public static class Program
     {
         var problemsIndex = ProblemsIndex.Instance;
 
-        WriteLegend();
+        while (true)
+        {
+            WriteLegend();
 
-        int selectedYear = SelectYear();
-        int selectedDay = SelectDay(selectedYear);
+            int selectedYear;
+            int selectedDay;
 
-        // Run problem
-        WriteLine();
-        RunProblem(problemsIndex[selectedYear, selectedDay]);
+            while (true)
+            {
+                selectedYear = SelectYear();
+                selectedDay = SelectDay(selectedYear);
+
+                if (selectedDay != 0)
+                    break;
+            }
+
+            // Run problem
+            WriteLine();
+            RunProblem(problemsIndex[selectedYear, selectedDay]);
+        }
     }
 
     private static int SelectYear()
     {
-        WriteLine("Available Years:");
+        WriteLine("\nAvailable Years:");
         var yearSummary = ProblemsIndex.Instance.GetGlobalYearSummary();
         var availableYears = yearSummary.AvailableYears.ToArray().Sort();
         int minYear = availableYears.First();
@@ -94,9 +106,12 @@ public static class Program
         // Useful to ensure the cursor goes in its place
         // after finishing writing the final non-25th day
         SetCursorPosition(0, topOffset + Math.Min(maxDay, 5) + 1);
+
+        WriteLine("Enter 0 to go back to selecting the year.\n");
+
         return ReadConditionalValue(IsValidDay, "Day  ");
 
-        bool IsValidDay(int day) => yearProblemInfo.Contains(day);
+        bool IsValidDay(int day) => day is 0 || yearProblemInfo.Contains(day);
     }
 
     private static ConsoleColor ItemColorForAvailability(bool available)
@@ -178,8 +193,6 @@ public static class Program
         // Unavailable free stars
         WriteWithColor("*", GetStarColor(PartSolutionStatus.UnavailableFreeStar));
         WriteLine(" = unavailable free star");
-
-        WriteLine();
     }
 
     private static void WriteProblemInfo(int year, int day)

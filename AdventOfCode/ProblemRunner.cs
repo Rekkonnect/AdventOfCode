@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Functions;
+using Garyon.Functions;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -76,6 +77,23 @@ public sealed class ProblemRunner
         if (!displayExecutionTimes)
             return;
 
-        Console.WriteLine($"{$"{title}:",9}{executionTime.TotalMilliseconds,13:N2} ms");
+        PrintExecutionTime(title, executionTime);
     }
+    private static void PrintExecutionTime(string title, TimeSpan executionTime)
+    {
+        Console.Write($"{title}:".PadRight(9));
+        ConsoleUtilities.WriteLineWithColor($"{executionTime.TotalMilliseconds,13:N2} ms", GetExecutionTimeColor(executionTime));
+    }
+    private static ConsoleColor GetExecutionTimeColor(TimeSpan executionTime) => executionTime.TotalMilliseconds switch
+    {
+        < 1 => ConsoleColor.Blue,
+        < 5 => ConsoleColor.Cyan,
+        < 20 => ConsoleColor.Magenta,
+        < 100 => ConsoleColor.Green,
+        < 400 => ConsoleColor.DarkGreen,
+        < 1000 => ConsoleColor.Yellow,
+        < 3000 => ConsoleColor.DarkYellow,
+        < 15000 => ConsoleColor.Red,
+        _ => ConsoleColor.DarkRed,
+    };
 }
