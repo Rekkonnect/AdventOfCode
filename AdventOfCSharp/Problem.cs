@@ -64,7 +64,7 @@ public abstract class Problem
         stateLoaded = targetStateLoadedStatus;
     }
 
-    private string BaseProblemFileDirectory(ProblemFileKind kind) => $@"{ProblemFiles.GetBaseCodePath()}\{kind}s\{Year}";
+    private string BaseProblemFileDirectory(ProblemFileKind kind) => $@"{ProblemFiles.GetBaseDirectory()}\{kind}s\{Year}";
 
     private string GetInputFileLocation(int testCase) => GetFileLocation(ProblemFileKind.Input, testCase);
     private string GetOutputFileLocation(int testCase) => GetFileLocation(ProblemFileKind.Output, testCase);

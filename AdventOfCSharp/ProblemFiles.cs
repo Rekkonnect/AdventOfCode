@@ -1,16 +1,30 @@
 ﻿#nullable enable
 
 using System.IO;
-using System.Runtime.CompilerServices;
 
 namespace AdventOfCSharp;
 
 public static class ProblemFiles
 {
-    // TODO: Test this in the future to see how it plays out on other machines
-    public static string GetBaseCodePath([CallerFilePath] string? filePath = null)
+    private static string? defaultBaseDirectory;
+
+    public static string? CustomBaseDirectory { get; set; }
+
+    public static string GetBaseDirectory()
+    {
+        if (CustomBaseDirectory is not null)
+            return CustomBaseDirectory;
+
+        if (defaultBaseDirectory is not null)
+            return defaultBaseDirectory;
+
+        return defaultBaseDirectory = GetDefaultBaseDirectory();
+    }
+
+    private static string GetDefaultBaseDirectory()
     {
         var entry = Assembly.GetEntryAssembly()!;
-        return Path.GetDirectoryName(entry.Location)!;
+        var executableDirectory = Path.GetDirectoryName(entry.Location)!;
+        return Directory.GetParent(executableDirectory)!.Parent!.Parent!.ToString();
     }
 }
