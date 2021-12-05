@@ -1,6 +1,7 @@
 ﻿#if DEBUG
 using AdventOfCode.Functions;
 #endif
+using AdventOfCSharp;
 using Garyon.DataStructures;
 using Garyon.Extensions;
 using Garyon.Extensions.ArrayExtensions;

@@ -1,8 +1,10 @@
-﻿namespace AdventOfCode.Utilities;
+﻿using AdventOfCSharp.Utilities;
+
+namespace AdventOfCode.Utilities;
 
 public class BoolLookupTable : LookupTable<bool>
 {
-    public int Count { get; private set; }
+    public int TrueCount { get; private set; }
 
     public BoolLookupTable(int start, int end)
         : base(start, end) { }
@@ -14,7 +16,7 @@ public class BoolLookupTable : LookupTable<bool>
     {
         for (int i = 0; i < Values.Length; i++)
             Values[i] = false;
-        Count = 0;
+        TrueCount = 0;
     }
 
     public override bool this[int index]
@@ -28,9 +30,9 @@ public class BoolLookupTable : LookupTable<bool>
             Values[index - Offset] = value;
 
             if (old && !value)
-                Count--;
+                TrueCount--;
             if (!old && value)
-                Count++;
+                TrueCount++;
         }
     }
 }

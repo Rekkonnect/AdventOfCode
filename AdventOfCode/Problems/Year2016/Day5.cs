@@ -1,5 +1,5 @@
 ﻿using AdventOfCode.Functions;
-using AdventOfCode.Problems.Utilities;
+using AdventOfCSharp;
 using Garyon.Functions;
 using System;
 using System.Linq;

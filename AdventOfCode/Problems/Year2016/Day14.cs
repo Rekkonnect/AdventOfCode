@@ -1,8 +1,8 @@
 ﻿//#define PRINT
 //#define PRINT_REHASHES
 
-using AdventOfCode.Problems.Utilities;
 using AdventOfCode.Utilities;
+using AdventOfCSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -218,40 +218,17 @@ public class Day14 : Problem<int>
             }
         }
 
-        // Struct records pretty please?
-
         private enum ConsecutivityAnalysisResult
         {
             Undetermined,
             Valid,
         }
 
-        protected struct QueuedHash
-        {
-            public int Index { get; }
-            public Consecutivity Consecutivity { get; }
+        protected record struct QueuedHash(int Index, Consecutivity Consecutivity);
 
-            public QueuedHash(int index, Consecutivity consecutivity)
-            {
-                Index = index;
-                Consecutivity = consecutivity;
-            }
-        }
-
-        protected struct Consecutivity
+        protected record struct Consecutivity(int Value, int Consecutive, int NextIndex)
         {
             public static readonly Consecutivity Default = FromNextIndex(0);
-
-            public int Value { get; }
-            public int Consecutive { get; }
-            public int NextIndex { get; }
-
-            public Consecutivity(int value, int consecutive, int nextIndex)
-            {
-                Value = value;
-                Consecutive = consecutive;
-                NextIndex = nextIndex;
-            }
 
             public Consecutivity WithNoConsecutivityInfo() => FromNextIndex(NextIndex);
 

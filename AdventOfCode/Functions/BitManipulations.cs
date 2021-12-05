@@ -47,16 +47,16 @@ public static class BitManipulations
             if ((mask & currentMask) > 0)
                 aceIndices.Add(i);
 
-        for (ulong combinationIndex = 0; combinationIndex < (1ul << aceIndices.Count); combinationIndex++)
+        for (ulong combinationIndex = 0; combinationIndex < (1UL << aceIndices.Count); combinationIndex++)
         {
             ulong result = 0;
 
             for (int i = 0; i < aceIndices.Count; i++)
             {
-                if ((combinationIndex & (1ul << i)) == 0)
+                if ((combinationIndex & (1UL << i)) == 0)
                     continue;
 
-                result |= 1ul << aceIndices[i];
+                result |= 1UL << aceIndices[i];
             }
 
             yield return result;
