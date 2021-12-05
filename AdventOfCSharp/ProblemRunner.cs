@@ -58,7 +58,7 @@ public sealed class ProblemRunner
 
             void SolveAssignResult()
             {
-                result[i] = solutionMethods[i].Invoke(Problem, null);
+                result[i] = solutionMethods[i].Invoke(Problem, null)!;
             }
         }
         return result;

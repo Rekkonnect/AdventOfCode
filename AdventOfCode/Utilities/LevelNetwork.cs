@@ -23,7 +23,7 @@ public abstract class LevelNetwork<TValue, TLevelNetworkNode, TLevelNetwork> : N
 {
     private readonly FlexibleHashSetList<TLevelNetworkNode> levels = new();
 
-    public TLevelNetwork This => this as TLevelNetwork;
+    public new TLevelNetwork This => this as TLevelNetwork;
 
     public int LevelCount => levels.Count;
 

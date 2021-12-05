@@ -44,6 +44,6 @@ public static class FileHelpers
 
     private static void EnsureDirectoryForPath(string path)
     {
-        Directory.CreateDirectory(Path.GetDirectoryName(path));
+        Directory.CreateDirectory(Path.GetDirectoryName(path)!);
     }
 }

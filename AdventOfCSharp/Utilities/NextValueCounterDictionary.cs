@@ -54,8 +54,11 @@ public class NextValueCounterDictionary<T> : ValueCounterDictionary<T>, IEquatab
         return Values.Count(v => v.SatisfiesComparison(value, comparison));
     }
 
-    public bool Equals(NextValueCounterDictionary<T> other)
+    public bool Equals(NextValueCounterDictionary<T>? other)
     {
+        if (other is null)
+            return false;
+
         foreach (var kvp in Dictionary)
             if (!other.Dictionary.TryGetValue(kvp.Key, out int value) || !kvp.Value.Equals(value))
                 return false;
@@ -63,7 +66,7 @@ public class NextValueCounterDictionary<T> : ValueCounterDictionary<T>, IEquatab
         return true;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return obj is NextValueCounterDictionary<T> d && Equals(d);
     }
