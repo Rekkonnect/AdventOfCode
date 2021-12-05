@@ -33,7 +33,7 @@ public class Day5 : Problem<string>
 
         var animationTask = CinematicHackerAnimation();
         var result = hacker.IdentifyPassword(secretKey);
-        Task.WaitAll(animationTask);
+        animationTask.Wait();
         return result;
 
         async Task CinematicHackerAnimation()

@@ -16,6 +16,6 @@ public static class IntegerExtensions
         if (value is 0)
             return 1;
 
-        return (int)Round(Floor(Log10(value))) + 1;
+        return (int)Floor(Log10(value)) + 1;
     }
 }
