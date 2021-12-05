@@ -1,6 +1,7 @@
-﻿using AdventOfCode.Functions;
-using AdventOfCode.Utilities;
+﻿using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.ThreeDimensions;
+using AdventOfCSharp;
+using AdventOfCSharp.Extensions;
 using Garyon.DataStructures;
 using Garyon.Extensions;
 using System.Collections.Generic;

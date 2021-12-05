@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Utilities;
+﻿using AdventOfCSharp.Utilities;
+
+namespace AdventOfCode.Utilities;
 
 public class BoolLookupTable : LookupTable<bool>
 {

@@ -1,6 +1,7 @@
 ﻿using AdventOfCode.Functions;
 using AdventOfCode.Problems.Year2017.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
+using AdventOfCSharp;
 using Garyon.Extensions;
 using System;
 using System.Linq;

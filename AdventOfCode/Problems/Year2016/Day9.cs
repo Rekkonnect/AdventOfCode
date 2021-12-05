@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Functions;
+using AdventOfCSharp;
 using Garyon.Extensions;
 using System.Collections;
 using System.Collections.Generic;

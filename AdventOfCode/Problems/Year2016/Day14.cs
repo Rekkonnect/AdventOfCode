@@ -1,8 +1,8 @@
 ﻿//#define PRINT
 //#define PRINT_REHASHES
 
-using AdventOfCode.Problems.Utilities;
 using AdventOfCode.Utilities;
+using AdventOfCSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;

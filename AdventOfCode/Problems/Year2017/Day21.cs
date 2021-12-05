@@ -1,5 +1,6 @@
-﻿using AdventOfCode.Functions;
-using AdventOfCode.Utilities.TwoDimensions;
+﻿using AdventOfCode.Utilities.TwoDimensions;
+using AdventOfCSharp;
+using AdventOfCSharp.Extensions;
 using Garyon.DataStructures;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;

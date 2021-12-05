@@ -8,6 +8,7 @@
 #endif
 
 using AdventOfCode.Utilities;
+using AdventOfCSharp;
 using Garyon.Extensions;
 using System;
 using System.Collections;

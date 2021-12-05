@@ -1,4 +1,5 @@
-﻿using Garyon.Extensions;
+﻿using AdventOfCSharp;
+using Garyon.Extensions;
 
 namespace AdventOfCode.Problems.Year2017;
 

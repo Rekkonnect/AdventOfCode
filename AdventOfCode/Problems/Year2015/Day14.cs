@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Functions;
+﻿using AdventOfCSharp;
+using AdventOfCSharp.Extensions;
 using Garyon.Extensions;
 using System;
 using System.Linq;

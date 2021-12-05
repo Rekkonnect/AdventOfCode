@@ -1,6 +1,7 @@
-﻿using AdventOfCode.Functions;
-using AdventOfCode.Utilities;
+﻿using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
+using AdventOfCSharp;
+using AdventOfCSharp.Extensions;
 using Garyon.Extensions;
 using System.Collections.Generic;
 using System.Linq;

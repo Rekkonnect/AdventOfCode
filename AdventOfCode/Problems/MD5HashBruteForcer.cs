@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AdventOfCode.Problems.Utilities;
+namespace AdventOfCode.Problems;
 
 public abstract class MD5HashBruteForcer
 {

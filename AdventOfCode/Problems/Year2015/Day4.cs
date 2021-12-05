@@ -1,4 +1,4 @@
-﻿using AdventOfCode.Problems.Utilities;
+﻿using AdventOfCSharp;
 
 namespace AdventOfCode.Problems.Year2015;
 

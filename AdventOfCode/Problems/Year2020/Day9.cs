@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using AdventOfCSharp;
+using System.Linq;
 
 namespace AdventOfCode.Problems.Year2020;
 

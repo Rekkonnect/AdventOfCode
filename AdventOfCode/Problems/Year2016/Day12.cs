@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Problems.Year2016;
+﻿using AdventOfCSharp;
+
+namespace AdventOfCode.Problems.Year2016;
 
 public class Day12 : Problem<int>
 {
