@@ -15,14 +15,14 @@ public sealed class ProblemRunner
     public object[] SolveAllParts(bool displayExecutionTimes = true) => SolveAllParts(0, displayExecutionTimes);
     public object[] SolveAllParts(int testCase, bool displayExecutionTimes = true)
     {
-        var methods = Problem.GetType().GetMethods().Where(m => m.Name.StartsWith(RunPartMethodPrefix)).ToArray();
+        var methods = Problem.GetType().GetMethods().Where(m => m.Name.StartsWith(SolvePartMethodPrefix)).ToArray();
         return SolveParts(testCase, methods, displayExecutionTimes);
     }
 
     public object SolvePart(int part, bool displayExecutionTimes = true) => SolvePart(part, 0, displayExecutionTimes);
     public object SolvePart(int part, int testCase, bool displayExecutionTimes = true)
     {
-        var methods = new[] { Problem.GetType().GetMethod(RunPartMethodName(part)) };
+        var methods = new[] { Problem.GetType().GetMethod(SolvePartMethodName(part)) };
         return SolveParts(testCase, methods, displayExecutionTimes)[0];
     }
 
