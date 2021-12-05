@@ -9,6 +9,7 @@ public abstract class BaseProgram
     protected static void ValidateAllSolutions()
     {
         var allProblems = ProblemsIndex.Instance.AllProblems();
+        WriteLine($"Validating All Problems\n");
         foreach (var problem in allProblems)
         {
             var instance = problem.ProblemType.ProblemClass?.InitializeInstance<Problem>();
@@ -17,7 +18,7 @@ public abstract class BaseProgram
 
             var runner = new ProblemRunner(instance);
 
-            WriteLine($"Validating Year {problem.Year} Day {problem.Day}");
+            DisplayProblemDate(problem.Year, problem.Day);
             ValidatePart(1);
             ValidatePart(2);
             WriteLine();
@@ -293,16 +294,30 @@ Focus on development, you lazy fucking ass
 
     protected static void RunProblemCase(Problem instance, int testCase)
     {
-        WriteLine($"Year {instance.Year} Day {instance.Day}");
-        WriteLine(testCase switch
+        DisplayProblemDate(instance.Year, instance.Day);
+        Write("Running ");
+        if (testCase is 0)
+            WriteLineWithColor("main problem\n", ConsoleColor.Green);
+        else
         {
-            0 => "Running problem\n",
-            _ => $"Running test case {testCase}\n",
-        });
+            WriteWithColor("test case ", ConsoleColor.DarkYellow);
+            WriteLineWithColor($"{testCase}\n", ConsoleColor.Cyan);
+        }
+
         var parts = new ProblemRunner(instance).SolveAllParts(testCase);
         WriteLine();
         foreach (var part in parts)
             WriteLine(AnswerStringConversion.Convert(part));
         WriteLine();
+    }
+
+    protected static void DisplayProblemDate(int year, int day)
+    {
+        WriteWithColor("Year ", ConsoleColor.DarkRed, false);
+        WriteWithColor("20", ConsoleColor.DarkYellow, false);
+        WriteLineWithColor((year % 100).ToString(), ConsoleColor.DarkGreen, false);
+
+        WriteWithColor("Day  ", ConsoleColor.DarkRed, false);
+        WriteLineWithColor(day.ToString().PadLeft(4), ConsoleColor.DarkGreen);
     }
 }

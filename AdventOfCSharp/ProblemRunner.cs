@@ -50,11 +50,11 @@ public sealed class ProblemRunner
         var result = new object[solutionMethods.Length];
 
         Problem.CurrentTestCase = testCase;
-        DisplayExecutionTimes(displayExecutionTimes, "Input", Problem.EnsureLoadedState);
+        DisplayExecutionTimes(displayExecutionTimes, 0, PrintInputExecutionTime, Problem.EnsureLoadedState);
 
         for (int i = 0; i < result.Length; i++)
         {
-            DisplayExecutionTimes(displayExecutionTimes, $"Part {solutionMethods[i].Name.Last()}", SolveAssignResult);
+            DisplayExecutionTimes(displayExecutionTimes, solutionMethods[i].Name.Last().GetNumericValueInteger(), PrintPartExecutionTime, SolveAssignResult);
 
             void SolveAssignResult()
             {
@@ -64,18 +64,37 @@ public sealed class ProblemRunner
         return result;
     }
 
-    private static void DisplayExecutionTimes(bool displayExecutionTimes, string title, Action action)
+    private static void DisplayExecutionTimes(bool displayExecutionTimes, int part, ExecutionTimePrinter printer, Action action)
     {
         var executionTime = BasicBenchmarking.MeasureExecutionTime(action);
 
-        if (!displayExecutionTimes)
-            return;
-
-        PrintExecutionTime(title, executionTime);
+        if (displayExecutionTimes)
+            printer(part, executionTime);
     }
-    private static void PrintExecutionTime(string title, TimeSpan executionTime)
+
+    private delegate void ExecutionTimePrinter(int part, TimeSpan executionTime);
+
+    private static void PrintInputExecutionTime(int part, TimeSpan executionTime)
     {
-        Console.Write($"{title}:".PadLeft(9));
+        ConsoleUtilities.WriteWithColor($"Input".PadLeft(8), ConsoleColor.Cyan);
+        PrintExecutionTime(executionTime);
+    }
+    private static void PrintPartExecutionTime(int part, TimeSpan executionTime)
+    {
+        ConsoleUtilities.WriteWithColor($"Part ".PadLeft(7), ConsoleColor.Cyan);
+        ConsoleUtilities.WriteWithColor(part.ToString(), GetPartColor(part));
+        PrintExecutionTime(executionTime);
+    }
+
+    private static ConsoleColor GetPartColor(int part) => part switch
+    {
+        1 => ConsoleColor.DarkGray,
+        2 => ConsoleColor.DarkYellow,
+    };
+
+    private static void PrintExecutionTime(TimeSpan executionTime)
+    {
+        Console.Write(':');
         ConsoleUtilities.WriteLineWithColor($"{executionTime.TotalMilliseconds,13:N2} ms", GetExecutionTimeColor(executionTime));
     }
     private static ConsoleColor GetExecutionTimeColor(TimeSpan executionTime) => executionTime.TotalMilliseconds switch

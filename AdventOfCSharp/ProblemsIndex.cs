@@ -51,7 +51,7 @@ public class ProblemsIndex
 
     public bool DetermineLastDayPart2Availability(int year) => problemDictionary[year].IsLastDayPart2Available;
 
-    public ProblemInfo? this[int year, int day] => problemDictionary[year]?[day] ?? ProblemInfo.Empty(year, day);
+    public ProblemInfo this[int year, int day] => problemDictionary[year]?[day] ?? ProblemInfo.Empty(year, day);
 }
 
 // Consider creating another custom lookup table wrapper type
