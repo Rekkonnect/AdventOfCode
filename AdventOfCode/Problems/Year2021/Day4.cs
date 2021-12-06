@@ -29,15 +29,6 @@ public class Day4 : Problem<uint>
         game = null;
     }
 
-    private static uint ParseBinary(string binary)
-    {
-        uint result = 0;
-        for (int i = 0; i < binary.Length; i++)
-            result |= (uint)(binary[^(i + 1)] - '0') << i;
-        
-        return result;
-    }
-
     private class BingoBoard
     {
         private readonly uint[,] numbers;

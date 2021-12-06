@@ -40,15 +40,6 @@ public class Day5 : Problem<int>
         return arrangement.OverlapCount;
     }
 
-    private static uint ParseBinary(string binary)
-    {
-        uint result = 0;
-        for (int i = 0; i < binary.Length; i++)
-            result |= (uint)(binary[^(i + 1)] - '0') << i;
-        
-        return result;
-    }
-
     private class VentArrangement
     {
         private readonly int[,] vents;
