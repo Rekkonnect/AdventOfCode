@@ -107,13 +107,6 @@ public class Day17 : Problem<int>
 
     private class CubeGrid4D : Grid4D<CubeState>
     {
-        // Constructors go brrr
-        public CubeGrid4D(int all)
-            : base(all, all, all, default) { }
-        public CubeGrid4D(int width, int height, int depth)
-            : base(width, height, depth, default) { }
-        public CubeGrid4D(Location4D dimensions)
-            : base(dimensions.X, dimensions.Y, dimensions.Z, default) { }
         public CubeGrid4D(Grid4D<CubeState> other)
             : base(other, other.Dimensions, Location4D.Zero) { }
         public CubeGrid4D(Grid4D<CubeState> other, Location4D dimensions, Location4D offset)
@@ -126,13 +119,6 @@ public class Day17 : Problem<int>
     }
     private class CubeGrid3D : Grid3D<CubeState>
     {
-        // Constructors go brrr
-        public CubeGrid3D(int all)
-            : base(all, all, all, default) { }
-        public CubeGrid3D(int width, int height, int depth)
-            : base(width, height, depth, default) { }
-        public CubeGrid3D(Location3D dimensions)
-            : base(dimensions.X, dimensions.Y, dimensions.Z, default) { }
         public CubeGrid3D(Grid3D<CubeState> other)
             : base(other, other.Dimensions, Location3D.Zero) { }
         public CubeGrid3D(Grid3D<CubeState> other, Location3D dimensions, Location3D offset)
