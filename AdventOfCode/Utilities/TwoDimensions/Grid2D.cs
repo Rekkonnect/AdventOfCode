@@ -244,6 +244,25 @@ public class Grid2D<T> : BaseGrid<T, Location2D>
     #endregion
 
     #region Adjacency
+    public AdjacentValueSlots<T> GetAdjacentValueSlots(Location2D location) => GetAdjacentValueSlots(location.X, location.Y);
+    public AdjacentValueSlots<T> GetAdjacentValueSlots(int x, int y)
+    {
+        var result = new AdjacentValueSlots<T>();
+        GetAdjacentValueSlots(x, y, result);
+        return result;
+    }
+    public void GetAdjacentValueSlots(int x, int y, AdjacentValueSlots<T> slots)
+    {
+        if (x - 1 >= 0)
+            slots.Left = Values[x - 1, y];
+        if (x + 1 < Width)
+            slots.Right = Values[x + 1, y];
+        if (y - 1 >= 0)
+            slots.Bottom = Values[x, y - 1];
+        if (y + 1 < Height)
+            slots.Top = Values[x, y + 1];
+    }
+
     public int GetAdjacentValues(Location2D location) => GetAdjacentValues(location.X, location.Y);
     public int GetAdjacentValues(Location2D location, T value) => GetAdjacentValues(location.X, location.Y, value);
     public int GetAdjacentValues(int x, int y) => GetAdjacentValues(x, y, Values[x, y]);
