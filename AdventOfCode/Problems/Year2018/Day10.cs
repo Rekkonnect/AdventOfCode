@@ -1,7 +1,6 @@
 ﻿using AdventOfCode.Utilities.TwoDimensions;
 using AdventOfCSharp;
 using Garyon.Extensions;
-using Garyon.Functions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,12 +9,12 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day10 : Problem<Day10.StarGrid, int>
+public class Day10 : Problem<IGlyphGrid, int>
 {
     private StarGrid message;
     private int formationTime;
 
-    public override StarGrid SolvePart1()
+    public override IGlyphGrid SolvePart1()
     {
         return message;
     }
@@ -110,7 +109,7 @@ public class Day10 : Problem<Day10.StarGrid, int>
         private IEnumerable<Location2D> GetPositionsAt(int time) => points.Select(p => p.PositionAt(time));
     }
 
-    public class StarGrid : PrintableGrid2D<bool>
+    private class StarGrid : PrintableGrid2D<bool>, IGlyphGrid
     {
         public StarGrid(Location2D dimensions, Location2D[] values)
             : base(dimensions)
