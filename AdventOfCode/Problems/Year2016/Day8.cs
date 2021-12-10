@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2016;
 
-public class Day8 : Problem<int, string>
+public class Day8 : Problem<int, IGlyphGrid>
 {
     private PixelAdjustmentInstruction[] instructions;
     private Screen screen;
@@ -16,9 +16,9 @@ public class Day8 : Problem<int, string>
     {
         return screen.ValueCounters[PixelState.On];
     }
-    public override string SolvePart2()
+    public override IGlyphGrid SolvePart2()
     {
-        return screen.ToString();
+        return screen;
     }
 
     protected override void ResetState()
@@ -33,7 +33,7 @@ public class Day8 : Problem<int, string>
         screen.ApplyInstructions(instructions);
     }
 
-    private class Screen : PrintableGrid2D<PixelState>
+    private class Screen : PrintableGrid2D<PixelState>, IGlyphGrid
     {
         public Screen()
             : base(50, 6) { }
@@ -61,7 +61,7 @@ public class Day8 : Problem<int, string>
 
         private void CreateRectangle(int width, int height)
         {
-            this[0..width, 0..height] = PixelState.On;
+            this[..width, ..height] = PixelState.On;
         }
         private void RotateRow(int row, int rotation)
         {
