@@ -22,7 +22,7 @@ public class Day6 : Problem<ulong>
 
     protected override void LoadState()
     {
-        system = ReproductionSystem.Parse(FileContents);
+        system = ReproductionSystem.Parse(FileContents.TrimEnd());
     }
     protected override void ResetState()
     {
