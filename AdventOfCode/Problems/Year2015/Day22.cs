@@ -244,7 +244,7 @@ public class Day22 : Problem<int>
         {
             return Math.Max(Damage - other.Armor, 1);
         }
-        public int GetMagicDamageAgainst(Character other, int damage)
+        public static int GetMagicDamageAgainst(Character other, int damage)
         {
             return Math.Max(damage, 1);
         }

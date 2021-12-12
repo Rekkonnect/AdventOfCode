@@ -63,7 +63,7 @@ public class Day14 : Problem<long>
             return value;
         }
 
-        private bool MatchesSequence(CircularLinkedListNode<int> start, int[] sequence)
+        private static bool MatchesSequence(CircularLinkedListNode<int> start, int[] sequence)
         {
             var current = start;
             for (int i = 0; i < sequence.Length; i++)

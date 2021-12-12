@@ -87,7 +87,7 @@ public class Day20 : Problem<ulong, int>
         return fullImage;
     }
 
-    private bool FindSeaMonsters(Grid2D<PixelColor> fullImage)
+    private static bool FindSeaMonsters(Grid2D<PixelColor> fullImage)
     {
         for (int y = 0; y < fullImage.Height - seaMonster.Height; y++)
         {
@@ -325,7 +325,7 @@ public class Day20 : Problem<ulong, int>
 
             tile.RotateCounterClockwise(turns);
         }
-        private TileSides GetEdgeSideOrientation(Tile tile, TileSideHashDictionary dictionary)
+        private static TileSides GetEdgeSideOrientation(Tile tile, TileSideHashDictionary dictionary)
         {
             var orientation = TileSides.None;
 

@@ -345,7 +345,7 @@ public class Day12 : Problem<int, long>
             EnsureEmptyPots(Last.Previous, c => c.Next, AddRightPots);
         }
 
-        private void EnsureEmptyPots(LinkedListNode<Pot> first, CurrentPotSelector currentPotSelector, Action<int> potAdder)
+        private static void EnsureEmptyPots(LinkedListNode<Pot> first, CurrentPotSelector currentPotSelector, Action<int> potAdder)
         {
             int consecutive = 0;
             var current = first;

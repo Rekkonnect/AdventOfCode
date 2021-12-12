@@ -122,7 +122,7 @@ public class Day4 : Problem<int>
         }
         #endregion
 
-        private bool IsWithin(int value, int min, int max)
+        private static bool IsWithin(int value, int min, int max)
         {
             return min <= value && value <= max;
         }

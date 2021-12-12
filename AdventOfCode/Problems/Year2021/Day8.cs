@@ -103,7 +103,7 @@ public class Day8 : Problem<int>
             SetEncapsulated(patterns, 9, 3);
             SetDigit(2, patterns[0]);
         }
-        private void SplitBySignalCount(List<SignalPattern> all, out List<SignalPattern> count5, out List<SignalPattern> count6)
+        private static void SplitBySignalCount(List<SignalPattern> all, out List<SignalPattern> count5, out List<SignalPattern> count6)
         {
             count6 = new();
             for (int i = 0; i < all.Count; i++)
@@ -131,7 +131,7 @@ public class Day8 : Problem<int>
             }
         }
 
-        private int DigitForDefinitivePattern(SignalPattern pattern)
+        private static int DigitForDefinitivePattern(SignalPattern pattern)
         {
             return pattern.SignalCount switch
             {

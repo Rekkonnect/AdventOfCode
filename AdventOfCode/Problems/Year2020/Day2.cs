@@ -19,7 +19,7 @@ public class Day2 : Problem<int>
         return GetValidPasswords(passwords.Select(p => new PasswordPolicyPart2(p)));
     }
 
-    private int GetValidPasswords(IEnumerable<PasswordPolicyBase> policies)
+    private static int GetValidPasswords(IEnumerable<PasswordPolicyBase> policies)
     {
         return policies.Count(p => p.IsValid);
     }
