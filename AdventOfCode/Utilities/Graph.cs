@@ -1,4 +1,5 @@
 ﻿using Garyon.Extensions;
+using Garyon.Functions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -92,14 +93,37 @@ public abstract class Graph<TValue, TGraphNode, TGraph> : INodedStructure<TValue
 
     public int Count => nodes.Count;
 
+    public IEnumerable<TGraphNode> Nodes => nodes.Select(Selectors.SelfObjectReturner);
+    public IEnumerable<TValue> NodeValues => nodes.Select(node => node.Value);
+
+    protected Graph()
+    {
+        nodes = new();
+    }
     protected Graph(IEnumerable<TGraphNode> graphNodes)
     {
         nodes = new(graphNodes);
     }
 
+    public void AddRange(IEnumerable<TGraphNode> nodeRange)
+    {
+        var remainingNodeSet = nodeRange.ToHashSet();
+        while (remainingNodeSet.Any())
+        {
+            var firstRemaining = remainingNodeSet.First();
+            var connected = firstRemaining.GetAllConnectedNodes();
+            remainingNodeSet.ExceptWith(connected);
+            nodes.UnionWith(connected);
+        }
+    }
+    protected void AddUnconnectedRange(IEnumerable<TGraphNode> nodeRange)
+    {
+        nodes.UnionWith(nodeRange);
+    }
+
     public void Add(TGraphNode node)
     {
-        nodes.AddRange(node.GetAllConnectedNodes());
+        nodes.UnionWith(node.GetAllConnectedNodes());
     }
     public bool Remove(TGraphNode node)
     {
