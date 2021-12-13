@@ -1,7 +1,4 @@
-﻿using Garyon.Extensions.ArrayExtensions;
-using System;
-
-namespace AdventOfCode.Problems;
+﻿namespace AdventOfCode.Problems;
 
 public class ComputerProgram
 {

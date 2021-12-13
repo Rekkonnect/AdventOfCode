@@ -1,8 +1,4 @@
-﻿using Garyon.Extensions;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AdventOfCode.Utilities;
+﻿namespace AdventOfCode.Utilities;
 
 public abstract class LevelNetworkNode<TValue, TLevelNetworkNode, TLevelNetwork> : NetworkNodeBase<TValue, TLevelNetworkNode, TLevelNetwork>
     where TLevelNetworkNode : LevelNetworkNode<TValue, TLevelNetworkNode, TLevelNetwork>

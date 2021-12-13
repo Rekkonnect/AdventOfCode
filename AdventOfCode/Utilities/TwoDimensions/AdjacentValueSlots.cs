@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AdventOfCode.Utilities.TwoDimensions;
+﻿namespace AdventOfCode.Utilities.TwoDimensions;
 
 public class AdjacentValueSlots<T>
 {

@@ -1,8 +1,4 @@
-﻿using AdventOfCSharp;
-using Garyon.Extensions;
-using System.Text.RegularExpressions;
-
-namespace AdventOfCode.Problems.Year2015;
+﻿namespace AdventOfCode.Problems.Year2015;
 
 public class Day25 : FinalDay<ulong>
 {

@@ -1,11 +1,9 @@
-﻿using AdventOfCSharp;
-
-namespace AdventOfCode;
+﻿namespace AdventOfCode;
 
 public class Program : BaseProgram
 {
     public static void Main()
     {
-        EnterMainMenu();
+        ValidateAllSolutions();
     }
 }

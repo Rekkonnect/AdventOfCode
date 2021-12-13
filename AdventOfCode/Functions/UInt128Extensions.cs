@@ -1,5 +1,4 @@
-﻿using Garyon.Extensions;
-using System.Numerics;
+﻿using System.Numerics;
 using UltimateOrb;
 
 namespace AdventOfCode.Functions;

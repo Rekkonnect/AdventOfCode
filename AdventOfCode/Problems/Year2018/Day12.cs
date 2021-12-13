@@ -1,14 +1,6 @@
 ﻿#if DEBUG
 using AdventOfCode.Functions;
 #endif
-using AdventOfCSharp;
-using Garyon.DataStructures;
-using Garyon.Extensions;
-using Garyon.Extensions.ArrayExtensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2018;
 

@@ -1,7 +1,5 @@
 ﻿using AdventOfCode.Utilities.ThreeDimensions;
 using AdventOfCode.Utilities.TwoDimensions;
-using System;
-using System.Collections.Generic;
 
 namespace AdventOfCode.Utilities.FourDimensions;
 

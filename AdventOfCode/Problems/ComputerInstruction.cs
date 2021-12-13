@@ -1,6 +1,4 @@
 ﻿using AdventOfCode.Functions;
-using System;
-using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems;
 

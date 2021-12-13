@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AdventOfCode.Utilities;
+﻿namespace AdventOfCode.Utilities;
 
 public abstract class NetworkNodeBase<TValue, TNetworkNode, TNetwork> : INode<TValue, TNetworkNode, TNetwork>
     where TNetworkNode : NetworkNodeBase<TValue, TNetworkNode, TNetwork>

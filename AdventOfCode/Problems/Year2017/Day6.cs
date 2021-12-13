@@ -1,11 +1,10 @@
 ﻿using AdventOfCode.Utilities;
-using AdventOfCSharp;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using UltimateOrb;
+
+#if DEBUG
+using System.Diagnostics;
+#endif
 
 namespace AdventOfCode.Problems.Year2017;
 

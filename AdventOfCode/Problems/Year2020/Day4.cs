@@ -1,10 +1,4 @@
-﻿using AdventOfCSharp;
-using Garyon.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AdventOfCode.Problems.Year2020;
+﻿namespace AdventOfCode.Problems.Year2020;
 
 public class Day4 : Problem<int>
 {

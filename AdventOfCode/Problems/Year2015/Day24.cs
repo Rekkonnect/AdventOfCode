@@ -1,11 +1,4 @@
-﻿using AdventOfCSharp;
-using Garyon.DataStructures;
-using Garyon.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AdventOfCode.Problems.Year2015;
+﻿namespace AdventOfCode.Problems.Year2015;
 
 public class Day24 : Problem<ulong>
 {

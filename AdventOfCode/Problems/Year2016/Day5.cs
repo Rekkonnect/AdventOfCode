@@ -1,8 +1,5 @@
 ﻿using AdventOfCode.Functions;
-using AdventOfCSharp;
 using Garyon.Functions;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AdventOfCode.Problems.Year2016;

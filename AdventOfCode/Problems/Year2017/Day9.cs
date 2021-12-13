@@ -1,9 +1,4 @@
-﻿using AdventOfCSharp;
-using Garyon.DataStructures;
-using Garyon.Extensions;
-using System.Linq;
-
-namespace AdventOfCode.Problems.Year2017;
+﻿namespace AdventOfCode.Problems.Year2017;
 
 public class Day9 : Problem<int>
 {

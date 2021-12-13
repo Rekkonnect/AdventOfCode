@@ -1,10 +1,5 @@
-﻿using AdventOfCSharp;
-using AdventOfCSharp.Extensions;
-using Garyon.DataStructures;
-using Garyon.Extensions;
+﻿using AdventOfCSharp.Extensions;
 using Garyon.Objects;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2015;
 

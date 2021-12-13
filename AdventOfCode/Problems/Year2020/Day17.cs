@@ -1,7 +1,6 @@
 ﻿using AdventOfCode.Utilities.FourDimensions;
 using AdventOfCode.Utilities.ThreeDimensions;
 using AdventOfCode.Utilities.TwoDimensions;
-using AdventOfCSharp;
 
 namespace AdventOfCode.Problems.Year2020;
 

@@ -1,11 +1,6 @@
 ﻿#nullable enable
 
 using AdventOfCode.Utilities;
-using AdventOfCSharp;
-using Garyon.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 
 namespace AdventOfCode.Problems.Year2021;

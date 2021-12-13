@@ -1,10 +1,4 @@
-﻿using AdventOfCSharp;
-using Garyon.Extensions;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace AdventOfCode.Problems.Year2017;
+﻿namespace AdventOfCode.Problems.Year2017;
 
 public class Day25 : FinalDay<int>
 {

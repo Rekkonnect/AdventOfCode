@@ -1,7 +1,5 @@
 ﻿#nullable enable
 
-using AdventOfCSharp;
-using Garyon.Extensions;
 using System.Runtime.CompilerServices;
 
 namespace AdventOfCode.Problems.Year2021;

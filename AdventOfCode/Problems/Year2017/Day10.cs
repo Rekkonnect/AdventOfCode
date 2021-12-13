@@ -1,6 +1,4 @@
 ﻿using AdventOfCode.Problems.Year2017.Utilities;
-using AdventOfCSharp;
-using System.Linq;
 
 namespace AdventOfCode.Problems.Year2017;
 

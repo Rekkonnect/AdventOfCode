@@ -1,7 +1,4 @@
-﻿using Garyon.Extensions;
-using System.Collections.Generic;
-
-namespace AdventOfCode.Functions;
+﻿namespace AdventOfCode.Functions;
 
 // How did these miss being in Garyon?
 public static class QueueAndStackExtensions

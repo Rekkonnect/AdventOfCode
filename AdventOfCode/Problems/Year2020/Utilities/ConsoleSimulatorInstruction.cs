@@ -1,6 +1,4 @@
 ﻿using AdventOfCode.Utilities;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace AdventOfCode.Problems.Year2020.Utilities;

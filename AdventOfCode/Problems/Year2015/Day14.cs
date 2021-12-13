@@ -1,9 +1,4 @@
-﻿using AdventOfCSharp;
-using AdventOfCSharp.Extensions;
-using Garyon.Extensions;
-using System;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using AdventOfCSharp.Extensions;
 
 namespace AdventOfCode.Problems.Year2015;
 

@@ -1,5 +1,4 @@
 ﻿using Garyon.Mathematics;
-using System.Collections.Generic;
 
 namespace AdventOfCode.Utilities;
 

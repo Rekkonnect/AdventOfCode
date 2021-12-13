@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AdventOfCode.Utilities.TwoDimensions;
+﻿namespace AdventOfCode.Utilities.TwoDimensions;
 
 public struct HexTileLocation : IEquatable<HexTileLocation>
 {

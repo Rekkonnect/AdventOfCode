@@ -1,41 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace AdventOfCode.Problems.Year2019.Utilities;
 
 public class IntcodeComputer
 {
-    private static Dictionary<Opcode, int> argumentCounts = new Dictionary<Opcode, int>();
+    private readonly long[] staticMemory;
+    private readonly long[] memory = new long[100000];
 
-    public const int MaxParameterCount = 3;
-
-    private long[] staticMemory;
-    private long[] memory = new long[100000];
-
-    private List<long> buffer = new List<long>();
+    private readonly List<long> buffer = new();
     private long lastOutput;
 
     private int bufferIndex = 0;
     private int relativeModeOffset = 0;
     private int executionPointer = 0;
 
-    private VMState state = VMState.Standby;
+    public VMState State { get; private set; } = VMState.Standby;
 
-    public bool IsStandby => state == VMState.Standby;
-    public bool IsRunning => state == VMState.Running;
-    public bool IsPaused => state == VMState.Paused;
-    public bool IsHalted => state == VMState.Halted;
+    public bool IsStandby => State == VMState.Standby;
+    public bool IsRunning => State == VMState.Running;
+    public bool IsPaused => State == VMState.Paused;
+    public bool IsHalted => State == VMState.Halted;
 
     public event InputReader InputRequested;
     public event OutputReader OutputWritten;
-
-    static IntcodeComputer()
-    {
-        // What the fuck went wrong with reflection
-        foreach (var v in typeof(Opcode).GetEnumValues())
-            argumentCounts.Add((Opcode)v, (typeof(Opcode).GetMember(v.ToString()).First().GetCustomAttributes(typeof(ArgumentCountAttribute), false).First() as ArgumentCountAttribute).ArgumentCount);
-    }
 
     public IntcodeComputer() { }
     public IntcodeComputer(int[] m)
@@ -69,7 +56,7 @@ public class IntcodeComputer
         if (!IsPaused)
             customMemory?.CopyTo(memory, 0);
 
-        state = VMState.Running;
+        State = VMState.Running;
 
         while (true)
         {
@@ -77,9 +64,9 @@ public class IntcodeComputer
             if (opcode == Opcode.Halt)
                 break;
 
-            var parameterModes = new ParameterMode[MaxParameterCount];
+            var parameterModes = new ParameterMode[OpcodeInformation.MaxParameterCount];
             int d = 100;
-            for (int a = 0; a < MaxParameterCount; a++, d *= 10)
+            for (int a = 0; a < OpcodeInformation.MaxParameterCount; a++, d *= 10)
                 parameterModes[a] = (ParameterMode)(memory[executionPointer] / d % 10);
 
             bool pointerChanged = false;
@@ -90,7 +77,7 @@ public class IntcodeComputer
                 executionPointer += GetPointerIncrement();
             if (shouldReturn)
             {
-                state = VMState.Paused;
+                State = VMState.Paused;
                 return lastOutput;
             }
 
@@ -152,25 +139,48 @@ public class IntcodeComputer
                     ParameterMode.Relative => relativeModeOffset + (int)memory[offset],
                 };
             }
-            int GetPointerIncrement() => argumentCounts[opcode] + 1;
+            int GetPointerIncrement() => OpcodeInformation.ArgumentCount(opcode) + 1;
         }
 
-        state = VMState.Halted;
+        State = VMState.Halted;
 
         return lastOutput;
     }
-    public async Task RunAsync(bool pauseOnOutput = false, bool pauseOnInput = false, long[] m = null, params long[] inputBuffer) => await Task.Run(() => Run(pauseOnOutput, pauseOnInput, m, inputBuffer));
-    public async Task RunUntilOutputAsync(long[] m = null, params long[] inputBuffer) => await Task.Run(() => RunUntilOutput(m, inputBuffer));
-    public async Task RunUntilRequestedInputAsync(long[] m = null, params long[] inputBuffer) => await Task.Run(() => RunUntilRequestedInput(m, inputBuffer));
-    public async Task RunToHaltAsync(long[] m = null, params long[] inputBuffer) => await Task.Run(() => RunToHalt(m, inputBuffer));
 
+    // Could the compiler not make something to automatically return Task.CompletedTask on fully synced asuyc methods?
+    public Task RunAsync(bool pauseOnOutput = false, bool pauseOnInput = false, long[] m = null, params long[] inputBuffer)
+    {
+        Run(pauseOnOutput, pauseOnInput, m, inputBuffer);
+        return Task.CompletedTask;
+    }
+    public Task RunUntilOutputAsync(long[] m = null, params long[] inputBuffer)
+    {
+        RunUntilOutput(m, inputBuffer);
+        return Task.CompletedTask;
+    }
+    public Task RunUntilRequestedInputAsync(long[] m = null, params long[] inputBuffer)
+    {
+        RunUntilRequestedInput(m, inputBuffer);
+        return Task.CompletedTask;
+    }
+    public Task RunToHaltAsync(long[] m = null, params long[] inputBuffer)
+    {
+        RunToHalt(m, inputBuffer);
+        return Task.CompletedTask;
+    }
+
+    public void ResetEvents()
+    {
+        InputRequested = null;
+        OutputWritten = null;
+    }
     public void Reset()
     {
         buffer.Clear();
         bufferIndex = 0;
         relativeModeOffset = 0;
         executionPointer = 0;
-        state = VMState.Standby;
+        State = VMState.Standby;
         InitializeMemory();
     }
 
@@ -229,6 +239,22 @@ public class IntcodeComputer
 
         [ArgumentCount(0)]
         Halt = 99,
+    }
+
+    public class OpcodeInformation
+    {
+        public const int MaxParameterCount = 3;
+
+        private static readonly Dictionary<Opcode, int> argumentCounts = new();
+
+        static OpcodeInformation()
+        {
+            // What the fuck went wrong with reflection
+            foreach (var v in typeof(Opcode).GetEnumValues())
+                argumentCounts.Add((Opcode)v, (typeof(Opcode).GetMember(v.ToString()).First().GetCustomAttributes(typeof(ArgumentCountAttribute), false).First() as ArgumentCountAttribute).ArgumentCount);
+        }
+
+        public static int ArgumentCount(Opcode opcode) => argumentCounts[opcode];
     }
 }
 

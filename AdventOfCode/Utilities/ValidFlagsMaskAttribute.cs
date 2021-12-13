@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AdventOfCode.Utilities;
+﻿namespace AdventOfCode.Utilities;
 
 // TODO: Use this in the following API:
 // T Garyon.Extensions.EnumExtensions.PreserveValidFlags<T>(this T enum)

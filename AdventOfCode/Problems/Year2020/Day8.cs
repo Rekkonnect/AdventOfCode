@@ -1,5 +1,4 @@
 ﻿using AdventOfCode.Problems.Year2020.Utilities;
-using AdventOfCSharp;
 
 namespace AdventOfCode.Problems.Year2020;
 

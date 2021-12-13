@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AdventOfCode.Functions;
+﻿namespace AdventOfCode.Functions;
 
 public static class KeyValuePairExtensions
 {

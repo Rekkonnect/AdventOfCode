@@ -2,11 +2,6 @@
 
 using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
-using AdventOfCSharp;
-using Garyon.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2016;
 

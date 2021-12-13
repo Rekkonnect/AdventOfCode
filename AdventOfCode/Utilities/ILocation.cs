@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AdventOfCode.Utilities;
+﻿namespace AdventOfCode.Utilities;
 
 public interface ILocation
 {

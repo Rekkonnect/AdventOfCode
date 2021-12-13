@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace AdventOfCode.Problems.Year2020.Utilities;
+﻿namespace AdventOfCode.Problems.Year2020.Utilities;
 
 public class ConsoleSimulator
 {

@@ -1,11 +1,7 @@
 ﻿using AdventOfCode.Functions;
 using AdventOfCode.Utilities.FourDimensions;
 using AdventOfCode.Utilities.ThreeDimensions;
-using Garyon.DataStructures;
 using Garyon.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using static System.Convert;
 
 namespace AdventOfCode.Utilities.TwoDimensions;

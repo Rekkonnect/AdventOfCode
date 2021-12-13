@@ -1,8 +1,4 @@
-﻿using AdventOfCSharp;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AdventOfCode.Problems.Year2017;
+﻿namespace AdventOfCode.Problems.Year2017;
 
 public class Day5 : Problem<int>
 {

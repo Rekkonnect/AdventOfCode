@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AdventOfCode.Utilities.TwoDimensions;
+﻿namespace AdventOfCode.Utilities.TwoDimensions;
 
 public class VerticalHexTileSetDirections : HexTileSetDirections<VerticalHexSide>
 {

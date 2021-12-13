@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AdventOfCode.Problems.Year2019.Utilities;
+﻿namespace AdventOfCode.Problems.Year2019.Utilities;
 
 [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = true)]
 public class ArgumentCountAttribute : Attribute

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AdventOfCode.Utilities.TwoDimensions;
+﻿namespace AdventOfCode.Utilities.TwoDimensions;
 
 // TODO: Refactor the printable character dictionary implementation and consider
 //       a mapper function; storing the characters in a dictionary should be optional
@@ -35,6 +31,8 @@ public abstract class PrintableGrid2D<T> : Grid2D<T>, IPrintableGrid<T>
     {
         printableCharacters = other.printableCharacters;
     }
+    public PrintableGrid2D(PrintableGrid2D<T> other, Location2D dimensions, Location2D offset)
+        : base(other, dimensions, offset) { }
 
     public virtual void PrintGrid() => Console.WriteLine(ToString());
 
