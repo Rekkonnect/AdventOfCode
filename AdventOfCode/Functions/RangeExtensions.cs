@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AdventOfCode.Functions;
+﻿namespace AdventOfCode.Functions;
 
 public static class RangeExtensions
 {

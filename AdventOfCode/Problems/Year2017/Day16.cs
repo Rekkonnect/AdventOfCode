@@ -1,11 +1,4 @@
 ﻿using AdventOfCode.Utilities;
-using AdventOfCSharp;
-using Garyon.DataStructures;
-using Garyon.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2017;
 
@@ -33,7 +26,6 @@ public class Day16 : Problem<string>
 
     private class Dance
     {
-
         private DanceMove[] moves;
 
         public Dance(IEnumerable<DanceMove> danceMoves)

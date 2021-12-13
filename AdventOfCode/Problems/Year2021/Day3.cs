@@ -1,9 +1,4 @@
-﻿using AdventOfCSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace AdventOfCode.Problems.Year2021;
+﻿namespace AdventOfCode.Problems.Year2021;
 
 public class Day3 : Problem<uint>
 {

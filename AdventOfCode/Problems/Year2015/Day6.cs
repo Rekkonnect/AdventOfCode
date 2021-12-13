@@ -1,12 +1,7 @@
 ﻿using AdventOfCode.Utilities.TwoDimensions;
-using AdventOfCSharp;
 using Garyon.Functions.IntrinsicsHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
-using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2015;
 

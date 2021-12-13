@@ -1,6 +1,4 @@
 ﻿using AdventOfCode.Functions;
-using AdventOfCSharp;
-using System.Linq;
 using System.Text.Json;
 
 namespace AdventOfCode.Problems.Year2015;

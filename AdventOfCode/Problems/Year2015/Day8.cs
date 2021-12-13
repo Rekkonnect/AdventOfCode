@@ -1,7 +1,4 @@
-﻿using AdventOfCSharp;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+﻿using System.Globalization;
 
 namespace AdventOfCode.Problems.Year2015;
 

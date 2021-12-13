@@ -1,5 +1,4 @@
 ﻿using Garyon.Exceptions;
-using System;
 
 namespace AdventOfCode.Utilities;
 

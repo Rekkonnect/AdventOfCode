@@ -1,7 +1,4 @@
-﻿using Garyon.Extensions;
-using Garyon.Functions;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Garyon.Functions;
 
 namespace AdventOfCode.Utilities;
 

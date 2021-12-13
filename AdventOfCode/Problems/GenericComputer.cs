@@ -1,5 +1,4 @@
 ﻿using AdventOfCode.Functions;
-using Garyon.DataStructures;
 
 namespace AdventOfCode.Problems;
 

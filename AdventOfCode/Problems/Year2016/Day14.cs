@@ -2,11 +2,6 @@
 //#define PRINT_REHASHES
 
 using AdventOfCode.Utilities;
-using AdventOfCSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AdventOfCode.Problems.Year2016;
 

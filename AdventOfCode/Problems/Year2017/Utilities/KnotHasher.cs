@@ -1,8 +1,4 @@
 ﻿using AdventOfCode.Utilities;
-using Garyon.Extensions.ArrayExtensions.ArrayConverting;
-using Microsoft.VisualBasic;
-using System.Collections.Generic;
-using System.Linq;
 using UltimateOrb;
 
 namespace AdventOfCode.Problems.Year2017.Utilities;

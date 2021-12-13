@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace AdventOfCode.Utilities;
+﻿namespace AdventOfCode.Utilities;
 
 public abstract class HeadedNetwork<TValue, TNetworkNode, TNetwork> : NetworkBase<TValue, TNetworkNode, TNetwork>
     where TNetworkNode : NetworkNode<TValue, TNetworkNode, TNetwork>

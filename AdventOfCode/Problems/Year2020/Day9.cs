@@ -1,7 +1,4 @@
-﻿using AdventOfCSharp;
-using System.Linq;
-
-namespace AdventOfCode.Problems.Year2020;
+﻿namespace AdventOfCode.Problems.Year2020;
 
 public class Day9 : Problem<long>
 {

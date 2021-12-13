@@ -1,7 +1,4 @@
-﻿using Garyon.DataStructures;
-using System.Collections.Generic;
-
-namespace AdventOfCode.Utilities;
+﻿namespace AdventOfCode.Utilities;
 
 public class FlexibleHashSetDictionary<TKey, TObject> : FlexibleInitializableValueDictionary<TKey, HashSet<TObject>>
 {

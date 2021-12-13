@@ -1,8 +1,4 @@
-﻿using Garyon.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using static AdventOfCode.Functions.MathFunctions;
+﻿using static AdventOfCode.Functions.MathFunctions;
 using static System.Math;
 
 namespace AdventOfCode.Utilities.TwoDimensions;

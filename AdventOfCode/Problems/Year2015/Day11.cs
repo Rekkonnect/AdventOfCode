@@ -1,6 +1,4 @@
-﻿using AdventOfCSharp;
-
-namespace AdventOfCode.Problems.Year2015;
+﻿namespace AdventOfCode.Problems.Year2015;
 
 public class Day11 : Problem<string>
 {

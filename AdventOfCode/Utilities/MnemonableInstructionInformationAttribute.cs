@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AdventOfCode.Utilities;
+﻿namespace AdventOfCode.Utilities;
 
 [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
 public class MnemonableInstructionInformationAttribute : Attribute

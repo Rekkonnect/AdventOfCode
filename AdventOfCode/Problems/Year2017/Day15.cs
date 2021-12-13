@@ -1,8 +1,4 @@
-﻿using AdventOfCSharp;
-using Garyon.Extensions;
-using System.Text.RegularExpressions;
-
-namespace AdventOfCode.Problems.Year2017;
+﻿namespace AdventOfCode.Problems.Year2017;
 
 public class Day15 : Problem<int>
 {

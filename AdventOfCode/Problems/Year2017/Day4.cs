@@ -1,7 +1,4 @@
-﻿using AdventOfCSharp;
-using AdventOfCSharp.Utilities;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AdventOfCSharp.Utilities;
 
 namespace AdventOfCode.Problems.Year2017;
 

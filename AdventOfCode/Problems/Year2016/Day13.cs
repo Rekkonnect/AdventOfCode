@@ -1,8 +1,4 @@
 ﻿using AdventOfCode.Utilities.TwoDimensions;
-using AdventOfCSharp;
-using Garyon.Extensions;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
 
 namespace AdventOfCode.Problems.Year2016;

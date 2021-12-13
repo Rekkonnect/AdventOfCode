@@ -1,7 +1,4 @@
-﻿using AdventOfCSharp;
-using Garyon.Extensions;
-
-namespace AdventOfCode.Problems.Year2017;
+﻿namespace AdventOfCode.Problems.Year2017;
 
 public class Day1 : Problem<int>
 {

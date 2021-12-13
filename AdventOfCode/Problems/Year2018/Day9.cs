@@ -1,10 +1,5 @@
 ﻿using AdventOfCode.Utilities;
-using AdventOfCSharp;
-using Garyon.DataStructures;
-using Garyon.Extensions;
 using System.Diagnostics;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Problems.Year2018;
 

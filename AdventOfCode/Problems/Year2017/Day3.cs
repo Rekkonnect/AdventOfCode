@@ -1,11 +1,6 @@
 ﻿//#define PRINT
 
-using AdventOfCode.Functions;
 using AdventOfCode.Utilities.TwoDimensions;
-using AdventOfCSharp;
-using Garyon.Extensions;
-using System;
-using System.Threading;
 
 namespace AdventOfCode.Problems.Year2017;
 

@@ -1,8 +1,5 @@
 ﻿using AdventOfCode.Functions;
 using AdventOfCode.Utilities;
-using AdventOfCSharp;
-using Garyon.Extensions;
-using System.Linq;
 
 namespace AdventOfCode.Problems.Year2015;
 
