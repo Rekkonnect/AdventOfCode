@@ -92,7 +92,9 @@ public class Grid2D<T> : BaseGrid<T, Location2D>
     public Grid2D(int both, T defaultValue)
         : this(both, both, defaultValue) { }
     public Grid2D(Location2D dimensions)
-        : this(dimensions.X, dimensions.Y, default) { }
+        : this(dimensions, default) { }
+    public Grid2D(Location2D dimensions, T defaultValue)
+        : this(dimensions.X, dimensions.Y, defaultValue) { }
     public Grid2D(int width, int height)
         : this(width, height, default) { }
     public Grid2D(int width, int height, T defaultValue)
