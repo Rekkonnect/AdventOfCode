@@ -75,7 +75,7 @@ public class Day13 : Problem<int, IGlyphGrid>
             : base(Location2D.GetLocationSpace(dotLocations, out var offset))
         {
             foreach (var location in dotLocations)
-                this[location + offset] = true;
+                this[location - offset] = true;
         }
 
         protected override IDictionary<bool, char> GetPrintableCharacters()
