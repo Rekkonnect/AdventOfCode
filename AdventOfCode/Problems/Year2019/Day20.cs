@@ -42,10 +42,10 @@ public class Day20 : Problem<int>
     }
     private struct MazeElement
     {
-        public static MazeElement NewEmpty => new MazeElement(MazeElementType.Empty);
-        public static MazeElement NewWall => new MazeElement(MazeElementType.Wall);
-        public static MazeElement NewOpen => new MazeElement(MazeElementType.Open);
-        public static MazeElement NewPortal => new MazeElement(MazeElementType.Portal);
+        public static MazeElement NewEmpty => new(MazeElementType.Empty);
+        public static MazeElement NewWall => new(MazeElementType.Wall);
+        public static MazeElement NewOpen => new(MazeElementType.Open);
+        public static MazeElement NewPortal => new(MazeElementType.Portal);
 
         public bool IsWallOrOpen => Type == MazeElementType.Wall || Type == MazeElementType.Open;
 
@@ -90,17 +90,19 @@ public class Day20 : Problem<int>
 
     private sealed class MazeGrid : PrintableGrid2D<MazeElement>
     {
-        public MazeGrid(int width, int height) : base(width, height) { }
-        public MazeGrid(MazeGrid other) : base(other) { }
+        public MazeGrid(int width, int height)
+            : base(width, height) { }
+        public MazeGrid(MazeGrid other)
+            : base(other) { }
 
-        protected override Dictionary<MazeElement, char> GetPrintableCharacters()
+        public override char GetPrintableCharacter(MazeElement value)
         {
-            return new Dictionary<MazeElement, char>
-                {
-                    { MazeElement.NewEmpty, ' ' },
-                    { MazeElement.NewOpen, '#' },
-                    { MazeElement.NewWall, '.' },
-                };
+            return value.Type switch
+            {
+                MazeElementType.Empty => ' ',
+                MazeElementType.Open => '#',
+                MazeElementType.Wall => '.',
+            };
         }
 
         protected override string FinalizeResultingString(StringBuilder builder)

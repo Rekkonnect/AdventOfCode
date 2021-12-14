@@ -40,13 +40,13 @@ public class Day13 : Problem<int>
 
         protected override bool IsImpassableObject(MazeCell element) => element is MazeCell.Wall;
 
-        protected override Dictionary<MazeCell, char> GetPrintableCharacters()
+        public override char GetPrintableCharacter(MazeCell value)
         {
-            return new()
+            return value switch
             {
-                [MazeCell.Unknown] = '?',
-                [MazeCell.OpenSpace] = '.',
-                [MazeCell.Wall] = '#',
+                MazeCell.Unknown => '?',
+                MazeCell.OpenSpace => '.',
+                MazeCell.Wall => '#',
             };
         }
 

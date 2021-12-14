@@ -234,7 +234,8 @@ public class Day17 : Problem<int>
     }
     private class CommandList : List<Command>
     {
-        public CommandList() : base(10) { }
+        public CommandList()
+            : base(10) { }
 
         public void AddWithoutExceedingLimit(Command command)
         {
@@ -334,18 +335,20 @@ public class Day17 : Problem<int>
         public Location2D CurrentRobotLocation { get; set; }
         public Direction CurrentRobotDirection { get; set; }
 
-        public SpaceGrid(int both) : base(both) { }
-        public SpaceGrid(int width, int height) : base(width, height) { }
+        public SpaceGrid(int both)
+            : base(both) { }
+        public SpaceGrid(int width, int height)
+            : base(width, height) { }
 
-        protected override Dictionary<ElementType, char> GetPrintableCharacters()
+        public override char GetPrintableCharacter(ElementType value)
         {
-            return new Dictionary<ElementType, char>
-                {
-                    { ElementType.Void , '.' },
-                    { ElementType.Scaffold , '#' },
-                    { ElementType.Intersection , 'O' },
-                    { ElementType.VacuumRobot , '^' },
-                };
+            return value switch
+            {
+                ElementType.Void => '.',
+                ElementType.Scaffold => '#',
+                ElementType.Intersection => 'O',
+                ElementType.VacuumRobot => '^',
+            };
         }
 
         public static SpaceGrid Parse(string s)

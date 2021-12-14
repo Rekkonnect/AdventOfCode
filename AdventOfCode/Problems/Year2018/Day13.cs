@@ -64,13 +64,13 @@ public class Day13 : Problem<Location2D>
         public CartCrash IterateUntilCrash()
         {
 #if PRINT
-                PrintGrid();
+            PrintGrid();
 #endif
             while (true)
             {
                 var result = Iterate();
 #if PRINT
-                    PrintGrid();
+                PrintGrid();
 #endif
 
                 if (result.Any())
@@ -148,112 +148,33 @@ public class Day13 : Problem<Location2D>
             return track;
         }
 
-        protected override IDictionary<TrackCell, char> GetPrintableCharacters()
+        public override char GetPrintableCharacter(TrackCell value)
         {
-            return new TrackCellCharDictionary();
+            if (value.Cart is not null)
+            {
+                return value.Cart.FacingDirection.Direction switch
+                {
+                    Direction.Up => '^',
+                    Direction.Down => 'v',
+                    Direction.Left => '<',
+                    Direction.Right => '>',
+                };
+            }
+
+            return value.Connection switch
+            {
+                TrackCellConnection.Intersection => '+',
+                TrackCellConnection.UpLeft => '/',
+                TrackCellConnection.UpRight => '\\',
+                TrackCellConnection.StraightHorizontal => '-',
+                TrackCellConnection.StraightVertical => '|',
+                _ => ' ',
+            };
         }
 
         private ref TrackCell this[Cart c]
         {
             get => ref Values[c.Location.X, c.Location.Y];
-        }
-
-        // The hack that tops it all off
-        // Could be better off using a IKeyValueMatcher<TKey, TValue>
-        // Normal dictionaries can be wrapped from a wrapper type implementing that interface
-        private class TrackCellCharDictionary : IDictionary<TrackCell, char>
-        {
-            public char this[TrackCell key]
-            {
-                get
-                {
-                    if (key.Cart is not null)
-                    {
-                        return key.Cart.FacingDirection.Direction switch
-                        {
-                            Direction.Up => '^',
-                            Direction.Down => 'v',
-                            Direction.Left => '<',
-                            Direction.Right => '>',
-                        };
-                    }
-
-                    return key.Connection switch
-                    {
-                        TrackCellConnection.Intersection => '+',
-                        TrackCellConnection.UpLeft => '/',
-                        TrackCellConnection.UpRight => '\\',
-                        TrackCellConnection.StraightHorizontal => '-',
-                        TrackCellConnection.StraightVertical => '|',
-                        _ => ' ',
-                    };
-                }
-                set => throw new System.NotImplementedException();
-            }
-
-            #region Hack bloat
-            ICollection<TrackCell> IDictionary<TrackCell, char>.Keys => throw new System.NotImplementedException();
-            ICollection<char> IDictionary<TrackCell, char>.Values => throw new System.NotImplementedException();
-
-            int ICollection<KeyValuePair<TrackCell, char>>.Count => throw new System.NotImplementedException();
-
-            bool ICollection<KeyValuePair<TrackCell, char>>.IsReadOnly => true;
-
-            void IDictionary<TrackCell, char>.Add(TrackCell key, char value)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void ICollection<KeyValuePair<TrackCell, char>>.Add(KeyValuePair<TrackCell, char> item)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void ICollection<KeyValuePair<TrackCell, char>>.Clear()
-            {
-                throw new System.NotImplementedException();
-            }
-
-            bool ICollection<KeyValuePair<TrackCell, char>>.Contains(KeyValuePair<TrackCell, char> item)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            bool IDictionary<TrackCell, char>.ContainsKey(TrackCell key)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            void ICollection<KeyValuePair<TrackCell, char>>.CopyTo(KeyValuePair<TrackCell, char>[] array, int arrayIndex)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            IEnumerator<KeyValuePair<TrackCell, char>> IEnumerable<KeyValuePair<TrackCell, char>>.GetEnumerator()
-            {
-                throw new System.NotImplementedException();
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                throw new System.NotImplementedException();
-            }
-
-            bool IDictionary<TrackCell, char>.Remove(TrackCell key)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            bool ICollection<KeyValuePair<TrackCell, char>>.Remove(KeyValuePair<TrackCell, char> item)
-            {
-                throw new System.NotImplementedException();
-            }
-
-            bool IDictionary<TrackCell, char>.TryGetValue(TrackCell key, out char value)
-            {
-                throw new System.NotImplementedException();
-            }
-            #endregion
         }
     }
 
@@ -279,7 +200,7 @@ public class Day13 : Problem<Location2D>
 
         public void MoveAlong(TrackCellConnection connection)
         {
-            switch ((connection, facingDirection.Direction))
+            switch (connection, facingDirection.Direction)
             {
                 case (TrackCellConnection.Intersection, _):
                     CrossIntersection();

@@ -70,18 +70,20 @@ public class Day15 : Problem<int>
 
     public sealed class ShipSection : PrintableGrid2D<ElementType>
     {
-        public ShipSection(int both) : base(both) { }
-        public ShipSection(int width, int height) : base(width, height) { }
+        public ShipSection(int both)
+            : base(both) { }
+        public ShipSection(int width, int height)
+            : base(width, height) { }
 
-        protected override Dictionary<ElementType, char> GetPrintableCharacters()
+        public override char GetPrintableCharacter(ElementType value)
         {
-            return new Dictionary<ElementType, char>
-                {
-                    { ElementType.Wall , '.' },
-                    { ElementType.Empty , '#' },
-                    { ElementType.OxygenSystem , 'O' },
-                    { ElementType.Undiscovered , ' ' },
-                };
+            return value switch
+            {
+                ElementType.Wall => '.',
+                ElementType.Empty => '#',
+                ElementType.OxygenSystem => 'O',
+                ElementType.Undiscovered => ' ',
+            };
         }
     }
 }

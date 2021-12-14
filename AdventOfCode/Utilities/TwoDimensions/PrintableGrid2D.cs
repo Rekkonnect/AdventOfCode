@@ -1,18 +1,9 @@
 ﻿namespace AdventOfCode.Utilities.TwoDimensions;
 
-// TODO: Refactor the printable character dictionary implementation and consider
-//       a mapper function; storing the characters in a dictionary should be optional
-//       Allow this type to be more cleanly used in the cases of a glyph grid;
-//       provide a custom PrintableGlyphGrid2D
 public abstract class PrintableGrid2D<T> : Grid2D<T>, IPrintableGrid<T>
 {
-    private IDictionary<T, char> printableCharacters;
-
-    private PrintableGrid2D(int width, int height, T defaultValue, bool initializeValueCounters)
-        : base(width, height, defaultValue, initializeValueCounters)
-    {
-        printableCharacters = GetPrintableCharacters();
-    }
+    protected PrintableGrid2D(int width, int height, T defaultValue, bool initializeValueCounters)
+        : base(width, height, defaultValue, initializeValueCounters) { }
 
     public PrintableGrid2D(int both)
         : this(both, both, default) { }
@@ -27,16 +18,13 @@ public abstract class PrintableGrid2D<T> : Grid2D<T>, IPrintableGrid<T>
     public PrintableGrid2D(Location2D dimensions, T defaultValue)
         : this(dimensions.X, dimensions.Y, defaultValue) { }
     public PrintableGrid2D(PrintableGrid2D<T> other)
-        : base(other)
-    {
-        printableCharacters = other.printableCharacters;
-    }
+        : base(other) { }
     public PrintableGrid2D(PrintableGrid2D<T> other, Location2D dimensions, Location2D offset)
         : base(other, dimensions, offset) { }
 
     public virtual void PrintGrid() => Console.WriteLine(ToString());
 
-    protected abstract IDictionary<T, char> GetPrintableCharacters();
+    public abstract char GetPrintableCharacter(T value);
     protected virtual string FinalizeResultingString(StringBuilder builder) => builder.ToString();
 
     public sealed override string ToString()
@@ -45,7 +33,7 @@ public abstract class PrintableGrid2D<T> : Grid2D<T>, IPrintableGrid<T>
         for (int y = 0; y < Height; y++)
         {
             for (int x = 0; x < Width; x++)
-                builder.Append(printableCharacters[Values[x, y]]);
+                builder.Append(GetPrintableCharacter(Values[x, y]));
             builder.AppendLine();
         }
         return FinalizeResultingString(builder);

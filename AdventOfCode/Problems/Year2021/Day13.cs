@@ -64,7 +64,7 @@ public class Day13 : Problem<int, IGlyphGrid>
         }
     }
 
-    private sealed class PaperGrid : PrintableGrid2D<bool>, IGlyphGrid
+    private sealed class PaperGrid : PrintableGlyphGrid2D<bool>
     {
         public PaperGrid(IEnumerable<Location2D> dotLocations)
             : base(Location2D.GetLocationSpace(dotLocations, out var offset))
@@ -73,14 +73,7 @@ public class Day13 : Problem<int, IGlyphGrid>
                 this[location - offset] = true;
         }
 
-        protected override IDictionary<bool, char> GetPrintableCharacters()
-        {
-            return new Dictionary<bool, char>
-            {
-                [false] = '.',
-                [true] = '#',
-            };
-        }
+        protected override bool IsDrawnPixel(bool value) => value;
     }
 
     private sealed class TransparentPaper

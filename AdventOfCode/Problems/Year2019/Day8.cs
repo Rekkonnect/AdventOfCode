@@ -31,7 +31,7 @@ public class Day8 : Problem<int, IGlyphGrid>
 
     private delegate T ImageProcessor<T>(ImageLayer[] layers);
 
-    private class ImageLayer : PrintableGrid2D<char>, IGlyphGrid
+    private class ImageLayer : PrintableGlyphGrid2D<char>
     {
         public new const int Width = 25;
         public new const int Height = 6;
@@ -79,13 +79,6 @@ public class Day8 : Problem<int, IGlyphGrid>
             return new ImageLayer(rendered);
         }
 
-        protected override IDictionary<char, char> GetPrintableCharacters()
-        {
-            return new Dictionary<char, char>
-            {
-                ['0'] = '.',
-                ['1'] = '#',
-            };
-        }
+        protected override bool IsDrawnPixel(char value) => value is '1';
     }
 }

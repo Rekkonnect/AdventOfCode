@@ -1,5 +1,14 @@
-﻿using AdventOfCode.Problems.Year2019.Utilities;
+﻿//#define ARCADE
+//#define REALTIME
+
+using AdventOfCode.Problems.Year2019.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
+#if ARCADE
+using Garyon.Functions;
+#if REALTIME
+using System.Threading;
+#endif
+#endif
 
 namespace AdventOfCode.Problems.Year2019;
 
@@ -28,6 +37,7 @@ public class Day13 : Problem<int>
     private T General<T>(GeneralFunction beforeOperation, Returner<T> returner)
     {
         int startingRow = Console.CursorTop;
+        int initialBlocks = 0;
 
         var grid = new GameGrid();
         int outputs = 0;
@@ -49,25 +59,53 @@ public class Day13 : Problem<int>
 
         computer.RunToHalt();
 
+#if ARCADE
+        if (gameRunning)
+            PrintScreen();
+#endif
+
         return returner(grid.ValueCounters, score);
 
-#if DEBUG
-        void PrintGrid()
+#if ARCADE
+        void PrintScreen()
         {
-            Console.SetCursorPosition(0, startingRow);
+            Console.SetCursorPosition(0, startingRow + 1);
+            ConsoleUtilities.WriteWithColor("SCORE ", ConsoleColor.Cyan, false);
+            ConsoleUtilities.WriteLineWithColor($"{score,6}", GetProgressColor(), true);
             grid.PrintGrid();
+#if REALTIME
+            Thread.Sleep(1);
+#endif
+        }
+
+        ConsoleColor GetProgressColor()
+        {
+            double remainingBlocks = grid.ValueCounters[TileType.Block];
+            double percentage = remainingBlocks * 100 / initialBlocks;
+            return percentage switch
+            {
+                0 => ConsoleColor.Green,
+                < 20 => ConsoleColor.DarkGreen,
+                < 40 => ConsoleColor.Magenta,
+                < 60 => ConsoleColor.DarkMagenta,
+                < 80 => ConsoleColor.DarkRed,
+                _ => ConsoleColor.Red,
+            };
         }
 #endif
 
         long InputRequested()
         {
-            gameRunning = true;
-#if DEBUG
-            PrintGrid();
+            if (!gameRunning)
+            {
+                gameRunning = true;
+                initialBlocks = grid.ValueCounters[TileType.Block];
+            }
+#if ARCADE
+            PrintScreen();
 #endif
             var newBallLocation = currentBallLocation + currentBallVelocity;
             return Math.Sign(currentBallLocation.X - currentPaddleLocation.X);
-
         }
         void OutputWritten(long output)
         {
@@ -124,15 +162,15 @@ public class Day13 : Problem<int>
         public GameGrid(int width, int height)
             : base(width, height) { }
 
-        protected override Dictionary<TileType, char> GetPrintableCharacters()
+        public override char GetPrintableCharacter(TileType value)
         {
-            return new Dictionary<TileType, char>
+            return value switch
             {
-                { TileType.Empty , ' ' },
-                { TileType.Wall , '#' },
-                { TileType.Block , '+' },
-                { TileType.HorizontalPaddle , '_' },
-                { TileType.Ball , 'O' },
+                TileType.Empty => ' ',
+                TileType.Wall => '#',
+                TileType.Block => '+',
+                TileType.HorizontalPaddle => '_',
+                TileType.Ball => 'O',
             };
         }
     }

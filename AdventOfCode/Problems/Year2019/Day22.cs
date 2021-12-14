@@ -96,7 +96,8 @@ public class Day22 : Problem<int, long>
     }
     public sealed class CutDeckCommand : ParameterizedDeckCommand
     {
-        public CutDeckCommand(int parameter) : base(parameter) { }
+        public CutDeckCommand(int parameter)
+            : base(parameter) { }
 
         public override void ApplyCommand(CardDeck deck) => deck.Cut(Parameter);
         public override long ApplyOnTrackedPosition(long position, long cardCount) => (position + Parameter + cardCount) % cardCount;
@@ -104,7 +105,8 @@ public class Day22 : Problem<int, long>
     }
     public sealed class DealWithIncrementDeckCommand : ParameterizedDeckCommand
     {
-        public DealWithIncrementDeckCommand(int parameter) : base(parameter) { }
+        public DealWithIncrementDeckCommand(int parameter)
+            : base(parameter) { }
 
         public override void ApplyCommand(CardDeck deck) => deck.DealWithIncrement(Parameter);
         public override long ApplyOnTrackedPosition(long position, long cardCount) => position * Parameter % cardCount;

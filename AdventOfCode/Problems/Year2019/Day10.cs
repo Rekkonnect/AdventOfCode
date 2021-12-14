@@ -127,8 +127,12 @@ public class Day10 : Problem<int>
 
         public double AbsoluteAngle => Angle % FullCircleDegrees;
 
-        public SlopedLocation(Location2D location, double angle, int manhattanDistance) => (Location, Angle, ManhattanDistance) = (location, angle, manhattanDistance);
-        public SlopedLocation(Location2D location, double angle, Location2D other) : this(location, angle, location.ManhattanDistance(other)) { }
+        public SlopedLocation(Location2D location, double angle, int manhattanDistance)
+        {
+            (Location, Angle, ManhattanDistance) = (location, angle, manhattanDistance);
+        }
+        public SlopedLocation(Location2D location, double angle, Location2D other)
+            : this(location, angle, location.ManhattanDistance(other)) { }
 
         public void AddFullCircleRotations(int count)
         {
@@ -154,16 +158,18 @@ public class Day10 : Problem<int>
 
         public int AsteroidCount => ValueCounters[true];
 
-        public AsteroidGrid(int width, int height) : base(width, height) { }
-        public AsteroidGrid(AsteroidGrid other) : base(other) { }
+        public AsteroidGrid(int width, int height)
+            : base(width, height) { }
+        public AsteroidGrid(AsteroidGrid other)
+            : base(other) { }
 
-        protected override Dictionary<bool, char> GetPrintableCharacters()
+        public override char GetPrintableCharacter(bool value)
         {
-            return new Dictionary<bool, char>
-                {
-                    { false, '.' },
-                    { true, '#' },
-                };
+            return value switch
+            {
+                false => '.',
+                true => '#',
+            };
         }
 
         public void SetBestLocation(bool value) => this[BestLocation] = value;

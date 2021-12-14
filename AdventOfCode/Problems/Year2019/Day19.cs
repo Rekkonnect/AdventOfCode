@@ -121,16 +121,18 @@ public class Day19 : Problem<int>
     {
         public int BeamPoints => ValueCounters[PointType.Beam];
 
-        public BeamGrid(int both) : base(both) { }
-        public BeamGrid(int width, int height) : base(width, height) { }
+        public BeamGrid(int both)
+            : base(both) { }
+        public BeamGrid(int width, int height)
+            : base(width, height) { }
 
-        protected override Dictionary<PointType, char> GetPrintableCharacters()
+        public override char GetPrintableCharacter(PointType value)
         {
-            return new Dictionary<PointType, char>
-                {
-                    { PointType.Air , '.' },
-                    { PointType.Beam , '#' },
-                };
+            return value switch
+            {
+                PointType.Air => '.',
+                PointType.Beam => '#',
+            };
         }
 
         public static BeamGrid Parse(string[] s)

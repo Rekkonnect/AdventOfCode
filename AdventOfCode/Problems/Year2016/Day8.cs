@@ -29,7 +29,7 @@ public class Day8 : Problem<int, IGlyphGrid>
         screen.ApplyInstructions(instructions);
     }
 
-    private class Screen : PrintableGrid2D<PixelState>, IGlyphGrid
+    private class Screen : PrintableGlyphGrid2D<PixelState>
     {
         public Screen()
             : base(50, 6) { }
@@ -68,14 +68,7 @@ public class Day8 : Problem<int, IGlyphGrid>
             SetYLine(column, GetYLine(column).RotateRight(rotation));
         }
 
-        protected override Dictionary<PixelState, char> GetPrintableCharacters()
-        {
-            return new()
-            {
-                [PixelState.Off] = '.',
-                [PixelState.On] = '#',
-            };
-        }
+        protected override bool IsDrawnPixel(PixelState value) => value is PixelState.On;
     }
     private enum PixelState
     {

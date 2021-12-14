@@ -93,7 +93,7 @@ public class Day11 : Problem<int, IGlyphGrid>
     private delegate void GeneralFunction(PanelGrid grid, Location2D startingLocation);
     private delegate T Returner<T>(int paintedPanels, PanelGrid grid);
 
-    private sealed class PanelGrid : PrintableGrid2D<PanelColor>, IGlyphGrid
+    private sealed class PanelGrid : PrintableGlyphGrid2D<PanelColor>
     {
         public PanelGrid(int both)
             : base(both) { }
@@ -173,14 +173,6 @@ public class Day11 : Problem<int, IGlyphGrid>
             return true;
         }
 
-        protected override Dictionary<PanelColor, char> GetPrintableCharacters()
-        {
-            return new Dictionary<PanelColor, char>
-            {
-                [PanelColor.Black] = '.',
-                [PanelColor.White] = '#',
-                [PanelColor.Untouched] = '.',
-            };
-        }
+        protected override bool IsDrawnPixel(PanelColor value) => value is PanelColor.White;
     }
 }

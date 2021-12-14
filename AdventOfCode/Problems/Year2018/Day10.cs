@@ -103,7 +103,7 @@ public class Day10 : Problem<IGlyphGrid, int>
         private IEnumerable<Location2D> GetPositionsAt(int time) => points.Select(p => p.PositionAt(time));
     }
 
-    private class StarGrid : PrintableGrid2D<bool>, IGlyphGrid
+    private class StarGrid : PrintableGlyphGrid2D<bool>
     {
         public StarGrid(Location2D dimensions, Location2D[] values)
             : base(dimensions)
@@ -112,13 +112,6 @@ public class Day10 : Problem<IGlyphGrid, int>
                 this[v] = true;
         }
 
-        protected override Dictionary<bool, char> GetPrintableCharacters()
-        {
-            return new()
-            {
-                [true] = '#',
-                [false] = '.',
-            };
-        }
+        protected override bool IsDrawnPixel(bool value) => value;
     }
 }

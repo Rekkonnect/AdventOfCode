@@ -200,10 +200,12 @@ public class Day24 : Problem<int>
             set => value.innerGrid = outerGrid = value;
         }
 
-        public RecursiveBugGrid() : base() => InitializeCentralGridTile();
-        public RecursiveBugGrid(BugGrid grid) : base(grid) => InitializeCentralGridTile();
+        public RecursiveBugGrid()
+            : base() => InitializeCentralGridTile();
+        public RecursiveBugGrid(BugGrid grid)
+            : base(grid) => InitializeCentralGridTile();
         public RecursiveBugGrid(RecursiveBugGrid grid)
-            : this((BugGrid)grid)
+            : this(grid as BugGrid)
         {
             innerGrid = grid.innerGrid;
             outerGrid = grid.outerGrid;
@@ -267,17 +269,19 @@ public class Day24 : Problem<int>
         public int BiodiversityRating => GetHashCode();
         public int BugCount => ValueCounters[GridElement.Bug];
 
-        public BugGrid() : base(GridSize) { }
-        public BugGrid(BugGrid other) : base(other) { }
+        public BugGrid()
+            : base(GridSize) { }
+        public BugGrid(BugGrid other)
+            : base(other) { }
 
-        protected override Dictionary<GridElement, char> GetPrintableCharacters()
+        public override char GetPrintableCharacter(GridElement value)
         {
-            return new Dictionary<GridElement, char>
-                {
-                    { GridElement.Empty, '.' },
-                    { GridElement.Bug, '#' },
-                    { GridElement.Grid, '?' },
-                };
+            return value switch
+            {
+                GridElement.Empty => '.',
+                GridElement.Bug => '#',
+                GridElement.Grid => '?',
+            };
         }
 
         public virtual BugGrid GetGridInNextMinute() => ApplyNewGridTransformation(InitializeNewGrid());
