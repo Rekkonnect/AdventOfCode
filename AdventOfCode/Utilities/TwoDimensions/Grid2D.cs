@@ -18,6 +18,8 @@ public class Grid2D<T> : BaseGrid<T, Location2D>
     public override Location2D Dimensions => (Width, Height);
     public override Location2D Center => Dimensions / 2;
 
+    public Location2D EndLocation => Dimensions - (1, 1);
+
     public override FlexibleListDictionary<T, Location2D> ElementDictionary
     {
         get
@@ -386,30 +388,30 @@ public class Grid2D<T> : BaseGrid<T, Location2D>
                 return;
 
             var (x1, y1) = location;
-            if (!IsImpassableObject(this[x1, y1]))
+            if (IsImpassableObject(this[location]))
+                return;
+
+            if (grid[x1, y1] <= depth)
+                return;
+
+            grid[x1, y1] = depth;
+
+            if (location == end)
+                resultingDirections = new List<Direction>(d);
+
+            var currentDirection = new DirectionalLocation(Direction.Right);
+            for (int i = 0; i < 4; i++)
             {
-                if (grid[x1, y1] <= depth)
-                    return;
+                d.Add(currentDirection.Direction);
+                AnalyzeGridDepth(location + currentDirection.LocationOffset, depth + 1);
+                d.RemoveAt(d.Count - 1);
 
-                grid[x1, y1] = depth;
-
-                if (location == end)
-                    resultingDirections = new List<Direction>(d);
-
-                var currentDirection = new DirectionalLocation(Direction.Right);
-                for (int i = 0; i < 4; i++)
-                {
-                    d.Add(currentDirection.Direction);
-                    AnalyzeGridDepth(location + currentDirection.LocationOffset, depth + 1);
-                    d.RemoveAt(d.Count - 1);
-
-                    currentDirection.TurnRight();
-                }
+                currentDirection.TurnRight();
             }
         }
     }
 
-    public IEnumerable<Location2D> EnumerateWholeGridLocations() => Location2D.EnumerateRectangleLocations((0, 0), Dimensions - (1, 1));
+    public IEnumerable<Location2D> EnumerateWholeGridLocations() => Location2D.EnumerateRectangleLocations(Location2D.Zero, EndLocation);
 
     public bool TryGetValue(int x, int y, out T value)
     {
