@@ -38,7 +38,7 @@ public struct Location4D : ILocation<Location4D>, IHasX, IHasY, IHasZ, IHasW
     public Location4D(int x, int y, int z, int w) => (X, Y, Z, W) = (x, y, z, w);
     public Location4D((int, int, int, int) point) => (X, Y, Z, W) = point;
 
-    public int ManhattanDistance(Location4D other) => Abs(X - other.X) + Abs(Y - other.Y) + Abs(Z - other.Z) + Abs(W - other.W);
+    public int ManhattanDistance(Location4D other) => (this - other).Absolute.ValueSum;
 
     public Location4D SignedDifferenceFrom(Location4D other)
     {
