@@ -1,12 +1,13 @@
 ﻿using AdventOfCode.Functions;
 using AdventOfCode.Utilities.FourDimensions;
 using AdventOfCode.Utilities.ThreeDimensions;
+using AdventOfCSharp.Utilities;
 using Garyon.Exceptions;
 using static System.Convert;
 
 namespace AdventOfCode.Utilities.TwoDimensions;
 
-public class Grid2D<T> : BaseGrid<T, Location2D>
+public class Grid2D<T> : BaseGrid<T, Location2D>, IEquatable<Grid2D<T>>
 {
     protected T[,] Values;
 
@@ -79,7 +80,7 @@ public class Grid2D<T> : BaseGrid<T, Location2D>
         if (initializeValueCounters)
             ValueCounters = new(Values.Cast<T>());
     }
-    protected Grid2D(int width, int height, T defaultValue, ValueCounterDictionary<T> valueCounters)
+    protected Grid2D(int width, int height, T defaultValue, NextValueCounterDictionary<T> valueCounters)
         : this(width, height, defaultValue, false)
     {
         ValueCounters = new(valueCounters);
@@ -282,6 +283,33 @@ public class Grid2D<T> : BaseGrid<T, Location2D>
         return result;
     }
 
+    public bool HasAdjacentValues(Location2D location, T value) => HasAdjacentValues(location.X, location.Y, value);
+    public bool HasAdjacentValues(int x, int y, T value)
+    {
+        if (x - 1 >= 0)
+        {
+            if (value.Equals(Values[x - 1, y]))
+                return true;
+        }
+        if (x + 1 < Width)
+        {
+            if (value.Equals(Values[x + 1, y]))
+                return true;
+        }
+        if (y - 1 >= 0)
+        {
+            if (value.Equals(Values[x, y - 1]))
+                return true;
+        }
+        if (y + 1 < Height)
+        {
+            if (value.Equals(Values[x, y + 1]))
+                return true;
+        }
+
+        return false;
+    }
+
     public int GetNeighborValues(Location2D location) => GetNeighborValues(location.X, location.Y);
     public int GetNeighborValues(Location2D location, T value) => GetNeighborValues(location.X, location.Y, value);
     public int GetNeighborValues(int x, int y) => GetNeighborValues(x, y, Values[x, y]);
@@ -306,6 +334,43 @@ public class Grid2D<T> : BaseGrid<T, Location2D>
         }
 
         return result;
+    }
+
+    public bool HasNeighborValues(Location2D location, T value) => HasNeighborValues(location.X, location.Y, value);
+    public bool HasNeighborValues(int x, int y, T value)
+    {
+        if (HasAdjacentValues(x, y, value))
+            return true;
+
+        // If only there was a convenient way to ignore out of bounds exceptions
+        if (x - 1 >= 0)
+        {
+            if (y - 1 >= 0)
+            {
+                if (value.Equals(Values[x - 1, y - 1]))
+                    return true;
+            }
+            if (y + 1 < Height)
+            {
+                if (value.Equals(Values[x - 1, y + 1]))
+                    return true;
+            }
+        }
+        if (x + 1 < Width)
+        {
+            if (y - 1 >= 0)
+            {
+                if (value.Equals(Values[x + 1, y - 1]))
+                    return true;
+            }
+            if (y + 1 < Height)
+            {
+                if (value.Equals(Values[x + 1, y + 1]))
+                    return true;
+            }
+        }
+
+        return false;
     }
     #endregion
 
@@ -430,6 +495,32 @@ public class Grid2D<T> : BaseGrid<T, Location2D>
     protected virtual bool IsImpassableObject(T element) => false;
 
     public override IEnumerator<T> GetEnumerator() => Values.Cast<T>().GetEnumerator();
+
+    public bool Equals(Grid2D<T> other)
+    {
+        if (!ValueCounters.Equals(other.ValueCounters))
+            return false;
+
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if (!Values[x, y].Equals(other.Values[x, y]))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+    public override bool Equals(object obj)
+    {
+        return obj is Grid2D<T> other && Equals(other);
+    }
+    public override int GetHashCode()
+    {
+        // Do not take too much time to generate the hash code
+        return ValueCounters.GetHashCode();
+    }
 
     public virtual T this[Range x, Range y]
     {

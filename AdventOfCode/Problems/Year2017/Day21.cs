@@ -1,5 +1,6 @@
 ﻿using AdventOfCode.Utilities.TwoDimensions;
 using AdventOfCSharp.Extensions;
+using AdventOfCSharp.Utilities;
 
 namespace AdventOfCode.Problems.Year2017;
 
@@ -81,7 +82,7 @@ public class Day21 : Problem<int>
         public const string RawStartingGrid = ".#./..#/###";
         public static readonly PixelGrid StartingGrid = Parse(RawStartingGrid);
 
-        private PixelGrid(int size, ValueCounterDictionary<PixelState> valueCounters)
+        private PixelGrid(int size, NextValueCounterDictionary<PixelState> valueCounters)
             : base(size, default, valueCounters) { }
 
         public PixelGrid(int size)

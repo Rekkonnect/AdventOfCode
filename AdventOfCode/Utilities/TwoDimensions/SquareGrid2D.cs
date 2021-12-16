@@ -1,4 +1,5 @@
-﻿using Garyon.Exceptions;
+﻿using AdventOfCSharp.Utilities;
+using Garyon.Exceptions;
 
 namespace AdventOfCode.Utilities.TwoDimensions;
 
@@ -7,7 +8,7 @@ public class SquareGrid2D<T> : Grid2D<T>
     public int Size => Width;
 
     #region Constructors
-    protected SquareGrid2D(int size, T defaultValue, ValueCounterDictionary<T> valueCounters)
+    protected SquareGrid2D(int size, T defaultValue, NextValueCounterDictionary<T> valueCounters)
         : base(size, size, defaultValue, valueCounters) { }
 
     // TODO: More constructors might be needed
