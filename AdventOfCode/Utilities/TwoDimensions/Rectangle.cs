@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Utilities.TwoDimensions;
+﻿using AdventOfCode.Functions;
+
+namespace AdventOfCode.Utilities.TwoDimensions;
 
 public struct Rectangle
 {
@@ -28,6 +30,11 @@ public struct Rectangle
         set => (Right, Bottom) = value;
     }
 
+    public int Width => Math.Abs(Top - Bottom) + 1;
+    public int Height => Math.Abs(Left - Right) + 1;
+
+    public int Area => Width * Height;
+
     public Rectangle(int left, int right, int bottom, int top)
     {
         Left = left;
@@ -43,4 +50,8 @@ public struct Rectangle
         BottomLeft = bottomLeft;
         BottomRight = bottomRight;
     }
+
+    public bool IsWithinX(int x) => MathFunctions.BetweenInclusive(x, Left, Right);
+    public bool IsWithinY(int y) => MathFunctions.BetweenInclusive(y, Top, Bottom);
+    public bool IsWithin(Location2D point) => IsWithinX(point.X) && IsWithinY(point.Y);
 }

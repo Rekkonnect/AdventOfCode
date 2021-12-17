@@ -1,14 +1,11 @@
-﻿using static System.Math;
+﻿using Garyon.Functions;
+using static System.Math;
 
 namespace AdventOfCode.Functions;
 
 public static class MathFunctions
 {
-    public const double FullCircleDegrees = 360;
-    public const double FullCircleRadians = 2 * PI;
-    public const double HalfCircleDegrees = 180;
-    public const double HalfCircleRadians = PI;
-
+    #region Divisions
     public static int GCD(int a, int b) => (int)GCD((long)a, b);
     public static long GCD(long a, long b)
     {
@@ -16,10 +13,12 @@ public static class MathFunctions
         b = Abs(b);
 
         while (a != 0 && b != 0)
+        {
             if (a > b)
                 a %= b;
             else
                 b %= a;
+        }
 
         return a | b;
     }
@@ -33,6 +32,13 @@ public static class MathFunctions
         nominator /= gcd;
         denominator /= gcd;
     }
+    #endregion
+
+    #region Trigonometry
+    public const double FullCircleDegrees = 360;
+    public const double FullCircleRadians = 2 * PI;
+    public const double HalfCircleDegrees = 180;
+    public const double HalfCircleRadians = PI;
 
     public static double ToDegrees(double rad) => rad / PI * 180;
     public static double ToRadians(double deg) => deg / 180 * PI;
@@ -52,4 +58,20 @@ public static class MathFunctions
         return result;
     }
     public static double InvertRadians(double rad) => (FullCircleRadians - rad) % FullCircleRadians;
+    #endregion
+
+    #region Comparisons
+    public static bool BetweenInclusive(int value, int a, int b)
+    {
+        if (a > b)
+            Misc.Swap(ref a, ref b);
+
+        return a <= value && value <= b;
+    }
+    #endregion
+
+    #region Sequences
+    public static int Sum(int max) => max * (max + 1) / 2;
+    public static int Sum(int start, int end) => Sum(end) - Sum(start);
+    #endregion
 }
