@@ -203,12 +203,9 @@ public class Day18 : Problem<int>
         public PairNode? Parent { get; set; }
         public ParentSide ParentSide { get; set; }
 
-        // OPTIMIZATION: Fix this and use it in reduction
-        public int Depth { get; set; }
-
         public abstract int Magnitude { get; }
 
-        // TODO: Make this worthless
+        // This is nearly as fast as caching the actual depth
         public int RecursiveDepth
         {
             get
@@ -323,7 +320,6 @@ public class Day18 : Problem<int>
 
             field = child;
             field.Parent = this;
-            field.Depth = Depth + 1;
             field.ParentSide = parentSide;
         }
 
