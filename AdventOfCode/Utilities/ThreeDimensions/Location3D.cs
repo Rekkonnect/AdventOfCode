@@ -43,6 +43,23 @@ public struct Location3D : ILocation<Location3D>, IHasX, IHasY, IHasZ
         return (Sign(x), Sign(y), Sign(z));
     }
 
+    public Location3D Shuffle(Orientation orientation)
+    {
+        return (this * orientation.Signs).Shuffle(orientation.AxesOrder);
+    }
+    public Location3D Shuffle(AxesOrder axes)
+    {
+        return axes switch
+        {
+            AxesOrder.XYZ => this,
+            AxesOrder.XZY => (X, Z, Y),
+            AxesOrder.YXZ => (Y, X, Z),
+            AxesOrder.YZX => (Y, Z, X),
+            AxesOrder.ZXY => (Z, X, Y),
+            AxesOrder.ZYX => (Z, Y, X),
+        };
+    }
+
     public void Deconstruct(out int x, out int y, out int z)
     {
         x = X;

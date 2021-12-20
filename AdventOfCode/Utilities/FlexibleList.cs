@@ -63,10 +63,9 @@ public class FlexibleList<T> : IList<T>
         if (Count >= newCount)
             return;
 
-        var collection = new List<T>(newCount - Count);
-        for (int i = 0; i < collection.Count; i++)
-            collection.Add(GetDefaultInitializedValue());
-        list.AddRange(collection);
+        var newValues = new T[newCount - Count];
+        newValues.Fill(GetDefaultInitializedValue());
+        list.AddRange(newValues);
     }
 
     protected virtual T GetDefaultInitializedValue() => default;
