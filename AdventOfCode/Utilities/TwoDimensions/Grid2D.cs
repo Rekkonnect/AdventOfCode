@@ -489,6 +489,8 @@ public class Grid2D<T> : BaseGrid<T, Location2D>, IEquatable<Grid2D<T>>
         return TryGetValue(location.X, location.Y, out value);
     }
 
+    public bool IsValidX(int x) => x >= 0 && x < Width;
+    public bool IsValidY(int y) => y >= 0 && y < Height;
     public bool IsValidLocation(int x, int y) => IsValidLocation((x, y));
     public bool IsValidLocation(Location2D location) => location.IsNonNegative && location.X < Width && location.Y < Height;
 
