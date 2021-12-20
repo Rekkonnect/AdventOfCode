@@ -1,4 +1,8 @@
-﻿namespace AdventOfCode.Problems.Year2021;
+﻿#define INTCODE
+
+using AdventOfCSharp.Extensions;
+
+namespace AdventOfCode.Problems.Year2021;
 
 public class Day7 : Problem<int>
 {
@@ -16,6 +20,14 @@ public class Day7 : Problem<int>
     protected override void LoadState()
     {
         crabs = Crabs.Parse(FileContents);
+
+#if INTCODE
+        // TODO: The framework now needs something for easter eggs
+        var computer = new Year2019.Utilities.IntcodeComputer(FileContents.Trim().Split(',').SelectArray(int.Parse));
+        computer.OutputWritten += value => Console.Write((char)value);
+        computer.RunToHalt();
+        Console.WriteLine();
+#endif
     }
     protected override void ResetState()
     {
