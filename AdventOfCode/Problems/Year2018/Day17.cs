@@ -40,7 +40,7 @@ public class Day17 : Problem<int>
         {
             int width = veins.Max(vein => vein.X.End.Value) + 1;
             int height = veins.Max(vein => vein.Y.End.Value);
-            int minY = veins.Max(vein => vein.Y.Start.Value);
+            int minY = veins.Min(vein => vein.Y.Start.Value);
 
             var result = new WaterSystem(width, height, minY);
 

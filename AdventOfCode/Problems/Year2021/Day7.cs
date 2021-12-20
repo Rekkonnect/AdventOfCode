@@ -1,11 +1,8 @@
-﻿#nullable enable
-
-
-namespace AdventOfCode.Problems.Year2021;
+﻿namespace AdventOfCode.Problems.Year2021;
 
 public class Day7 : Problem<int>
 {
-    private Crabs? crabs;
+    private Crabs crabs;
 
     public override int SolvePart1()
     {

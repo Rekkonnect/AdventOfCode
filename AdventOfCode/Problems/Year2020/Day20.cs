@@ -1,6 +1,8 @@
 ﻿using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
 using System.Collections;
+using System.Collections.Specialized;
+using System.Numerics;
 
 namespace AdventOfCode.Problems.Year2020;
 
@@ -59,7 +61,7 @@ public class Day20 : Problem<ulong, int>
         tiles = null;
     }
 
-    private Grid2D<PixelColor> FindImageOrientation(Grid2D<PixelColor> fullImage)
+    private static Grid2D<PixelColor> FindImageOrientation(Grid2D<PixelColor> fullImage)
     {
         // This pattern plays out too well
         for (int i = 0; i < 2; i++)
@@ -87,17 +89,8 @@ public class Day20 : Problem<ulong, int>
         {
             for (int x = 0; x < fullImage.Width - seaMonster.Width; x++)
             {
-                bool isSeaMonster = true;
-
                 // Detect if sea monster exists in that location
-                foreach (var l in seaMonsterLocationOffsets)
-                    if (fullImage[(x, y) + l] != PixelColor.White)
-                    {
-                        isSeaMonster = false;
-                        break;
-                    }
-
-                if (!isSeaMonster)
+                if (!MatchesSeaMonster(fullImage, x, y))
                     continue;
 
                 // Find sea monster
@@ -107,6 +100,17 @@ public class Day20 : Problem<ulong, int>
         }
 
         return fullImage.ValueCounters[PixelColor.SeaMonster] > 0;
+
+        static bool MatchesSeaMonster(Grid2D<PixelColor> fullImage, int x, int y)
+        {
+            foreach (var l in seaMonsterLocationOffsets)
+            {
+                if (fullImage[(x, y) + l] != PixelColor.White)
+                    return false;
+            }
+
+            return true;
+        }
     }
 
     private class TileCollection
@@ -114,8 +118,11 @@ public class Day20 : Problem<ulong, int>
         private KeyedObjectDictionary<int, Tile> tileDictionary;
 
         private TileSideHashDictionary sideHashes = new();
+        // Edgy tiles contains all tiles that are on the edge of the board
+        // Tiles with value 1 are on the side, and with value 2 are corners
         private ValueCounterDictionary<Tile> edgyTiles = new();
 
+        // TODO: Consider removing
         private TileMatchingState[,] tileMatchingStates;
 
         private Tile[,] connectedTiles;
@@ -132,6 +139,7 @@ public class Day20 : Problem<ulong, int>
                     tileMatchingStates[i, j] = new();
 
             GetMatchingTiles();
+            InitializeEdgyTiles();
         }
 
         private void GetMatchingTiles()
@@ -168,7 +176,15 @@ public class Day20 : Problem<ulong, int>
 
         public IEnumerable<Tile> GetCorners()
         {
-            return GetEdgyTileDictionary().Where(counter => counter.Value == 4).Select(kvp => kvp.Key);
+            return GetEdges(2);
+        }
+        public IEnumerable<Tile> GetEdges()
+        {
+            return GetEdges(1);
+        }
+        private IEnumerable<Tile> GetEdges(int targetEdgeSides)
+        {
+            return edgyTiles.Where(counter => counter.Value == targetEdgeSides).Select(kvp => kvp.Key);
         }
 
         public Tile[,] ConnectTiles()
@@ -182,7 +198,7 @@ public class Day20 : Problem<ulong, int>
             var remainingTiles = new TileSideHashDictionary(sideHashes);
 
             var corners = GetCorners().ToList();
-            var edges = edgyTiles.Keys.Where(t => !corners.Contains(t)).ToList();
+            var edges = GetEdges().ToList();
 
             // Probably most of this copy-pasted code can be abstracted somewhere better
             // but like I said, it's getting too late
@@ -191,7 +207,7 @@ public class Day20 : Problem<ulong, int>
             var topLeftCorner = corners.First();
             connectedTiles[0, 0] = topLeftCorner;
             corners.RemoveAt(0);
-            //remainingTiles.RemoveFromTile(topLeftCorner);
+            remainingTiles.RemoveFromTile(topLeftCorner);
 
             OrientTileEdgeSides(topLeftCorner, remainingTiles, TileSides.TopLeft);
 
@@ -199,6 +215,7 @@ public class Day20 : Problem<ulong, int>
             var previousPiece = topLeftCorner;
             for (int x = 1; x < size - 1; x++)
             {
+                // BUG: Currently, this breaks some state, and we would like to know why
                 var pieces = remainingTiles[previousPiece.RightSideHash];
                 pieces = pieces.Where(p => edges.Contains(p.Tile)).ToList();
                 if (pieces.Count < 1)
@@ -215,7 +232,7 @@ public class Day20 : Problem<ulong, int>
             }
 
             // Find top-right corner
-            var topRightCorner = remainingTiles[previousPiece.RightSideHash].Where(p => corners.Contains(p.Tile)).First().Tile;
+            var topRightCorner = remainingTiles[previousPiece.RightSideHash].Where(p => corners.Contains(p.Tile)).Single().Tile;
             connectedTiles[size - 1, 0] = topRightCorner;
             corners.Remove(topRightCorner);
             remainingTiles.RemoveFromTile(topRightCorner);
@@ -266,78 +283,64 @@ public class Day20 : Problem<ulong, int>
 
             int turns = 0;
 
-            switch (originalOrientation)
+            if (IsSingleSide(originalOrientation))
             {
-                case TileSides.Top:
-                case TileSides.Right:
-                case TileSides.Bottom:
-                case TileSides.Left:
-                    switch (newOrientation)
-                    {
-                        case TileSides.Top:
-                        case TileSides.Right:
-                        case TileSides.Bottom:
-                        case TileSides.Left:
-                            break;
+                if (!IsSingleSide(newOrientation))
+                    throw new ArgumentException("Invalid new orientation");
 
-                        default:
-                            throw new ArgumentException("Invalid new orientation");
-                    }
+                while (originalOrientation != newOrientation)
+                {
+                    newOrientation = (TileSides)((int)newOrientation << 1);
+                    turns++;
+                }
+            }
+            else
+            {
+                turns = (originalOrientation, newOrientation) switch
+                {
+                    // Please for my sanity change that code to something else someday
+                    // TL, BL, BR, TR, TL, BL, BR, ...
+                    (TileSides.TopLeft, TileSides.BottomLeft) => 1,
+                    (TileSides.TopLeft, TileSides.BottomRight) => 2,
+                    (TileSides.TopLeft, TileSides.TopRight) => 3,
 
-                    while (originalOrientation != newOrientation)
-                    {
-                        newOrientation = (TileSides)((int)newOrientation << 1);
-                        turns++;
-                    }
-                    break;
+                    (TileSides.BottomLeft, TileSides.BottomRight) => 1,
+                    (TileSides.BottomLeft, TileSides.TopRight) => 2,
+                    (TileSides.BottomLeft, TileSides.TopLeft) => 3,
 
-                default:
-                    turns = (originalOrientation, newOrientation) switch
-                    {
-                        // Please for my sanity change that code to something else someday
-                        // TL, BL, BR, TR, TL, BL, BR, ...
-                        (TileSides.TopLeft, TileSides.BottomLeft) => 1,
-                        (TileSides.TopLeft, TileSides.BottomRight) => 2,
-                        (TileSides.TopLeft, TileSides.TopRight) => 3,
+                    (TileSides.BottomRight, TileSides.TopRight) => 1,
+                    (TileSides.BottomRight, TileSides.TopLeft) => 2,
+                    (TileSides.BottomRight, TileSides.BottomLeft) => 3,
 
-                        (TileSides.BottomLeft, TileSides.BottomRight) => 1,
-                        (TileSides.BottomLeft, TileSides.TopRight) => 2,
-                        (TileSides.BottomLeft, TileSides.TopLeft) => 3,
+                    (TileSides.TopRight, TileSides.TopLeft) => 1,
+                    (TileSides.TopRight, TileSides.BottomLeft) => 2,
+                    (TileSides.TopRight, TileSides.BottomRight) => 3,
 
-                        (TileSides.BottomRight, TileSides.TopRight) => 1,
-                        (TileSides.BottomRight, TileSides.TopLeft) => 2,
-                        (TileSides.BottomRight, TileSides.BottomLeft) => 3,
-
-                        (TileSides.TopRight, TileSides.TopLeft) => 1,
-                        (TileSides.TopRight, TileSides.BottomLeft) => 2,
-                        (TileSides.TopRight, TileSides.BottomRight) => 3,
-
-                        _ => 0, // How the fuck
-                    };
-                    break;
+                    _ => 0, // How the fuck
+                };
             }
 
             tile.RotateCounterClockwise(turns);
         }
         private static TileSides GetEdgeSideOrientation(Tile tile, TileSideHashDictionary dictionary)
         {
-            var orientation = TileSides.None;
-
-            // I hate that this is copypasted, but this solution is taking far too long
-            // Might consider refactoring someday in the future:tm:
-            if (dictionary[tile.TopSideHash.HashValue].Count < 2)
-                orientation |= TileSides.Top;
-            if (dictionary[tile.RightSideHash.HashValue].Count < 2)
-                orientation |= TileSides.Right;
-            if (dictionary[tile.BottomSideHash.HashValue].Count < 2)
-                orientation |= TileSides.Bottom;
-            if (dictionary[tile.LeftSideHash.HashValue].Count < 2)
-                orientation |= TileSides.Left;
+            var orientation = Sides(tile.TopSideHash, TileSides.Top, dictionary)
+                            | Sides(tile.RightSideHash, TileSides.Right, dictionary)
+                            | Sides(tile.BottomSideHash, TileSides.Bottom, dictionary)
+                            | Sides(tile.LeftSideHash, TileSides.Left, dictionary);
 
             return orientation;
+
+            static TileSides Sides(TileSideHash hash, TileSides orientation, TileSideHashDictionary dictionary)
+            {
+                if (dictionary[hash.HashValue].Count < 1)
+                    return orientation;
+
+                return default;
+            }
         }
 
-        private ValueCounterDictionary<Tile> GetEdgyTileDictionary()
+        private ValueCounterDictionary<Tile> InitializeEdgyTiles()
         {
             foreach (var sideHash in sideHashes)
             {
@@ -349,11 +352,20 @@ public class Day20 : Problem<ulong, int>
                 edgyTiles.Add(tiles.First().Tile);
             }
 
+            // Due to the current implementation; values are duplicated
+            // since both sides' hashes are recorded
+            foreach (var tile in edgyTiles.Keys)
+                edgyTiles[tile] /= 2;
+            
             return edgyTiles;
         }
 
         public Tile this[int tileID] => tileDictionary[tileID];
     }
+
+    private static bool IsSingleSide(TileSides side) => HasSides(side, 1);
+    private static bool IsDoubleSide(TileSides side) => HasSides(side, 2);
+    private static bool HasSides(TileSides side, int count) => BitOperations.PopCount((uint)side) == count && side < TileSides.All;
 
     private enum TileSides
     {
@@ -411,7 +423,7 @@ public class Day20 : Problem<ulong, int>
 
     private class TileMatchingState
     {
-        private BitArray bits = new(16);
+        private BitVector32 bits = new();
 
         public bool this[Direction faceRotation, Direction direction]
         {
@@ -419,7 +431,7 @@ public class Day20 : Problem<ulong, int>
             set => bits[GetIndex(faceRotation, direction)] = value;
         }
 
-        private static int GetIndex(Direction faceRotation, Direction direction) => (int)faceRotation * 4 + (int)direction;
+        private static int GetIndex(Direction faceRotation, Direction direction) => ((int)faceRotation << 2) + (int)direction;
     }
 
     private class TileMatch : IKeyedObject<int>

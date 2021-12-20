@@ -193,7 +193,7 @@ public class Day18 : Problem<int>
         // I'm starting to notice the need for self-type interfaces even more
         public bool Equals(Area other)
         {
-            return Equals((Grid2D<AcreType>)other);
+            return Equals(other as Grid2D<AcreType>);
         }
         public override bool Equals(object obj)
         {
