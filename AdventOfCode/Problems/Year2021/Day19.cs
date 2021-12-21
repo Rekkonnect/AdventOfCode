@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Utilities;
+﻿using AdventOfCode.Functions;
+using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.ThreeDimensions;
 using AdventOfCSharp.Extensions;
 using Garyon.Functions;
@@ -11,8 +12,6 @@ public class Day19 : Problem<int>
     private Space space;
     private ScannerComplex scannerComplex;
 
-    // Incorrect, incapable
-    [PartSolution(PartSolutionStatus.WIP)]
     public override int SolvePart1()
     {
         scannerComplex.InitializeScanners();
@@ -21,7 +20,13 @@ public class Day19 : Problem<int>
     }
     public override int SolvePart2()
     {
-        return -1;
+        scannerComplex.InitializeScanners();
+        return scannerComplex.Scanners.CachedCartesianProductExcludingSame().Max(ScannerDistanceComparer);
+
+        static int ScannerDistanceComparer((Scanner A, Scanner B) scanners)
+        {
+            return scanners.A.Offset.ManhattanDistance(scanners.B.Offset);
+        }
     }
 
     protected override void LoadState()
@@ -50,6 +55,15 @@ public class Day19 : Problem<int>
 
             foreach (var scanner in ScannerComplex.Scanners)
                 beacons.UnionWith(scanner.AbsoluteBeacons.Select(beacon => beacon.Location));
+
+#if DEBUG
+            var beaconArray = beacons.ToArray();
+            Array.Sort(beaconArray, (a, b) => a.X.CompareTo(b.X));
+            foreach (var beacon in beaconArray)
+            {
+                Console.WriteLine(beacon);
+            }
+#endif
         }
     }
 
@@ -58,17 +72,17 @@ public class Day19 : Problem<int>
         private readonly RelativeScannerData[] relativeScanners;
         private readonly Scanner?[] absoluteScanners;
 
-        public IEnumerable<Scanner> Scanners => absoluteScanners.Where(Predicates.NotNull) as IEnumerable<Scanner>;
+        public IReadOnlyList<Scanner> Scanners => absoluteScanners.Where(Predicates.NotNull).ToArray() as IReadOnlyList<Scanner>;
 
-        public ScannerComplex(RelativeScannerData[] relativeScanners)
+        public ScannerComplex(RelativeScannerData[] relativeScannerData)
         {
-            this.relativeScanners = new RelativeScannerData[relativeScanners.Length];
-            foreach (var scanner in relativeScanners)
-                this.relativeScanners[scanner.ID] = scanner;
+            relativeScanners = new RelativeScannerData[relativeScannerData.Length];
+            foreach (var scanner in relativeScannerData)
+                relativeScanners[scanner.ID] = scanner;
 
-            absoluteScanners = new Scanner[this.relativeScanners.Length];
+            absoluteScanners = new Scanner[relativeScanners.Length];
             // Initialize the first scanner, which is 0
-            absoluteScanners[0] = new(this.relativeScanners[0], Location3D.Zero, Orientation.AllPositiveXYZ);
+            absoluteScanners[0] = new(relativeScanners[0], Location3D.Zero, Orientation.AllPositiveXYZ);
         }
 
         public void InitializeScanners()
@@ -99,7 +113,7 @@ public class Day19 : Problem<int>
                 if (!scanner.CanBeReferenceForScannerID(relativeScannerIndex))
                     continue;
 
-                if (TryInitializeScanner(relativeScannerIndex, absoluteScannerIndex))
+                if (TryInitializeScanner(relativeScannerIndex, scanner))
                     return true;
 
                 scanner.RegisterFailedReferenceForScannerID(relativeScannerIndex);
@@ -107,10 +121,9 @@ public class Day19 : Problem<int>
 
             return false;
         }
-        private bool TryInitializeScanner(int targetScannerIndex, int referenceScannerIndex)
+        private bool TryInitializeScanner(int targetScannerIndex, Scanner absoluteReferenceScanner)
         {
             var relativeTargetScanner = relativeScanners[targetScannerIndex];
-            var absoluteReferenceScanner = absoluteScanners[referenceScannerIndex]!;
 
             var mapper = new BeaconMapper();
 
@@ -214,6 +227,9 @@ public class Day19 : Problem<int>
         public int MappedBeaconCount => referenceBeacons.Count;
         public int EqualityCount => equalities.Count;
 
+        public IEnumerable<BeaconDistance> ReferenceDistances => equalities.Select(equality => equality.Reference);
+        public IEnumerable<BeaconDistance> TargetDistances => equalities.Select(equality => equality.Target);
+
         public void RegisterEquality(BeaconDistanceEquality equality)
         {
             equalities.Add(equality);
@@ -292,11 +308,8 @@ public class Day19 : Problem<int>
                 absoluteBeaconBuilder.Add(beacon.ToAbsolute(offset, orientation));
             AbsoluteBeacons = absoluteBeaconBuilder.ToImmutable();
 
-            for (int i = 0; i < AbsoluteBeacons.Length; i++)
-            {
-                for (int j = i + 1; j < AbsoluteBeacons.Length; j++)
-                    Distances.Add(new(AbsoluteBeacons[i], AbsoluteBeacons[j]));
-            }
+            foreach (var (start, end) in AbsoluteBeacons.CachedCartesianProductExcludingSame())
+                Distances.Add(new(start, end));
         }
 
         public bool CanBeReferenceForScannerID(int id) => !referenceScannerFailures[id];
@@ -306,6 +319,8 @@ public class Day19 : Problem<int>
     private sealed class BeaconDistanceStorage
     {
         private readonly Dictionary<Location3D, BeaconDistance> distanceDictionary = new();
+
+        public IEnumerable<BeaconDistance> Values => distanceDictionary.Values;
 
         public BeaconDistance? GetDistance(Location3D distance) => distanceDictionary.ValueOrDefault(distance);
 
@@ -378,17 +393,15 @@ public class Day19 : Problem<int>
                 beaconArrayBuilder.Add(new RelativeBeacon(position));
             
             RelativeBeacons = beaconArrayBuilder.ToImmutable();
-            for (int i = 0; i < RelativeBeacons.Length; i++)
-            {
-                for (int j = i + 1; j < RelativeBeacons.Length; j++)
-                {
-                    RelativeBeacons[i].LinkDistance(RelativeBeacons[j]);
-                }
-            }
 
+            foreach (var (start, end) in RelativeBeacons.CachedCartesianProductExcludingSame())
+                start.LinkDistance(end);
+            
             foreach (var beacon in RelativeBeacons)
                 Distances.AddRange(beacon.Distances);
         }
+
+        public static RelativeScannerData Empty(int id = -1) => new(id, Array.Empty<Location3D>());
 
         public static RelativeScannerData Parse(string[] lines)
         {
