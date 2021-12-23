@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Utilities;
+﻿using Garyon.Objects;
+
+namespace AdventOfCode.Utilities;
 
 public interface ILocation
 {
@@ -20,6 +22,7 @@ public interface ILocation<T> : ILocation, IEquatable<T>
 
     int ManhattanDistance(T other);
     T SignedDifferenceFrom(T other);
+    bool SatisfiesComparisonPerCoordinate(T other, ComparisonKinds kinds);
 }
 
 public static class ILocationExtensions

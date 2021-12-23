@@ -1,4 +1,5 @@
-﻿using static AdventOfCode.Functions.MathFunctions;
+﻿using Garyon.Objects;
+using static AdventOfCode.Functions.MathFunctions;
 using static System.Math;
 
 namespace AdventOfCode.Utilities.TwoDimensions;
@@ -76,6 +77,19 @@ public struct Location2D : ILocation<Location2D>, IHasX, IHasY
     {
         var (x, y) = this - other;
         return (Sign(x), Sign(y));
+    }
+
+    public bool SatisfiesComparisonPerCoordinate(Location2D other, ComparisonKinds kinds)
+    {
+        var difference = SignedDifferenceFrom(other);
+        return difference.X.SatisfiesComparison(0, kinds)
+            && difference.Y.SatisfiesComparison(0, kinds);
+    }
+    public bool MatchesComparisonPerCoordinate(Location2D other, ComparisonResult result)
+    {
+        var difference = SignedDifferenceFrom(other);
+        return difference.X == (int)result
+            && difference.Y == (int)result;
     }
 
     public Location2D GetSlopeAsFraction(Location2D other)

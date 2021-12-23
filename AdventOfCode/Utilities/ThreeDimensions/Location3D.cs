@@ -1,4 +1,6 @@
-﻿using static System.Math;
+﻿using AdventOfCode.Functions;
+using Garyon.Objects;
+using static System.Math;
 
 namespace AdventOfCode.Utilities.ThreeDimensions;
 
@@ -18,6 +20,7 @@ public struct Location3D : ILocation<Location3D>, IHasX, IHasY, IHasZ
 
     public int ValueSum => X + Y + Z;
     public int ValueProduct => X * Y * Z;
+    public long ValueProduct64 => (long)X * Y * Z;
     public int ManhattanDistanceFromCenter => Absolute.ValueSum;
 
     public Location3D Absolute => (Abs(X), Abs(Y), Abs(Z));
@@ -41,6 +44,21 @@ public struct Location3D : ILocation<Location3D>, IHasX, IHasY, IHasZ
     {
         var (x, y, z) = this - other;
         return (Sign(x), Sign(y), Sign(z));
+    }
+
+    public bool SatisfiesComparisonPerCoordinate(Location3D other, ComparisonKinds kinds)
+    {
+        var difference = SignedDifferenceFrom(other);
+        return difference.X.SatisfiesComparisonFixed(0, kinds)
+            && difference.Y.SatisfiesComparisonFixed(0, kinds)
+            && difference.Z.SatisfiesComparisonFixed(0, kinds);
+    }
+    public bool MatchesComparisonPerCoordinate(Location3D other, ComparisonResult result)
+    {
+        var difference = SignedDifferenceFrom(other);
+        return difference.X == (int)result
+            && difference.Y == (int)result
+            && difference.Z == (int)result;
     }
 
     public Location3D Shuffle(Orientation orientation)
@@ -86,4 +104,13 @@ public struct Location3D : ILocation<Location3D>, IHasX, IHasY, IHasZ
     public override string ToString() => $"({X}, {Y}, {Z})";
     public override int GetHashCode() => HashCode.Combine(X, Y, Z);
     public override bool Equals(object obj) => obj is Location3D l && this == l;
+
+    public static Location3D Min(Location3D left, Location3D right)
+    {
+        return new(Math.Min(left.X, right.X), Math.Min(left.Y, right.Y), Math.Min(left.Z, right.Z));
+    }
+    public static Location3D Max(Location3D left, Location3D right)
+    {
+        return new(Math.Max(left.X, right.X), Math.Max(left.Y, right.Y), Math.Max(left.Z, right.Z));
+    }
 }

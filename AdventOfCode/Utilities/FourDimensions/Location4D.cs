@@ -1,4 +1,5 @@
-﻿using static System.Math;
+﻿using Garyon.Objects;
+using static System.Math;
 
 namespace AdventOfCode.Utilities.FourDimensions;
 
@@ -44,6 +45,23 @@ public struct Location4D : ILocation<Location4D>, IHasX, IHasY, IHasZ, IHasW
     {
         var (x, y, z, w) = this - other;
         return (Sign(x), Sign(y), Sign(z), Sign(w));
+    }
+
+    public bool SatisfiesComparisonPerCoordinate(Location4D other, ComparisonKinds kinds)
+    {
+        var difference = SignedDifferenceFrom(other);
+        return difference.X.SatisfiesComparison(0, kinds)
+            && difference.Y.SatisfiesComparison(0, kinds)
+            && difference.Z.SatisfiesComparison(0, kinds)
+            && difference.W.SatisfiesComparison(0, kinds);
+    }
+    public bool MatchesComparisonPerCoordinate(Location4D other, ComparisonResult result)
+    {
+        var difference = SignedDifferenceFrom(other);
+        return difference.X == (int)result
+            && difference.Y == (int)result
+            && difference.Z == (int)result
+            && difference.W == (int)result;
     }
 
     public void Deconstruct(out int x, out int y, out int z, out int w)
