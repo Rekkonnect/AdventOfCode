@@ -25,8 +25,12 @@ public enum ComputerOperator
     Subtract,
     [MnemonableInstructionInformation("mul", 2, FunctionalityTypes = OperatorFunctionalityTypes.ValueAdjustment)]
     Multiply,
+    [MnemonableInstructionInformation("div", 2, FunctionalityTypes = OperatorFunctionalityTypes.ValueAdjustment)]
+    Divide,
     [MnemonableInstructionInformation("mod", 2, FunctionalityTypes = OperatorFunctionalityTypes.ValueAdjustment)]
     Modulo,
+    [MnemonableInstructionInformation("eql", 2, FunctionalityTypes = OperatorFunctionalityTypes.ValueAdjustment)]
+    Equality,
 
     [MnemonableInstructionInformation("jmp", 1, FunctionalityTypes = OperatorFunctionalityTypes.Jump)]
     Jump,
@@ -41,7 +45,9 @@ public enum ComputerOperator
 
     [MnemonableInstructionInformation("tgl", 1)]
     Toggle,
-    [MnemonableInstructionInformation("out", 1)]
+    [MnemonableInstructionInformation("inp", 1, FunctionalityTypes = OperatorFunctionalityTypes.Interaction)]
+    Input,
+    [MnemonableInstructionInformation("out", 1, FunctionalityTypes = OperatorFunctionalityTypes.Interaction)]
     Output,
 
     [MnemonableInstructionInformation("snd", 1, FunctionalityTypes = OperatorFunctionalityTypes.Misc)]

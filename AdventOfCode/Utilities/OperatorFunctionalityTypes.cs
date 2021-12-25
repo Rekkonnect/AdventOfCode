@@ -7,4 +7,5 @@ public enum OperatorFunctionalityTypes
     Jump = 1,
     ValueAdjustment = 1 << 1,
     Misc = 1 << 2,
+    Interaction = 1 << 3,
 }
