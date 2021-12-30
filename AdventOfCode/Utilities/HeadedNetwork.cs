@@ -6,6 +6,10 @@ public abstract class HeadedNetwork<TValue, TNetworkNode, TNetwork> : NetworkBas
 {
     public TNetworkNode Head { get; private set; }
 
+    protected HeadedNetwork(TNetworkNode head)
+    {
+        Head = head;
+    }
     protected HeadedNetwork(IEnumerable<TNetworkNode> nodes)
     {
         var previous = nodes;

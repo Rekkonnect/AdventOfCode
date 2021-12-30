@@ -24,18 +24,15 @@ public abstract class NetworkNodeBase<TValue, TNetworkNode, TNetwork> : INode<TV
 
     public bool AddNext(TNetworkNode next)
     {
-        if (next == this)
-            return false;
-
-        if (previousNodes.Contains(next))
-            return false;
-
-        next.previousNodes.Add(This);
-        return nextNodes.Add(next);
+        return next.AddPrevious(This);
     }
-    public bool RemoveNext(TNetworkNode next) => nextNodes.Remove(next);
+    public bool RemoveNext(TNetworkNode next)
+    {
+        return next.RemovePrevious(This);
+    }
 
-    public bool AddPrevious(TNetworkNode previous)
+    // Unconventional system design; consider migrating virtualization to AddNext
+    public virtual bool AddPrevious(TNetworkNode previous)
     {
         if (previous == this)
             return false;
@@ -46,12 +43,25 @@ public abstract class NetworkNodeBase<TValue, TNetworkNode, TNetwork> : INode<TV
         previous.nextNodes.Add(This);
         return previousNodes.Add(previous);
     }
-    public bool RemovePrevious(TNetworkNode previous) => previousNodes.Remove(previous);
+    public bool RemovePrevious(TNetworkNode previous)
+    {
+        if (!previousNodes.Remove(previous))
+            return false;
+
+        previous.nextNodes.Remove(This);
+        return true;
+    }
 
     public bool IsConnectedTo(TNetworkNode other) => nextNodes.Contains(other) || previousNodes.Contains(other);
 
     public void Isolate()
     {
+        foreach (var next in nextNodes)
+            next.previousNodes.Remove(This);
+
+        foreach (var previous in previousNodes)
+            previous.nextNodes.Remove(This);
+
         nextNodes.Clear();
         previousNodes.Clear();
     }

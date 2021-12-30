@@ -1,4 +1,5 @@
 ﻿using Garyon.Functions;
+using System.ComponentModel.DataAnnotations;
 using static System.Math;
 
 namespace AdventOfCode.Functions;
@@ -63,10 +64,22 @@ public static class MathFunctions
     #region Comparisons
     public static bool BetweenInclusive(int value, int a, int b)
     {
-        if (a > b)
-            Misc.Swap(ref a, ref b);
-
+        EnsureOrdered(ref a, ref b);
         return a <= value && value <= b;
+    }
+
+    public static void Order<T>(in T a, in T b, out T min, out T max)
+        where T : IComparable<T>
+    {
+        min = a;
+        max = b;
+        EnsureOrdered(ref min, ref max);
+    }
+    public static void EnsureOrdered<T>(ref T min, ref T max)
+        where T : IComparable<T>
+    {
+        if (min.CompareTo(max) > 0)
+            Misc.Swap(ref min, ref max);
     }
     #endregion
 

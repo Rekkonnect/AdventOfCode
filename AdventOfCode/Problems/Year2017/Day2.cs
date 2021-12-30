@@ -1,4 +1,5 @@
-﻿using Garyon.Functions;
+﻿using AdventOfCode.Functions;
+using Garyon.Functions;
 
 namespace AdventOfCode.Problems.Year2017;
 
@@ -61,8 +62,7 @@ public class Day2 : Problem<int>
                     {
                         int max = Values[i];
                         int min = Values[j];
-                        if (max < min)
-                            Misc.Swap(ref min, ref max);
+                        MathFunctions.EnsureOrdered(ref min, ref max);
 
                         int result = Math.DivRem(max, min, out int remainder);
                         if (remainder is 0)
