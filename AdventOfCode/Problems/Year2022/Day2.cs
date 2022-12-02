@@ -16,7 +16,7 @@ public class Day2 : Problem<int>
         return FileLines.Select(lineSelector).Sum(r => r.TotalScore);
     }
 
-    private record struct RPSGameInfo(RPSResult Opponent, RPSResult Me, GameResult Result)
+    private record struct RPSGameInfo(Choice Opponent, Choice Me, GameResult Result)
     {
         public int ResultScore => Result switch
         {
@@ -27,9 +27,9 @@ public class Day2 : Problem<int>
 
         public int RPSScore => Me switch
         {
-            RPSResult.Rock => 1,
-            RPSResult.Paper => 2,
-            RPSResult.Scissors => 3,
+            Choice.Rock => 1,
+            Choice.Paper => 2,
+            Choice.Scissors => 3,
         };
 
         public int TotalScore => ResultScore + RPSScore;
@@ -39,17 +39,13 @@ public class Day2 : Problem<int>
             char opponentCode = line[0];
             char meCode = line[2];
 
-            var opponent = opponentCode switch
-            {
-                'A' => RPSResult.Rock,
-                'B' => RPSResult.Paper,
-                'C' => RPSResult.Scissors,
-            };
+            var opponent = ParseComputerChoice(opponentCode);
+
             var me = meCode switch
             {
-                'X' => RPSResult.Rock,
-                'Y' => RPSResult.Paper,
-                'Z' => RPSResult.Scissors,
+                'X' => Choice.Rock,
+                'Y' => Choice.Paper,
+                'Z' => Choice.Scissors,
             };
 
             return CalculateForLinePart1(opponent, me);
@@ -59,12 +55,8 @@ public class Day2 : Problem<int>
             char opponentCode = line[0];
             char targetResultCode = line[2];
 
-            var opponent = opponentCode switch
-            {
-                'A' => RPSResult.Rock,
-                'B' => RPSResult.Paper,
-                'C' => RPSResult.Scissors,
-            };
+            var opponent = ParseComputerChoice(opponentCode);
+
             var result = targetResultCode switch
             {
                 'X' => GameResult.Loss,
@@ -75,7 +67,14 @@ public class Day2 : Problem<int>
             return CalculateForLinePart2(opponent, result);
         }
 
-        private static RPSGameInfo CalculateForLinePart1(RPSResult opponent, RPSResult me)
+        private static Choice ParseComputerChoice(char opponentCode) => opponentCode switch
+        {
+            'A' => Choice.Rock,
+            'B' => Choice.Paper,
+            'C' => Choice.Scissors,
+        };
+
+        private static RPSGameInfo CalculateForLinePart1(Choice opponent, Choice me)
         {
             if (opponent == me)
             {
@@ -84,15 +83,16 @@ public class Day2 : Problem<int>
 
             return (opponent, me) switch
             {
-                (RPSResult.Paper, RPSResult.Scissors) or
-                (RPSResult.Scissors, RPSResult.Rock) or
-                (RPSResult.Rock, RPSResult.Paper) => Target(GameResult.Win),
+                (Choice.Paper, Choice.Scissors) or
+                (Choice.Scissors, Choice.Rock) or
+                (Choice.Rock, Choice.Paper) => Target(GameResult.Win),
+
                 _ => Target(GameResult.Loss),
             };
 
             RPSGameInfo Target(GameResult result) => new(opponent, me, result);
         }
-        private static RPSGameInfo CalculateForLinePart2(RPSResult opponent, GameResult result)
+        private static RPSGameInfo CalculateForLinePart2(Choice opponent, GameResult result)
         {
             if (result is GameResult.Draw)
             {
@@ -101,24 +101,26 @@ public class Day2 : Problem<int>
 
             return (opponent, result) switch
             {
-                (RPSResult.Rock, GameResult.Win) or
-                (RPSResult.Scissors, GameResult.Loss) => Target(RPSResult.Paper),
-                (RPSResult.Scissors, GameResult.Win) or
-                (RPSResult.Paper, GameResult.Loss) => Target(RPSResult.Rock),
+                (Choice.Rock, GameResult.Win) or
+                (Choice.Scissors, GameResult.Loss) => Target(Choice.Paper),
 
-                _ => Target(RPSResult.Scissors),
+                (Choice.Scissors, GameResult.Win) or
+                (Choice.Paper, GameResult.Loss) => Target(Choice.Rock),
+
+                _ => Target(Choice.Scissors),
             };
-            RPSGameInfo Target(RPSResult me) => new(opponent, me, result);
+
+            RPSGameInfo Target(Choice me) => new(opponent, me, result);
         }
     }
 
-    private enum RPSResult
+    private enum Choice
     {
         Rock,
         Paper,
         Scissors,
     }
-    public enum GameResult
+    private enum GameResult
     {
         Loss,
         Draw,
