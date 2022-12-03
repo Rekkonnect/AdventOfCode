@@ -59,4 +59,15 @@ public static class StringExtensions
     {
         return s.Split(delimiter).SelectArray(int.Parse);
     }
+
+    public static string SubstringAfter(this string s, string match)
+    {
+        int index = s.IndexOfAfter(match);
+        return s[index..];
+    }
+    public static ReadOnlySpan<char> SubstringSpanAfter(this string s, string match)
+    {
+        int index = s.IndexOfAfter(match);
+        return s.AsSpan()[index..];
+    }
 }

@@ -374,6 +374,11 @@ public class Grid2D<T> : BaseGrid<T, Location2D>, IEquatable<Grid2D<T>>
     }
     #endregion
 
+    public ref T GetUnsafeRef(int x, int y)
+    {
+        return ref Values[x, y];
+    }
+
     public int[,] GetRegionMap(T value, out int regionCount)
     {
         var map = new int[Width, Height];
