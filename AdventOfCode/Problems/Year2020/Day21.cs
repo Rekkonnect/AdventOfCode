@@ -1,9 +1,10 @@
-﻿using AdventOfCSharp.Utilities;
+﻿using AdventOfCode.Utilities;
+using AdventOfCSharp.Utilities;
 using System.Collections;
 
 namespace AdventOfCode.Problems.Year2020;
 
-public class Day21 : Problem<int, string>
+public class Day21 : Problem<int, DelimitedList<string>>
 {
     private FoodCollection foodCollection;
 
@@ -12,9 +13,9 @@ public class Day21 : Problem<int, string>
         var nonAllergen = foodCollection.NonAllergenIngredients;
         return foodCollection.SelectMany(f => f.Ingredients).Count(nonAllergen.Contains);
     }
-    public override string SolvePart2()
+    public override DelimitedList<string> SolvePart2()
     {
-        return foodCollection.IngredientAllergenCorrelations.Select(kvp => kvp.Value).Combine(',');
+        return foodCollection.IngredientAllergenCorrelations.Select(kvp => kvp.Value).ToDelimitedList(",");
     }
 
     protected override void LoadState()

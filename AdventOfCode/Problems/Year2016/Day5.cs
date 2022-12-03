@@ -10,10 +10,12 @@ public class Day5 : Problem<string>
 
     private string secretKey;
 
+    [PrintsToConsole]
     public override string SolvePart1()
     {
         return HackPassword<PasswordHackerPart1>();
     }
+    [PrintsToConsole]
     public override string SolvePart2()
     {
         return HackPassword<PasswordHackerPart2>();
@@ -36,7 +38,7 @@ public class Day5 : Problem<string>
         async Task CinematicHackerAnimation()
         {
             Console.CursorVisible = false;
-            Console.WriteLine();
+            Console.WriteLine("\n");
             while (currentPassword.Any(c => c == default))
             {
                 Write(currentPassword);

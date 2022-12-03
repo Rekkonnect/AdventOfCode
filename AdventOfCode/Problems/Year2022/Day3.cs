@@ -137,12 +137,12 @@ public class Day3 : Problem<int>
         {
             get
             {
-                if (Type is >= 'a' and <= 'z')
-                    return Type - 'a' + 1;
-                if (Type is >= 'A' and <= 'Z')
-                    return Type - 'A' + 27;
-
-                return 0;
+                return Type switch
+                {
+                    >= 'a' and <= 'z' => Type - 'a' + 1,
+                    >= 'A' and <= 'Z' => Type - 'A' + 27,
+                    _ => 0
+                };
             }
         }
     }

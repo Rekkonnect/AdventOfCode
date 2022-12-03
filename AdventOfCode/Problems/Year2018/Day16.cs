@@ -107,7 +107,7 @@ public class Day16 : Problem<int>
 
         private static RegisterState ParseState(string raw)
         {
-            return new(raw.Split(", ").Select(int.Parse).ToArray());
+            return new(raw.ParseInt32Array(", "));
         }
     }
 

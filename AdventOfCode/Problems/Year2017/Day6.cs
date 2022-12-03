@@ -1,6 +1,7 @@
 ﻿using AdventOfCode.Utilities;
 using System.Data;
 using UltimateOrb;
+using AdventOfCode.Functions;
 
 #if DEBUG
 using System.Diagnostics;
@@ -23,7 +24,7 @@ public class Day6 : Problem<int>
 
     protected override void LoadState()
     {
-        memory = new(FileContents.Split('\t').Select(int.Parse).ToArray());
+        memory = new(FileContents.ParseInt32Array('\t'));
         memory.RedistributeUntilLoop();
     }
     protected override void ResetState()

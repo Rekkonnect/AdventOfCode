@@ -9,6 +9,9 @@ public class Day22 : Problem<int>
 {
     private StorageCluster cluster;
 
+#if PRINT
+    [PrintsToConsole]
+#endif
     public override int SolvePart1()
     {
         return cluster.GetViablePairCount();
@@ -49,10 +52,10 @@ public class Day22 : Problem<int>
             var sortedAvailable = new SortedCollection<StorageDisk>(flattenedValues, StorageDisk.AscendingAvailable);
 
 #if PRINT
-                Console.WriteLine("\nSorted by Used:\n");
-                sortedUsed.ForEach(d => Console.WriteLine(d));
-                Console.WriteLine("\nSorted by Available:\n");
-                sortedAvailable.ForEach(d => Console.WriteLine(d));
+            Console.WriteLine("\nSorted by Used:\n");
+            sortedUsed.ForEach(d => Console.WriteLine(d));
+            Console.WriteLine("\nSorted by Available:\n");
+            sortedAvailable.ForEach(d => Console.WriteLine(d));
 #endif
 
             int count = 0;
@@ -79,7 +82,7 @@ public class Day22 : Problem<int>
                     count--;
 
 #if PRINT
-                    Console.WriteLine($"Used\t\t{usedIndex,3} | {currentUsed}\nAvailable\t{availableIndex,3} | {sortedAvailable[availableIndex]}\n{count}\n");
+                Console.WriteLine($"Used\t\t{usedIndex,3} | {currentUsed}\nAvailable\t{availableIndex,3} | {sortedAvailable[availableIndex]}\n{count}\n");
 #endif
             }
 

@@ -1,5 +1,4 @@
-﻿#define INTCODE
-
+﻿using AdventOfCode.Functions;
 using AdventOfCSharp.Extensions;
 
 namespace AdventOfCode.Problems.Year2021;
@@ -17,17 +16,21 @@ public class Day7 : Problem<int>
         return crabs.GetMinExponentialFuel();
     }
 
+    [PrintsToConsole]
+    [PartSolver("Input Easter Egg", SolverKind = PartSolverKind.EasterEgg)]
+    public string InputEasterEgg()
+    {
+        var computer = new Year2019.Utilities.IntcodeComputer(FileContents.Trim().ParseInt32Array(','));
+        var result = new StringBuilder();
+
+        computer.OutputWritten += value => result.Append((char)value);
+        computer.RunToHalt();
+        return result.ToString();
+    }
+
     protected override void LoadState()
     {
         crabs = Crabs.Parse(FileContents);
-
-#if INTCODE
-        // TODO: The framework now needs something for easter eggs
-        var computer = new Year2019.Utilities.IntcodeComputer(FileContents.Trim().Split(',').SelectArray(int.Parse));
-        computer.OutputWritten += value => Console.Write((char)value);
-        computer.RunToHalt();
-        Console.WriteLine();
-#endif
     }
     protected override void ResetState()
     {
@@ -83,7 +86,7 @@ public class Day7 : Problem<int>
 
         public static Crabs Parse(string rawPositions)
         {
-            var positions = rawPositions.Split(',').Select(int.Parse).ToArray();
+            var positions = rawPositions.ParseInt32Array(',');
             return new(positions.Sort());
         }
     }

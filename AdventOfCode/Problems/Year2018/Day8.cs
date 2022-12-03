@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Problems.Year2018;
+﻿using AdventOfCode.Functions;
+
+namespace AdventOfCode.Problems.Year2018;
 
 public class Day8 : Problem<int>
 {
@@ -15,7 +17,7 @@ public class Day8 : Problem<int>
 
     protected override void LoadState()
     {
-        licenseFile = new(FileContents.Split(' ').Select(int.Parse).ToArray());
+        licenseFile = new(FileContents.ParseInt32Array(' '));
     }
     protected override void ResetState()
     {

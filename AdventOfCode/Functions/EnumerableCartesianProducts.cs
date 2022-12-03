@@ -1,4 +1,6 @@
-﻿namespace AdventOfCode.Functions;
+﻿using System.Collections.Immutable;
+
+namespace AdventOfCode.Functions;
 
 public static class EnumerableCartesianProducts
 {
@@ -42,5 +44,19 @@ public static class EnumerableCartesianProducts
             }
         }
         return result;
+    }
+    public static IReadOnlyList<(T, T)> CachedHomogenousCartesianProduct<T>(this IReadOnlyList<T> source)
+    {
+        int sourceCount = source.Count;
+        int resultCount = MathFunctions.Sum(sourceCount);
+        var builder = ImmutableArray.CreateBuilder<(T, T)>(resultCount);
+        for (int i = 0; i < sourceCount; i++)
+        {
+            for (int j = i + 1; j < sourceCount; j++)
+            {
+                builder.Add((source[i], source[j]));
+            }
+        }
+        return builder;
     }
 }

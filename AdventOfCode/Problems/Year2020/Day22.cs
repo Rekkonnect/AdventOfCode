@@ -105,7 +105,7 @@ public class Day22 : Problem<int>
             }
 
 #if DEBUGLOGGING_PLAYERSTATES
-                Console.WriteLine($"Playing a sub-game to determine the winner...");
+            Console.WriteLine($"Playing a sub-game to determine the winner...");
 #endif
             // If the players can recurse a new game given their current decks, then so be it
             var newGamePlayers = new List<Player>();
@@ -116,7 +116,7 @@ public class Day22 : Problem<int>
             var winner = new RecursiveCombatGame(newGamePlayers).PlayToEnd();
 
 #if DEBUGLOGGING_GAMEINITIALIZATIONS
-                Console.WriteLine($"Returning back to the original game...\n\n=== Previous Game ===\n");
+            Console.WriteLine($"Returning back to the original game...\n\n=== Previous Game ===\n");
 #endif
 
             return winner;
@@ -153,7 +153,7 @@ public class Day22 : Problem<int>
         public Player PlayToEnd()
         {
 #if DEBUGLOGGING_GAMEINITIALIZATIONS
-                Console.WriteLine($"\n=== New Game ===\n");
+            Console.WriteLine($"\n=== New Game ===\n");
 #endif
             while (!IsOver)
                 PlayRound();
@@ -163,9 +163,9 @@ public class Day22 : Problem<int>
         public void PlayRound()
         {
 #if DEBUGLOGGING_PLAYERSTATES
-                Console.WriteLine("-- New Round --");
-                foreach (var p in Players)
-                    Console.WriteLine($"Player {p.PlayerID}'s deck: {p.Deck}");
+            Console.WriteLine("-- New Round --");
+            foreach (var p in Players)
+                Console.WriteLine($"Player {p.PlayerID}'s deck: {p.Deck}");
 #endif
 
             var playedCardDictionary = new SortedDictionary<Card, Player>();
@@ -174,7 +174,7 @@ public class Day22 : Problem<int>
                 var drawnCard = p.DrawTopCard();
                 playedCardDictionary.Add(drawnCard, p);
 #if DEBUGLOGGING_PLAYERSTATES
-                    Console.WriteLine($"Player {p.PlayerID} plays: {drawnCard}");
+                Console.WriteLine($"Player {p.PlayerID} plays: {drawnCard}");
 #endif
             }
 
@@ -184,7 +184,7 @@ public class Day22 : Problem<int>
                 alivePlayers.Clear();
                 alivePlayers.Add(Winner = winner);
 #if DEBUGLOGGING_GAMEINITIALIZATIONS
-                    Console.WriteLine($"The winner of the current game is player {winner.PlayerID}");
+                Console.WriteLine($"The winner of the current game is player {winner.PlayerID}");
 #endif
                 return;
             }
@@ -205,7 +205,7 @@ public class Day22 : Problem<int>
             {
                 Winner = alivePlayers.First();
 #if DEBUGLOGGING_GAMEINITIALIZATIONS
-                    Console.WriteLine($"The winner of the current game is player {Winner.PlayerID}");
+                Console.WriteLine($"The winner of the current game is player {Winner.PlayerID}");
 #endif
             }
         }

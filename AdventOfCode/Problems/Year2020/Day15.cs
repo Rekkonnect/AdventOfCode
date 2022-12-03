@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using AdventOfCode.Functions;
+using System.Buffers;
 
 namespace AdventOfCode.Problems.Year2020;
 
@@ -24,7 +25,7 @@ public class Day15 : Problem<int>
 
     protected override void LoadState()
     {
-        startingNumbers = FileContents.Split(',').Select(int.Parse).ToArray();
+        startingNumbers = FileContents.ParseInt32Array(',');
     }
     protected override void ResetState()
     {

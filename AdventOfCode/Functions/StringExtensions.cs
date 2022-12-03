@@ -1,4 +1,5 @@
-﻿using Garyon.Exceptions;
+﻿using AdventOfCSharp.Extensions;
+using Garyon.Exceptions;
 
 namespace AdventOfCode.Functions;
 
@@ -48,5 +49,14 @@ public static class StringExtensions
                 return false;
 
         return true;
+    }
+
+    public static int[] ParseInt32Array(this string s, char delimiter)
+    {
+        return s.Split(delimiter).SelectArray(int.Parse);
+    }
+    public static int[] ParseInt32Array(this string s, string delimiter)
+    {
+        return s.Split(delimiter).SelectArray(int.Parse);
     }
 }

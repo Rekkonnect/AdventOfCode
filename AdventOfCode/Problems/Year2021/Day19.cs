@@ -410,7 +410,7 @@ public class Day19 : Problem<int>
         }
         private static Location3D ParseLocation(string raw)
         {
-            var values = raw.Split(',').SelectArray(int.Parse);
+            var values = raw.ParseInt32Array(',');
             return new(values[0], values[1], values[2]);
         }
     }

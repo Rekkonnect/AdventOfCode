@@ -1,4 +1,5 @@
-﻿using Garyon.Mathematics;
+﻿using AdventOfCode.Functions;
+using Garyon.Mathematics;
 
 namespace AdventOfCode.Problems.Year2015;
 
@@ -58,7 +59,7 @@ public class Day2 : Problem<int>
 
         public static PresentBox Parse(string line)
         {
-            var dimensions = line.Split('x').Select(int.Parse).ToArray();
+            var dimensions = line.ParseInt32Array('x');
             return new PresentBox(dimensions[0], dimensions[1], dimensions[2]);
         }
     }

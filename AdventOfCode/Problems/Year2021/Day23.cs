@@ -5,6 +5,7 @@
 using AdventOfCode.Functions;
 using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
+using Garyon.Objects;
 using System.Collections.Immutable;
 
 namespace AdventOfCode.Problems.Year2021;
@@ -12,8 +13,13 @@ namespace AdventOfCode.Problems.Year2021;
 public class Day23 : Problem<int>
 {
     private AmphipodGrid grid;
-
+#if PRINT_STATES
+    [PrintsToConsole]
+#endif
     public override int SolvePart1() => SolvePart(grid);
+#if PRINT_STATES
+    [PrintsToConsole]
+#endif
     public override int SolvePart2() => SolvePart(grid.ExpandForPart2());
 
     private static int SolvePart(AmphipodGrid grid) => grid.MinimumEnergyToOrganize();

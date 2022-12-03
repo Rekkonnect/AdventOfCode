@@ -56,7 +56,7 @@ public class Day21 : Problem<int>
         {
             player.Weapon = weapon;
 
-            foreach (var armor in AvailableItems.Armor.Concat(new ArmorClothing[] { null }))
+            foreach (var armor in AvailableItems.Armor.ConcatSingleValue(null))
             {
                 player.ArmorClothing = armor;
 
@@ -190,28 +190,28 @@ public class Day21 : Problem<int>
         {
             Weapons = ImmutableArray.Create(new Weapon[]
             {
-                    new("Dagger", 8, 4),
-                    new("Shortsword", 10, 5),
-                    new("Warhammer", 25, 6),
-                    new("Longsword", 40, 7),
-                    new("Greataxe", 74, 8),
+                new("Dagger", 8, 4),
+                new("Shortsword", 10, 5),
+                new("Warhammer", 25, 6),
+                new("Longsword", 40, 7),
+                new("Greataxe", 74, 8),
             });
             Armor = ImmutableArray.Create(new ArmorClothing[]
             {
-                    new("Leather", 13, 1),
-                    new("Chainmail", 31, 2),
-                    new("Splintmail", 53, 3),
-                    new("Bandedmail", 75, 4),
-                    new("Platemail", 102, 5),
+                new("Leather", 13, 1),
+                new("Chainmail", 31, 2),
+                new("Splintmail", 53, 3),
+                new("Bandedmail", 75, 4),
+                new("Platemail", 102, 5),
             });
             Rings = ImmutableArray.Create(new Ring[]
             {
-                    new DamageRing("Damage +1", 25, 1),
-                    new DamageRing("Damage +2", 50, 2),
-                    new DamageRing("Damage +3", 100, 3),
-                    new ArmorRing("Armor +1", 20, 1),
-                    new ArmorRing("Armor +2", 40, 2),
-                    new ArmorRing("Armor +3", 80, 3),
+                new DamageRing("Damage +1", 25, 1),
+                new DamageRing("Damage +2", 50, 2),
+                new DamageRing("Damage +3", 100, 3),
+                new ArmorRing("Armor +1", 20, 1),
+                new ArmorRing("Armor +2", 40, 2),
+                new ArmorRing("Armor +3", 80, 3),
             });
 
             itemNames = Weapons.AsEnumerable<Item>().ConcatMultiple(Armor, Rings).ToDictionary(i => i.Name);

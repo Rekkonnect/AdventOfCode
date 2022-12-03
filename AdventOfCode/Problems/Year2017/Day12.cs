@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Utilities;
+﻿using AdventOfCode.Functions;
+using AdventOfCode.Utilities;
 
 namespace AdventOfCode.Problems.Year2017;
 
@@ -62,7 +63,7 @@ public class Day12 : Problem<int>
         {
             var groups = connectionPattern.Match(raw).Groups;
             int original = groups["original"].Value.ParseInt32();
-            var connected = groups["connected"].Value.Split(", ").Select(int.Parse).ToArray();
+            var connected = groups["connected"].Value.ParseInt32Array(", ");
             return new(original, connected);
         }
     }

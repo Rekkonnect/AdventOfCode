@@ -76,6 +76,6 @@ public class Day2 : Problem<int>
         public SpreadsheetRow(IEnumerable<int> values)
             : this(values.ToArray()) { }
 
-        public static SpreadsheetRow Parse(string s) => new(s.Split('\t').Select(int.Parse).ToArray());
+        public static SpreadsheetRow Parse(string s) => new(s.ParseInt32Array('\t'));
     }
 }

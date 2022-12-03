@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Utilities.FourDimensions;
+﻿using AdventOfCode.Functions;
+using AdventOfCode.Utilities.FourDimensions;
 using AdventOfCSharp.Extensions;
 
 namespace AdventOfCode.Problems.Year2018;
@@ -105,7 +106,7 @@ public class Day25 : FinalDay<int>
         }
         private static Location4D ParsePoint(string rawPoint)
         {
-            var coordinates = rawPoint.Split(',').SelectArray(int.Parse);
+            var coordinates = rawPoint.ParseInt32Array(',');
             return new(coordinates[0], coordinates[1], coordinates[2], coordinates[3]);
         }
     }

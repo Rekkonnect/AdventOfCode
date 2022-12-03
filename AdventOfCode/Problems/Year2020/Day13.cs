@@ -89,6 +89,6 @@ public class Day13 : Problem<int, long>
     {
         var lines = FileLines;
         earliestTimestamp = lines[0].ParseInt32();
-        busIDs = lines[1].Replace('x', '0').Split(',').Select(int.Parse).ToArray();
+        busIDs = lines[1].Replace('x', '0').ParseInt32Array(',');
     }
 }

@@ -103,7 +103,7 @@ public class Day22 : Problem<int>
             return new(Player.Clone(), Boss.Clone())
             {
                 Winner = Winner,
-                Effects = new(Effects.Select(kvp => kvp.WithValue(kvp.Value?.Clone()))),
+                Effects = new(Effects.Select(kvp => kvp.WithValue<Type, Effect>(kvp.Value?.Clone()))),
                 PlayerManaCost = PlayerManaCost,
             };
         }
@@ -314,11 +314,11 @@ public class Day22 : Problem<int>
     {
         public static ImmutableArray<Spell> Spells = ImmutableArray.Create(new Spell[]
         {
-                new MagicMissile(),
-                new Drain(),
-                new Shield(),
-                new Poison(),
-                new Recharge(),
+            new MagicMissile(),
+            new Drain(),
+            new Shield(),
+            new Poison(),
+            new Recharge(),
         });
 
         public static int MinimumSpellCost { get; }
