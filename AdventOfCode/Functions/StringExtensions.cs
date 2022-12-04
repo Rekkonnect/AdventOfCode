@@ -3,6 +3,8 @@ using Garyon.Exceptions;
 
 namespace AdventOfCode.Functions;
 
+using SpanString = ReadOnlySpan<char>;
+
 public static class StringExtensions
 {
     // TODO: Migrate to Garyon with documentation
@@ -63,11 +65,90 @@ public static class StringExtensions
     public static string SubstringAfter(this string s, string match)
     {
         int index = s.IndexOfAfter(match);
+        if (index < 0)
+            return s;
+
         return s[index..];
     }
-    public static ReadOnlySpan<char> SubstringSpanAfter(this string s, string match)
+    public static SpanString SubstringSpanAfter(this string s, string match)
     {
         int index = s.IndexOfAfter(match);
-        return s.AsSpan()[index..];
+        var result = s.AsSpan();
+        if (index < 0)
+            return result;
+
+        return result[index..];
+    }
+
+    public static int IndexOf(this string s, string delimiter, out int nextIndex)
+    {
+        int index = s.IndexOf(delimiter);
+        nextIndex = -1;
+        if (index > -1)
+        {
+            nextIndex = index + delimiter.Length;
+        }
+
+        return index;
+    }
+    public static int IndexOf(this string s, char delimiter, out int nextIndex)
+    {
+        int index = s.IndexOf(delimiter);
+        nextIndex = -1;
+        if (index > -1)
+        {
+            nextIndex = index + 1;
+        }
+
+        return index;
+    }
+
+    /// <summary>
+    /// Splits the given string based on the first occurrence of the delimiter,
+    /// returning the left and right span slices of the string.
+    /// </summary>
+    /// <param name="s">The string to delimit.</param>
+    /// <param name="delimiter">The delimiter to find in the string.</param>
+    /// <param name="left">
+    /// The left segment of the string up until before the delimiter.
+    /// If the delimiter is not found, this will equal the entire string.
+    /// </param>
+    /// <param name="right">
+    /// The right segment of the string starting from the next character
+    /// after the first occurrence of the delimiter. If the delimiter is
+    /// not found, this will equal <see langword="default"/>.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> if the delimiter was found once, otherwise
+    /// <see langword="false"/>.
+    /// </returns>
+    public static bool SplitOnceSpan(this string s, string delimiter, out SpanString left, out SpanString right)
+    {
+        var span = s.AsSpan();
+        left = span;
+        right = default;
+
+        int index = s.IndexOf(delimiter, out int nextIndex);
+        if (index < 0)
+            return false;
+
+        left = span[..index];
+        right = span[nextIndex..];
+        return true;
+    }
+    /// <inheritdoc cref="SplitOnceSpan(string, string, out SpanString, out SpanString)"/>
+    public static bool SplitOnceSpan(this string s, char delimiter, out SpanString left, out SpanString right)
+    {
+        var span = s.AsSpan();
+        left = span;
+        right = default;
+
+        int index = s.IndexOf(delimiter, out int nextIndex);
+        if (index < 0)
+            return false;
+
+        left = span[..index];
+        right = span[nextIndex..];
+        return true;
     }
 }

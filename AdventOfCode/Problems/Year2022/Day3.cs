@@ -28,11 +28,10 @@ public class Day3 : Problem<int>
     protected override void LoadState()
     {
         rucksacks = FileLines.Select(Rucksack.Parse).ToArray();
-        base.LoadState();
     }
     protected override void ResetState()
     {
-        base.ResetState();
+        rucksacks = null;
     }
 
     private class RucksackGroup
