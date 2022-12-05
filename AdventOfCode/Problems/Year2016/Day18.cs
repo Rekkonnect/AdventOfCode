@@ -1,5 +1,4 @@
 ﻿using AdventOfCode.Functions;
-using UltimateOrb;
 
 namespace AdventOfCode.Problems.Year2016;
 
@@ -33,7 +32,7 @@ public class Day18 : Problem<int>
         private UInt128 bits;
         public int Length { get; }
 
-        public int TrapCount => bits.PopCount();
+        public int TrapCount => (int)UInt128.PopCount(bits);
         public int SafeCount => Length - TrapCount;
 
         private TileRow(int length, UInt128 rowBits)

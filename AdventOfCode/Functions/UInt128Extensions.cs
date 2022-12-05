@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using UltimateOrb;
+using UInt128 = UltimateOrb.UInt128;
 
 namespace AdventOfCode.Functions;
 

@@ -10,7 +10,6 @@ public class Day4 : Problem<int>
     public override int SolvePart1()
     {
         return pairs.Count(p => p.FullyContained);
-
     }
     public override int SolvePart2()
     {

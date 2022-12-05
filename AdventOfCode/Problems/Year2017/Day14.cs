@@ -2,6 +2,7 @@
 using AdventOfCode.Problems.Year2017.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
 using UltimateOrb;
+using UInt128 = UltimateOrb.UInt128;
 
 namespace AdventOfCode.Problems.Year2017;
 

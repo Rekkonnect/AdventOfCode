@@ -1,5 +1,4 @@
 ﻿using AdventOfCode.Utilities;
-using UltimateOrb;
 
 namespace AdventOfCode.Problems.Year2017.Utilities;
 
