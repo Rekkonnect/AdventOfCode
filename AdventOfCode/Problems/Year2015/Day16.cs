@@ -5,7 +5,7 @@ namespace AdventOfCode.Problems.Year2015;
 
 public partial class Day16 : Problem<int>
 {
-    private static GiftDictionary receivedGiftsPart1 = new()
+    private static readonly GiftDictionary receivedGiftsPart1 = new()
     {
         ["children"] = 3,
         ["cats"] = 7,
@@ -18,7 +18,7 @@ public partial class Day16 : Problem<int>
         ["cars"] = 2,
         ["perfumes"] = 1,
     };
-    private static GiftDictionary receivedGiftsPart2;
+    private static readonly GiftDictionary receivedGiftsPart2;
 
     static Day16()
     {

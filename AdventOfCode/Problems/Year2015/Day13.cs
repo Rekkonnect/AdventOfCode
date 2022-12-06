@@ -100,7 +100,7 @@ public partial class Day13 : Problem<int>
 
     private class Person
     {
-        private FlexibleDictionary<string, SittingArrangementRule> arrangements = new();
+        private readonly FlexibleDictionary<string, SittingArrangementRule> arrangements = new();
 
         public string Name { get; }
 

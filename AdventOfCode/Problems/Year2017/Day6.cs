@@ -33,7 +33,7 @@ public class Day6 : Problem<int>
 
     private class Memory
     {
-        private int[] banks;
+        private readonly int[] banks;
 
         public int BankCount => banks.Length;
 

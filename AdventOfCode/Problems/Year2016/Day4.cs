@@ -90,7 +90,7 @@ public partial class Day4 : Problem<int>
         private static partial Regex DataRegex();
     }
 
-    private struct CharacterOccurrences : IComparable<CharacterOccurrences>
+    private readonly struct CharacterOccurrences : IComparable<CharacterOccurrences>
     {
         public char Character { get; }
         public int Occurrences { get; }

@@ -2,7 +2,7 @@
 
 public class Day23 : Problem<int>
 {
-    private GenericComputer computer = new();
+    private readonly GenericComputer computer = new();
     private ComputerInstruction[] instructions;
 
     public override int SolvePart1()

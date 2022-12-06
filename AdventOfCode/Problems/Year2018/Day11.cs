@@ -25,7 +25,7 @@ public class Day11 : Problem<Location2D, Day11.GridSquare>
         grid = null;
     }
 
-    public struct GridSquare
+    public readonly struct GridSquare
     {
         public static readonly GridSquare LeastPowerful = new(Location2D.Zero, 0, int.MinValue);
 
@@ -50,7 +50,7 @@ public class Day11 : Problem<Location2D, Day11.GridSquare>
     {
         public const int GridSize = 300;
 
-        private int serialNumber;
+        private readonly int serialNumber;
 
         public FuelGrid(int serialNumber)
             : base(GridSize)

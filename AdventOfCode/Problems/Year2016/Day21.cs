@@ -26,7 +26,7 @@ public partial class Day21 : Problem<string>
 
     private class PasswordScrambler
     {
-        private Operation[] operations;
+        private readonly Operation[] operations;
 
         public PasswordScrambler(Operation[] scrambleOperations) => operations = scrambleOperations;
 
@@ -326,7 +326,7 @@ public partial class Day21 : Problem<string>
 
     private class RotateBasedPositionInversionDictionary : KeyedObjectDictionary<int, RotateBasedPositionIndexMapping> { }
 
-    private struct RotateBasedPositionIndexMapping : IKeyedObject<int>
+    private readonly struct RotateBasedPositionIndexMapping : IKeyedObject<int>
     {
         int IKeyedObject<int>.Key => Rotated;
 

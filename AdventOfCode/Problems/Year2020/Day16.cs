@@ -7,7 +7,7 @@ public partial class Day16 : Problem<int, ulong>
 {
     // Is it just me or am I abusing LINQ a bit too much?
 
-    private FieldRuleSystem ruleSystem = new();
+    private readonly FieldRuleSystem ruleSystem = new();
 
     private Ticket personalTicket;
     private List<Ticket> nearbyTickets;

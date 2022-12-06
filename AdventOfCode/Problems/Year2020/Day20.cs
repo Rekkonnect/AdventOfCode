@@ -115,15 +115,15 @@ public class Day20 : Problem<ulong, int>
 
     private class TileCollection
     {
-        private KeyedObjectDictionary<int, Tile> tileDictionary;
+        private readonly KeyedObjectDictionary<int, Tile> tileDictionary;
 
-        private TileSideHashDictionary sideHashes = new();
+        private readonly TileSideHashDictionary sideHashes = new();
         // Edgy tiles contains all tiles that are on the edge of the board
         // Tiles with value 1 are on the side, and with value 2 are corners
-        private ValueCounterDictionary<Tile> edgyTiles = new();
+        private readonly ValueCounterDictionary<Tile> edgyTiles = new();
 
         // TODO: Consider removing
-        private TileMatchingState[,] tileMatchingStates;
+        private readonly TileMatchingState[,] tileMatchingStates;
 
         private Tile[,] connectedTiles;
 

@@ -40,7 +40,7 @@ public class Day6 : Problem<int>
     public class OrbitalObject
     {
         private OrbitalObject directOrbit;
-        private HashSet<OrbitalObject> directOrbiters = new HashSet<OrbitalObject>();
+        private readonly HashSet<OrbitalObject> directOrbiters = new HashSet<OrbitalObject>();
 
         private int distance = int.MaxValue;
 

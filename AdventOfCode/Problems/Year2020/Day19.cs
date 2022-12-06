@@ -45,7 +45,7 @@ public class Day19 : Problem<int>
 
     private class RuleSystem
     {
-        private Rule[] ruleArray;
+        private readonly Rule[] ruleArray;
 
         public int Count => ruleArray.Length;
 

@@ -50,7 +50,7 @@ public class Day22 : Problem<int, long>
 
     private class DeckCommandArray
     {
-        private DeckCommand[] commands;
+        private readonly DeckCommand[] commands;
 
         public DeckCommandArray(DeckCommand[] commandArray) => commands = commandArray;
 

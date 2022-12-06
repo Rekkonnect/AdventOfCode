@@ -24,7 +24,7 @@ public class Day2 : Problem<int, string>
 
     private class BoxCatalog
     {
-        private BoxID[] boxes;
+        private readonly BoxID[] boxes;
 
         public int Checksum => boxes.Count(b => b.ContainsDoubleLetter) * boxes.Count(b => b.ContainsTripleLetter);
 

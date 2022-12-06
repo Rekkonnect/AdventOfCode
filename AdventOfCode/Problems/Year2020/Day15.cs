@@ -34,7 +34,7 @@ public class Day15 : Problem<int>
 
     private class NumberGame
     {
-        private NumberGameEntry[] spokenNumbersTable;
+        private readonly NumberGameEntry[] spokenNumbersTable;
 
         public int CurrentTurn { get; private set; }
         public int LastSpokenNumber { get; private set; }

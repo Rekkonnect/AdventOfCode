@@ -25,7 +25,7 @@ public class Day2 : Problem<int>
         presentBoxes = ParsedFileLines(PresentBox.Parse);
     }
 
-    private struct PresentBox
+    private readonly struct PresentBox
     {
         public int W { get; }
         public int H { get; }

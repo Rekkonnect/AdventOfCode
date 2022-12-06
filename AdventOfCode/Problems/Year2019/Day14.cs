@@ -169,7 +169,7 @@ public class Day14 : Problem<long>
             Thread.Sleep(5);
             //Console.ReadKey(true);
         }
-        private int startingCursorTopPosition = Console.CursorTop + 1;
+        private readonly int startingCursorTopPosition = Console.CursorTop + 1;
 
         public static List<ChemicalResourceBank> GetBanks(Chemical[] chemicals, bool canProduceORE)
         {

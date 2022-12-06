@@ -4,7 +4,7 @@ public class PrimeContainer
 {
     public static PrimeContainer Current { get; } = new();
 
-    private List<int> primes = new() { 2, 3 };
+    private readonly List<int> primes = new() { 2, 3 };
 
     public bool IsPrime(int number)
     {

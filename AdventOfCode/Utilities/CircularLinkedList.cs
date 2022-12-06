@@ -272,7 +272,7 @@ public class CircularLinkedList<T> : IList<T>
     public class Enumerator : IEnumerator<T>
     {
         private CircularLinkedListNode<T> currentNode;
-        private CircularLinkedListNode<T> head;
+        private readonly CircularLinkedListNode<T> head;
         private bool enumeratedHead;
 
         public T Current => currentNode.Value;

@@ -5,7 +5,7 @@ namespace AdventOfCode.Utilities.ThreeDimensions;
 public class Grid3D<T> : BaseGrid<T, Location3D>
 {
     #region Statically store the neighbor offsets
-    private static Location3D[] neighborOffsets;
+    private static readonly Location3D[] neighborOffsets;
 
     static Grid3D()
     {

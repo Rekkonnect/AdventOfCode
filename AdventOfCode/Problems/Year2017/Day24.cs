@@ -141,7 +141,7 @@ public partial class Day24 : Problem<int, int>
         }
     }
 
-    private partial struct Component : IEquatable<Component>
+    private readonly partial struct Component : IEquatable<Component>
     {
         private static readonly Regex componentPattern = ComponentRegex();
 

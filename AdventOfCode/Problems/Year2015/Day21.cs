@@ -180,7 +180,7 @@ public partial class Day21 : Problem<int>
 
     private static class AvailableItems
     {
-        private static Dictionary<string, Item> itemNames = new();
+        private static readonly Dictionary<string, Item> itemNames = new();
 
         public static ImmutableArray<Weapon> Weapons { get; }
         public static ImmutableArray<ArmorClothing> Armor { get; }

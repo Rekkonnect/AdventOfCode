@@ -88,7 +88,7 @@ public class Day3 : Problem<uint>
         MostCommon = 1,
     }
 
-    private ref struct BitCounts
+    private readonly ref struct BitCounts
     {
         private readonly uint aceCount;
 

@@ -33,9 +33,9 @@ public partial class Day7 : Problem<int>
 
     private class WireSystem
     {
-        private FlexibleDictionary<string, ushort?> wires = new();
+        private readonly FlexibleDictionary<string, ushort?> wires = new();
 
-        private InstructionCollection instructions;
+        private readonly InstructionCollection instructions;
 
         public WireSystem(InstructionCollection instructions)
         {
@@ -87,9 +87,9 @@ public partial class Day7 : Problem<int>
 
     private class InstructionCollection : IEnumerable<Instruction>
     {
-        private IEnumerable<Instruction> instructions;
+        private readonly IEnumerable<Instruction> instructions;
 
-        private FlexibleDictionary<string, Instruction> assignmentInstructions = new();
+        private readonly FlexibleDictionary<string, Instruction> assignmentInstructions = new();
 
         public InstructionCollection(IEnumerable<Instruction> instructions)
         {

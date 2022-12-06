@@ -29,7 +29,7 @@ public partial class Day8 : Problem<int>
     {
         private readonly FlexibleDictionary<string, int> registers = new();
 
-        private ConditionalInstruction[] instructions;
+        private readonly ConditionalInstruction[] instructions;
         private int instructionIndex;
 
         public Computer(ConditionalInstruction[] conditionalInstructions)

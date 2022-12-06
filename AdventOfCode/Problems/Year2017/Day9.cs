@@ -24,7 +24,7 @@ public class Day9 : Problem<int>
 
     private class GarbageStream
     {
-        private string stream;
+        private readonly string stream;
         private StreamTree streamTree;
 
         public int Score => streamTree.TraversePreOrderNodes().Sum(n => n.Depth);
@@ -143,7 +143,7 @@ public class Day9 : Problem<int>
         }
     }
 
-    private struct Group
+    private readonly struct Group
     {
         public int Depth { get; }
 

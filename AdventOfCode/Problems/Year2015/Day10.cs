@@ -24,7 +24,7 @@ public class Day10 : Problem<int>
 
     private unsafe class LookAndSaySequence
     {
-        private ArraySegment<byte> sequence;
+        private readonly ArraySegment<byte> sequence;
 
         public int Length => sequence.Count;
 
@@ -73,7 +73,7 @@ public class Day10 : Problem<int>
 
     private unsafe class UnsafeArrayBuilder<T>
     {
-        private T[] ar;
+        private readonly T[] ar;
 
         public int Length { get; private set; }
 

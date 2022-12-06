@@ -27,7 +27,7 @@ public class Day17 : Problem<int>
 
     private class ContainerCollection
     {
-        private int[] containers;
+        private readonly int[] containers;
 
         public ContainerCollection(IEnumerable<int> containerSizes)
         {

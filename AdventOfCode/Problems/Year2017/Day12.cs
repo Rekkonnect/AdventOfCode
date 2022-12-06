@@ -27,7 +27,7 @@ public partial class Day12 : Problem<int>
 
     private class ProgramSystem
     {
-        private FlexibleDictionary<int, PipeConnection> connections;
+        private readonly FlexibleDictionary<int, PipeConnection> connections;
 
         private readonly Graph<int> connectionGraph;
         private readonly Dictionary<int, GraphNode<int>> graphNodeDictionary = new();

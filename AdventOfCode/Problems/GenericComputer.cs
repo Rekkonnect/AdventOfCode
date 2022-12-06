@@ -4,7 +4,7 @@ namespace AdventOfCode.Problems;
 
 public class GenericComputer
 {
-    private ComputerProgram program;
+    private readonly ComputerProgram program;
     private readonly ValueCounterDictionary<ComputerOperator> operatorInvocationCount = new();
 
     private int instructionIndex;
@@ -189,7 +189,7 @@ public class GenericComputer
 
     public delegate bool ExecutionOutputHandler(long output);
 
-    public struct ArgumentInfo
+    public readonly struct ArgumentInfo
     {
         public static readonly ArgumentInfo InvalidArgument = new(false, default, default);
 

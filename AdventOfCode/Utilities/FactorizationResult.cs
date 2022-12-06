@@ -63,7 +63,7 @@ public class FactorizationResult
         }
     }
 
-    private struct Factor
+    private readonly struct Factor
     {
         public int Prime { get; }
         public int Exponent { get; }

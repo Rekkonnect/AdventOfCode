@@ -6,7 +6,7 @@ namespace AdventOfCode.Utilities.FourDimensions;
 public class Grid4D<T> : BaseGrid<T, Location4D>
 {
     #region Statically store the neighbor offsets
-    private static Location4D[] neighborOffsets;
+    private static readonly Location4D[] neighborOffsets;
 
     static Grid4D()
     {

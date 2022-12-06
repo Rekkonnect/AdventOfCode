@@ -36,10 +36,10 @@ public partial class Day16 : Problem<int>
     {
         // Please for the fucking love of C# improve enum types
 
-        private Operation[] operations;
+        private readonly Operation[] operations;
 
-        private Opcode[] opcodeNumbers = new Opcode[(int)Opcode.OpcodeCount];
-        private OpcodeCandidates[] opcodeCandidates = new OpcodeCandidates[(int)Opcode.OpcodeCount];
+        private readonly Opcode[] opcodeNumbers = new Opcode[(int)Opcode.OpcodeCount];
+        private readonly OpcodeCandidates[] opcodeCandidates = new OpcodeCandidates[(int)Opcode.OpcodeCount];
 
         public RegisterState CurrentRegisters { get; private set; }
 
@@ -283,7 +283,7 @@ public partial class Day16 : Problem<int>
         }
     }
 
-    private struct AnalyzedOpcode
+    private readonly struct AnalyzedOpcode
     {
         public OperationCategory Category { get; }
         public OperationInputType InputType { get; }

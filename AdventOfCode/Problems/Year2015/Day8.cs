@@ -26,9 +26,9 @@ public class Day8 : Problem<int>
 
     private class CodeString
     {
-        private string original;
-        private string decoded;
-        private string encoded;
+        private readonly string original;
+        private readonly string decoded;
+        private readonly string encoded;
 
         public int OriginalStringLength => original.Length;
         public int DecodedStringLength => decoded.Length;

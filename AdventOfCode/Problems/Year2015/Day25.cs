@@ -20,7 +20,7 @@ public partial class Day25 : FinalDay<ulong>
         gridLocation = CodeGridLocation.Parse(FileContents);
     }
 
-    private partial struct CodeGridLocation
+    private readonly partial struct CodeGridLocation
     {
         private static readonly Regex manualLocationPattern = ManualLocationRegex();
 

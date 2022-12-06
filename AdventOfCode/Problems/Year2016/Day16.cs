@@ -32,7 +32,7 @@ public class Day16 : Problem<string>
     private class Disk
     {
         // Too lazy to SIMD optimize this
-        private bool[] data;
+        private readonly bool[] data;
 
         public int CurrentLength { get; private set; }
         public int DiskSize { get; }

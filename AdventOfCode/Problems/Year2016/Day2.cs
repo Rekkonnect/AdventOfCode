@@ -40,7 +40,7 @@ public class Day2 : Problem<string>
 
     private class InstructionString
     {
-        private IEnumerable<Direction> instructions;
+        private readonly IEnumerable<Direction> instructions;
 
         public InstructionString(IEnumerable<Direction> directions)
         {

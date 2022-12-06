@@ -49,7 +49,7 @@ public class Day14 : Problem<int>
         public const int RowCount = 128;
 
         private readonly string key;
-        private UInt128[] rows = new UInt128[RowCount];
+        private readonly UInt128[] rows = new UInt128[RowCount];
 
         public int UsedSquares => rows.Sum(r => r.PopCount());
 

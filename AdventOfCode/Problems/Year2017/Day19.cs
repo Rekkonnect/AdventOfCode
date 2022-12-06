@@ -95,7 +95,7 @@ public class Day19 : Problem<string, int>
         }
     }
 
-    private struct DiagramCell
+    private readonly struct DiagramCell
     {
         public DiagramCellType Type { get; }
         public char Letter { get; }

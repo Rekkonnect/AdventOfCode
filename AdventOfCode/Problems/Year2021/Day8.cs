@@ -262,7 +262,7 @@ public class Day8 : Problem<int>
         private static ulong Set(ulong value, ulong mask) => value | mask;
     }
 
-    private struct SignalPattern
+    private readonly struct SignalPattern
     {
         private readonly byte segments;
         private readonly byte signalCount;

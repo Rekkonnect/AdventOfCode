@@ -2,21 +2,21 @@
 
 public struct DirectionalLocation
 {
-    private static Dictionary<Direction, Location2D> locations = new Dictionary<Direction, Location2D>
+    private static readonly Dictionary<Direction, Location2D> locations = new Dictionary<Direction, Location2D>
     {
         [Direction.Up] = (0, 1),
         [Direction.Down] = (0, -1),
         [Direction.Left] = (-1, 0),
         [Direction.Right] = (1, 0),
     };
-    private static Direction[] orderedDirections =
+    private static readonly Direction[] orderedDirections =
     {
             Direction.Up,
             Direction.Right,
             Direction.Down,
             Direction.Left,
         };
-    private static Dictionary<Direction, int> orderedDirectionsIndices;
+    private static readonly Dictionary<Direction, int> orderedDirectionsIndices;
 
     public static IEnumerable<Location2D> LocationOffsets { get; } = locations.Values;
 

@@ -383,7 +383,7 @@ public partial class Day12 : Problem<int, long>
         private delegate LinkedListNode<Pot> CurrentPotSelector(LinkedListNode<Pot> pot);
     }
 
-    private struct Pot
+    private readonly struct Pot
     {
         public int Index { get; }
         public bool AlivePlant { get; }

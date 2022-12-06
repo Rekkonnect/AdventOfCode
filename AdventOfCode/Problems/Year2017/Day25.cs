@@ -22,14 +22,14 @@ public partial class Day25 : FinalDay<int>
     {
         private static readonly Regex initialPattern = InitialRegex();
 
-        private int desiredSteps;
+        private readonly int desiredSteps;
         private int currentStep;
 
         private readonly HashSet<int> trueValues = new();
         private char currentState;
         private int currentTapeIndex;
 
-        private Dictionary<char, State> stateDictionary;
+        private readonly Dictionary<char, State> stateDictionary;
 
         private State CurrentState => stateDictionary[currentState];
 

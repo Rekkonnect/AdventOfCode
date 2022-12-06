@@ -31,11 +31,11 @@ public partial class Day10 : Problem<int>
 
     private class BotHandlingMachine
     {
-        private List<ValueAssignmentInstruction> valueAssignmentInstructions = new();
-        private KeyedObjectDictionary<int, ComparisonInstruction> comparisonInstructions = new();
+        private readonly List<ValueAssignmentInstruction> valueAssignmentInstructions = new();
+        private readonly KeyedObjectDictionary<int, ComparisonInstruction> comparisonInstructions = new();
 
-        private KeyedObjectDictionary<ContainerID, MicrochipContainer> containers = new();
-        private Stack<Bot> doubleChipBots = new();
+        private readonly KeyedObjectDictionary<ContainerID, MicrochipContainer> containers = new();
+        private readonly Stack<Bot> doubleChipBots = new();
 
         private Bot CurrentDoubleChipBot => doubleChipBots.Peek();
 
@@ -192,7 +192,7 @@ public partial class Day10 : Problem<int>
         }
     }
 
-    private struct ContainerID
+    private readonly struct ContainerID
     {
         public ContainerType ContainerType { get; }
         public int ID { get; }

@@ -89,7 +89,7 @@ public partial class Day22 : Problem<int>
 
     private class RecursiveCombatGame : CombatGame
     {
-        private HashedItemSet<RoundState> previousRoundStates = new(500);
+        private readonly HashedItemSet<RoundState> previousRoundStates = new(500);
 
         public RecursiveCombatGame(IEnumerable<Player> players)
             : base(players) { }
@@ -133,7 +133,7 @@ public partial class Day22 : Problem<int>
     }
     private class CombatGame
     {
-        private List<Player> alivePlayers;
+        private readonly List<Player> alivePlayers;
 
         public IEnumerable<Player> Players { get; private init; }
         public int PlayerCount { get; }
@@ -273,7 +273,7 @@ public partial class Day22 : Problem<int>
     }
     private class Deck : IEnumerable<Card>
     {
-        private Queue<Card> cards;
+        private readonly Queue<Card> cards;
 
         public bool IsEmpty => !cards.Any();
         public Card[] CardArray => cards.ToArray();

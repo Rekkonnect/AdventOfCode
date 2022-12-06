@@ -28,7 +28,7 @@ public partial class Day20 : Problem<int>
 
     private class ParticleSystem
     {
-        private Particle[] particles;
+        private readonly Particle[] particles;
 
         public int ClosestParticleIndex => particles.Select(p => p.Acceleration.ManhattanDistanceFromCenter).ToArray().MinIndex();
 

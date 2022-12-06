@@ -33,7 +33,7 @@ public partial class Day6 : Problem<int>
 
     private class UnoptimizedLightGrid
     {
-        private int[,] lights = new int[1000, 1000];
+        private readonly int[,] lights = new int[1000, 1000];
 
         public int GetTotalBrightness()
         {
@@ -99,7 +99,7 @@ public partial class Day6 : Problem<int>
         private const int usedBytes = dimension * dimension / 8;
 
         // + vector byte count to avoid memory corruptions and access violations
-        private byte[] bits = new byte[usedBytes + Vector256<byte>.Count];
+        private readonly byte[] bits = new byte[usedBytes + Vector256<byte>.Count];
 
         public int GetTurnedOnLightCount()
         {

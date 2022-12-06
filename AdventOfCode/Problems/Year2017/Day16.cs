@@ -26,7 +26,7 @@ public partial class Day16 : Problem<string>
 
     private class Dance
     {
-        private DanceMove[] moves;
+        private readonly DanceMove[] moves;
 
         public Dance(IEnumerable<DanceMove> danceMoves)
         {

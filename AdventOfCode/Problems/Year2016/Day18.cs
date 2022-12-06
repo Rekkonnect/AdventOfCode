@@ -29,7 +29,7 @@ public class Day18 : Problem<int>
 
     private struct TileRow
     {
-        private UInt128 bits;
+        private readonly UInt128 bits;
         public int Length { get; }
 
         public int TrapCount => (int)UInt128.PopCount(bits);

@@ -5,8 +5,8 @@ namespace AdventOfCode.Problems.Year2020.Utilities;
 
 public class ConsoleSimulatorInstruction
 {
-    private static Dictionary<string, ConsoleSimulatorOperation> supportedOperationMnemonics = new();
-    private static Dictionary<ConsoleSimulatorOperation, MnemonableInstructionInformationAttribute> supportedOperationAttributes = new();
+    private static readonly Dictionary<string, ConsoleSimulatorOperation> supportedOperationMnemonics = new();
+    private static readonly Dictionary<ConsoleSimulatorOperation, MnemonableInstructionInformationAttribute> supportedOperationAttributes = new();
 
     static ConsoleSimulatorInstruction()
     {
@@ -20,7 +20,7 @@ public class ConsoleSimulatorInstruction
         }
     }
 
-    private int[] arguments;
+    private readonly int[] arguments;
 
     public ConsoleSimulatorOperation Operation { get; set; }
 

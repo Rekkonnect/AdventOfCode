@@ -27,7 +27,7 @@ public partial class Day7 : Problem<string, int>
 
     private class CircusProgram
     {
-        private ProgramTree programTree;
+        private readonly ProgramTree programTree;
 
         public ProgramNode BottomProgram => programTree.Root.Value;
 

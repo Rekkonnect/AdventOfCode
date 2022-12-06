@@ -2,7 +2,7 @@
 
 public class SegmentList
 {
-    private List<int> startIndices = new List<int> { 0 };
+    private readonly List<int> startIndices = new List<int> { 0 };
 
     public void AddSegmentStart(int start)
     {

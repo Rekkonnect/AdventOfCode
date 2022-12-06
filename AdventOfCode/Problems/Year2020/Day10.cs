@@ -4,7 +4,7 @@ namespace AdventOfCode.Problems.Year2020;
 
 public class Day10 : Problem<int, long>
 {
-    private static FlexibleDictionary<int, long> combinations = new();
+    private static readonly FlexibleDictionary<int, long> combinations = new();
 
     private int[] numbers;
 

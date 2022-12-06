@@ -49,9 +49,9 @@ public class Day23 : Problem<long>
 
     private class ComputerNetwork
     {
-        private IntcodeComputer[] computers;
-        private Dictionary<int, Queue<Packet>> packetQueues = new Dictionary<int, Queue<Packet>>();
-        private Dictionary<int, Packet> incompletePackets = new Dictionary<int, Packet>();
+        private readonly IntcodeComputer[] computers;
+        private readonly Dictionary<int, Queue<Packet>> packetQueues = new Dictionary<int, Queue<Packet>>();
+        private readonly Dictionary<int, Packet> incompletePackets = new Dictionary<int, Packet>();
 
         public readonly int ComputerCount;
 

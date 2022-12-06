@@ -24,7 +24,7 @@ public class Day11 : Problem<string>
 
     private class Password
     {
-        private string original;
+        private readonly string original;
 
         public Password(string originalPassword)
         {

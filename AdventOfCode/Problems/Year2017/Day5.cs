@@ -26,7 +26,7 @@ public class Day5 : Problem<int>
 
     private class JumpMaze
     {
-        private int[] jumpOffsets;
+        private readonly int[] jumpOffsets;
 
         public JumpMaze(IEnumerable<int> jumps)
         {

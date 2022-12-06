@@ -112,7 +112,7 @@ public class Day12 : Problem<int>
 
         public override string ToString() => $"{ShipLocation}";
     }
-    private struct ShipCommand
+    private readonly struct ShipCommand
     {
         public ShipCommandType Type { get; init; }
         public int Value { get; init; }

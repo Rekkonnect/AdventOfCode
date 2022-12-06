@@ -50,12 +50,12 @@ public class Day23 : Problem<string, ulong>
     {
         public const int CupCount = 1_000_000;
 
-        private CircularLinkedList<int> labels;
+        private readonly CircularLinkedList<int> labels;
         private CircularLinkedListNode<int> currentSelectedCup;
 
-        private FlexibleDictionary<int, CircularLinkedListNode<int>> hashedLabels;
+        private readonly FlexibleDictionary<int, CircularLinkedListNode<int>> hashedLabels;
 
-        private CircularLinkedListNode<int>[] currentlyPickedUp = new CircularLinkedListNode<int>[3];
+        private readonly CircularLinkedListNode<int>[] currentlyPickedUp = new CircularLinkedListNode<int>[3];
 
         public ulong LeftStarLabel => (ulong)hashedLabels[1].Next.Next.Value;
         public ulong RightStarLabel => (ulong)hashedLabels[1].Next.Value;

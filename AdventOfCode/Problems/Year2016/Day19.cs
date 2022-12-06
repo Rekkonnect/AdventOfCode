@@ -22,7 +22,7 @@ public class Day19 : Problem<int>
 
     private class ElfStealingGame
     {
-        private CircularLinkedList<int> linkedList;
+        private readonly CircularLinkedList<int> linkedList;
 
         public ElfStealingGame(int elves)
         {

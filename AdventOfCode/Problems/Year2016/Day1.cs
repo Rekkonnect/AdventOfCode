@@ -26,7 +26,7 @@ public class Day1 : Problem<int>
 
     private class InstructionString
     {
-        private IEnumerable<Instruction> instructions;
+        private readonly IEnumerable<Instruction> instructions;
 
         public Location2D EndingLocation { get; private set; }
         public Location2D FirstRevisitedLocation { get; private set; }
@@ -76,7 +76,7 @@ public class Day1 : Problem<int>
             return new(raw.Split(", ").Select(Instruction.Parse));
         }
     }
-    private struct Instruction
+    private readonly struct Instruction
     {
         public Direction Direction { get; }
         public int Forward { get; }

@@ -27,7 +27,7 @@ public partial class Day9 : Problem<int>
 
     private class LocationSystem
     {
-        private DestinationDictionary locations = new();
+        private readonly DestinationDictionary locations = new();
 
         public LocationSystem(IEnumerable<Trip> destinationTrips)
         {
@@ -86,7 +86,7 @@ public partial class Day9 : Problem<int>
 
     private class Destination
     {
-        private FlexibleDictionary<string, Trip> trips = new();
+        private readonly FlexibleDictionary<string, Trip> trips = new();
 
         public string Name { get; }
 
