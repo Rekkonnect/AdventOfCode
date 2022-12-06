@@ -4,7 +4,7 @@ using AdventOfCode.Utilities.TwoDimensions;
 
 namespace AdventOfCode.Problems.Year2021;
 
-public class Day13 : Problem<int, IGlyphGrid>
+public partial class Day13 : Problem<int, IGlyphGrid>
 {
     private TransparentPaper? paper;
     private FoldingInstruction[]? foldingInstructions;
@@ -45,9 +45,9 @@ public class Day13 : Problem<int, IGlyphGrid>
     {
         public override void FoldPaper(TransparentPaper paper) => paper.FoldAlongY(AxisIndex);
     }
-    private abstract record class FoldingInstruction(int AxisIndex)
+    private abstract partial record class FoldingInstruction(int AxisIndex)
     {
-        private static readonly Regex instructionPattern = new(@"fold along (?'axis'\w)=(?'index'\d*)");
+        private static readonly Regex instructionPattern = InstructionRegex();
 
         public abstract void FoldPaper(TransparentPaper paper);
 
@@ -62,6 +62,9 @@ public class Day13 : Problem<int, IGlyphGrid>
                 'y' => new FoldAlongYInstruction(index),
             };
         }
+
+        [GeneratedRegex("fold along (?'axis'\\w)=(?'index'\\d*)")]
+        private static partial Regex InstructionRegex();
     }
 
     private sealed class PaperGrid : PrintableGlyphGrid2D<bool>

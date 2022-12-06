@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2015;
 
-public class Day21 : Problem<int>
+public partial class Day21 : Problem<int>
 {
     private BossStats playerStats;
 
@@ -230,9 +230,9 @@ public class Day21 : Problem<int>
     private sealed record DamageRing(string Name, int Cost, int Damage) : Ring(Name, Cost, Damage, 0);
     private sealed record ArmorRing(string Name, int Cost, int Armor) : Ring(Name, Cost, 0, Armor);
 
-    private record BossStats(int HP, int Damage, int Armor)
+    private partial record BossStats(int HP, int Damage, int Armor)
     {
-        private static readonly Regex statPattern = new(@"Hit Points: (?'hp'\d*)\s*Damage: (?'damage'\d*)\s*Armor: (?'armor'\d*)", RegexOptions.Compiled);
+        private static readonly Regex statPattern = StatRegex();
 
         public Boss CreateBoss() => new(Damage, Armor);
 
@@ -244,5 +244,8 @@ public class Day21 : Problem<int>
             int armor = groups["armor"].Value.ParseInt32();
             return new(hp, damage, armor);
         }
+
+        [GeneratedRegex("Hit Points: (?'hp'\\d*)\\s*Damage: (?'damage'\\d*)\\s*Armor: (?'armor'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex StatRegex();
     }
 }

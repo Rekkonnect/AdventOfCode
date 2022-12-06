@@ -3,7 +3,7 @@ using AdventOfCode.Utilities.TwoDimensions;
 
 namespace AdventOfCode.Problems.Year2021;
 
-public class Day17 : Problem<int>
+public partial class Day17 : Problem<int>
 {
     private Trajector trajector;
 
@@ -27,11 +27,11 @@ public class Day17 : Problem<int>
 
 #nullable enable
 
-    private sealed class Trajector
+    private sealed partial class Trajector
     {
         // While always x > 0 and y < 0, this regex pattern matches more cases
         // than the solver itself supports
-        private static readonly Regex targetAreaPattern = new(@"target area: x=(?'xStart'-?\d*)\.\.(?'xEnd'-?\d*), y=(?'yStart'-?\d*)\.\.(?'yEnd'-?\d*)");
+        private static readonly Regex targetAreaPattern = TargetAreaRegex();
 
         private readonly Rectangle target;
 
@@ -172,5 +172,8 @@ public class Day17 : Problem<int>
             int yEnd = groups["yEnd"].Value.ParseInt32();
             return new(new(xStart, xEnd, yStart, yEnd));
         }
+
+        [GeneratedRegex("target area: x=(?'xStart'-?\\d*)\\.\\.(?'xEnd'-?\\d*), y=(?'yStart'-?\\d*)\\.\\.(?'yEnd'-?\\d*)")]
+        private static partial Regex TargetAreaRegex();
     }
 }

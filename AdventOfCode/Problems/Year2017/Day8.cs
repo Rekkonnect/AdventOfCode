@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2017;
 
-public class Day8 : Problem<int>
+public partial class Day8 : Problem<int>
 {
     private Computer computer;
 
@@ -80,9 +80,9 @@ public class Day8 : Problem<int>
         public int GetRegister(string s) => registers[s];
     }
 
-    private record Condition(string LeftRegister, ComparisonKinds Comparison, int RightValue)
+    private partial record Condition(string LeftRegister, ComparisonKinds Comparison, int RightValue)
     {
-        private static readonly Regex conditionPattern = new(@"(?'register'\w*) (?'comparison'\W*) (?'value'[-\d]*)", RegexOptions.Compiled);
+        private static readonly Regex conditionPattern = ConditionRegex();
 
         public bool Valid(int registerValue) => Comparison.Matches(registerValue.GetComparisonResult(RightValue));
 
@@ -108,11 +108,14 @@ public class Day8 : Problem<int>
                 _ => ComparisonKinds.None,
             };
         }
+
+        [GeneratedRegex("(?'register'\\w*) (?'comparison'\\W*) (?'value'[-\\d]*)", RegexOptions.Compiled)]
+        private static partial Regex ConditionRegex();
     }
 
-    private record ConditionalInstruction(string Register, ComputerOperator Operator, int Adjustment, Condition Condition)
+    private partial record ConditionalInstruction(string Register, ComputerOperator Operator, int Adjustment, Condition Condition)
     {
-        private static readonly Regex nodePattern = new(@"(?'register'\w*) (?'operator'\w*) (?'adjustment'[-\d]*) if (?'condition'.*)", RegexOptions.Compiled);
+        private static readonly Regex nodePattern = NodeRegex();
 
         public static ConditionalInstruction Parse(string raw)
         {
@@ -123,5 +126,8 @@ public class Day8 : Problem<int>
             var condition = groups["condition"].Value;
             return new(register, op, adjustment, Condition.Parse(condition));
         }
+
+        [GeneratedRegex("(?'register'\\w*) (?'operator'\\w*) (?'adjustment'[-\\d]*) if (?'condition'.*)", RegexOptions.Compiled)]
+        private static partial Regex NodeRegex();
     }
 }

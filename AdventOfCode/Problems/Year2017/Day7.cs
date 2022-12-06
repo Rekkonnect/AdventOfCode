@@ -3,7 +3,7 @@ using AdventOfCode.Utilities;
 
 namespace AdventOfCode.Problems.Year2017;
 
-public class Day7 : Problem<string, int>
+public partial class Day7 : Problem<string, int>
 {
     private CircusProgram program;
 
@@ -148,9 +148,9 @@ public class Day7 : Problem<string, int>
             : this(programNode.Name, programNode.Weight) { }
     }
 
-    private record ProgramNodeDeclaration(string Name, int Weight, string[] ChildrenNodes)
+    private partial record ProgramNodeDeclaration(string Name, int Weight, string[] ChildrenNodes)
     {
-        private static readonly Regex nodePattern = new(@"(?'name'\w*) \((?'weight'\d*)\)( -\> (?'children'.*))*", RegexOptions.Compiled);
+        private static readonly Regex nodePattern = NodeRegex();
 
         public bool IsLeafNode => ChildrenNodes[0].Length is 0;
 
@@ -164,5 +164,8 @@ public class Day7 : Problem<string, int>
             var children = groups["children"].Value;
             return new(name, weight, children.Split(", "));
         }
+
+        [GeneratedRegex("(?'name'\\w*) \\((?'weight'\\d*)\\)( -\\> (?'children'.*))*", RegexOptions.Compiled)]
+        private static partial Regex NodeRegex();
     }
 }

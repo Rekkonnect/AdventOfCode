@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2016;
 
-public class Day4 : Problem<int>
+public partial class Day4 : Problem<int>
 {
     private RoomData[] rooms;
     private RoomData[] realRooms;
@@ -24,9 +24,9 @@ public class Day4 : Problem<int>
         rooms = ParsedFileLines(RoomData.Parse);
     }
 
-    private record RoomData(string Name, int SectorID, string Checksum)
+    private partial record RoomData(string Name, int SectorID, string Checksum)
     {
-        private static readonly Regex dataPattern = new(@"(?'name'[\w\-]*)\-(?'sectorID'\d*)\[(?'checksum'\w*)\]", RegexOptions.Compiled);
+        private static readonly Regex dataPattern = DataRegex();
 
         private bool? real;
         private string decryptedName;
@@ -85,6 +85,9 @@ public class Day4 : Problem<int>
             var checksum = groups["checksum"].Value;
             return new(name, sectorID, checksum);
         }
+
+        [GeneratedRegex("(?'name'[\\w\\-]*)\\-(?'sectorID'\\d*)\\[(?'checksum'\\w*)\\]", RegexOptions.Compiled)]
+        private static partial Regex DataRegex();
     }
 
     private struct CharacterOccurrences : IComparable<CharacterOccurrences>

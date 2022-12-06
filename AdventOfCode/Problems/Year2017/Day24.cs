@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2017;
 
-public class Day24 : Problem<int, int>
+public partial class Day24 : Problem<int, int>
 {
     private BridgeBuilder builder;
 
@@ -141,9 +141,9 @@ public class Day24 : Problem<int, int>
         }
     }
 
-    private struct Component : IEquatable<Component>
+    private partial struct Component : IEquatable<Component>
     {
-        private static readonly Regex componentPattern = new(@"(?'a'\d*)/(?'b'\d*)", RegexOptions.Compiled);
+        private static readonly Regex componentPattern = ComponentRegex();
 
         public int EndA { get; }
         public int EndB { get; }
@@ -177,7 +177,9 @@ public class Day24 : Problem<int, int>
 
         public bool Equals(Component other) => EndA == other.EndA && EndB == other.EndB;
         public override bool Equals(object obj) => obj is Component other && Equals(other);
-        public override int GetHashCode() => (EndA << 8) | EndB;
+        public override int GetHashCode() => EndA << 8 | EndB;
         public override string ToString() => $"{EndA}/{EndB}";
+        [GeneratedRegex("(?'a'\\d*)/(?'b'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex ComponentRegex();
     }
 }

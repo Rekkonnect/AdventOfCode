@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2020;
 
-public class Day14 : Problem<ulong>
+public partial class Day14 : Problem<ulong>
 {
     private MemorySystemCommand[] commands;
     private MemorySystem memorySystem;
@@ -99,9 +99,12 @@ public class Day14 : Problem<ulong>
             return null;
         }
     }
-    private class MemoryWriteCommand : MemorySystemCommand
+    private partial class MemoryWriteCommand : MemorySystemCommand
     {
-        private static readonly Regex commandPattern = new(@"mem\[(?'addr'\d*)\] = (?'val'\d*)", RegexOptions.Compiled);
+        private static readonly Regex commandPattern = CommandRegex();
+
+        [GeneratedRegex("mem\\[(?'addr'\\d*)\\] = (?'val'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex CommandRegex();
 
         public ulong MemoryAddress { get; }
         public ulong NewValue { get; }
@@ -125,9 +128,12 @@ public class Day14 : Problem<ulong>
 
         public override string ToString() => $"mem[{MemoryAddress}] = {NewValue}";
     }
-    private class MaskSetCommand : MemorySystemCommand
+    private partial class MaskSetCommand : MemorySystemCommand
     {
-        private static readonly Regex commandPattern = new(@"mask = (?'val'[01X]*)", RegexOptions.Compiled);
+        private static readonly Regex commandPattern = CommandRegex();
+
+        [GeneratedRegex("mask = (?'val'[01X]*)", RegexOptions.Compiled)]
+        private static partial Regex CommandRegex();
 
         public Bitmask NewMask { get; }
 
@@ -148,7 +154,7 @@ public class Day14 : Problem<ulong>
     #region Records
     private record MaskedMemoryAddress(ulong RawMemoryAddress, ulong FloatingBitsMask)
     {
-        public ulong MaskedBaseMemoryAddress => RawMemoryAddress & (~FloatingBitsMask);
+        public ulong MaskedBaseMemoryAddress => RawMemoryAddress & ~FloatingBitsMask;
 
         public override string ToString()
         {
@@ -176,7 +182,7 @@ public class Day14 : Problem<ulong>
 
         public ulong ApplyToValue(ulong value)
         {
-            return (value & XMask) | RawValueMask;
+            return value & XMask | RawValueMask;
         }
         public ulong ApplyToMemoryAddress(ulong memoryAddress)
         {

@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2015;
 
-public class Day14 : Problem<int>
+public partial class Day14 : Problem<int>
 {
     private ReindeerRace reindeerRace;
 
@@ -64,9 +64,9 @@ public class Day14 : Problem<int>
         }
     }
 
-    private record Reindeer(string Name, int Speed, int FlyTime, int RestTime)
+    private partial record Reindeer(string Name, int Speed, int FlyTime, int RestTime)
     {
-        private static readonly Regex reindeerPattern = new(@"(?'name'\w*) can fly (?'speed'\d*) km/s for (?'fly'\d*) seconds, but then must rest for (?'rest'\d*) seconds\.", RegexOptions.Compiled);
+        private static readonly Regex reindeerPattern = ReindeerRegex();
 
         public int IterationDistance => Speed * FlyTime;
         public int LoopTime => FlyTime + RestTime;
@@ -94,5 +94,8 @@ public class Day14 : Problem<int>
             int restTime = groups["rest"].Value.ParseInt32();
             return new(name, speed, flyTime, restTime);
         }
+
+        [GeneratedRegex("(?'name'\\w*) can fly (?'speed'\\d*) km/s for (?'fly'\\d*) seconds, but then must rest for (?'rest'\\d*) seconds\\.", RegexOptions.Compiled)]
+        private static partial Regex ReindeerRegex();
     }
 }

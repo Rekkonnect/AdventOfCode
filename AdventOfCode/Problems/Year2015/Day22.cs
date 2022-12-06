@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 
 namespace AdventOfCode.Problems.Year2015;
 
-public class Day22 : Problem<int>
+public partial class Day22 : Problem<int>
 {
     private BossStats bossStats;
 
@@ -486,9 +486,9 @@ public class Day22 : Problem<int>
         }
     }
 
-    private record BossStats(int HP, int Damage)
+    private partial record BossStats(int HP, int Damage)
     {
-        private static readonly Regex statPattern = new(@"Hit Points: (?'hp'\d*)\s*Damage: (?'damage'\d*)", RegexOptions.Compiled);
+        private static readonly Regex statPattern = StatRegex();
 
         public Boss CreateBoss() => new(HP, Damage);
 
@@ -499,5 +499,8 @@ public class Day22 : Problem<int>
             int damage = groups["damage"].Value.ParseInt32();
             return new(hp, damage);
         }
+
+        [GeneratedRegex("Hit Points: (?'hp'\\d*)\\s*Damage: (?'damage'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex StatRegex();
     }
 }

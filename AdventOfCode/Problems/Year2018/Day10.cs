@@ -3,7 +3,7 @@ using System.Data;
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day10 : Problem<IGlyphGrid, int>
+public partial class Day10 : Problem<IGlyphGrid, int>
 {
     private StarGrid message;
     private int formationTime;
@@ -27,10 +27,15 @@ public class Day10 : Problem<IGlyphGrid, int>
         message = null;
     }
 
-    private record Point(Location2D StartingPosition, Location2D Velocity)
+    private partial record Point(Location2D StartingPosition, Location2D Velocity)
     {
-        private static readonly Regex configurationPattern = new(@"position=(?'position'.*) velocity=(?'velocity'.*)");
-        private static readonly Regex locationPattern = new(@"<\s*(?'x'[-\d]*),\s*(?'y'[-\d]*)>", RegexOptions.Compiled);
+        private static readonly Regex configurationPattern = ConfigurationRegex();
+        private static readonly Regex locationPattern = LocationRegex();
+
+        [GeneratedRegex("position=(?'position'.*) velocity=(?'velocity'.*)")]
+        private static partial Regex ConfigurationRegex();
+        [GeneratedRegex("<\\s*(?'x'[-\\d]*),\\s*(?'y'[-\\d]*)>", RegexOptions.Compiled)]
+        private static partial Regex LocationRegex();
 
         public Location2D PositionAt(int time) => StartingPosition + Velocity * time;
 

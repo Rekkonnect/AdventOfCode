@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace AdventOfCode.Problems.Year2020;
 
-public class Day21 : Problem<int, DelimitedList<string>>
+public partial class Day21 : Problem<int, DelimitedList<string>>
 {
     private FoodCollection foodCollection;
 
@@ -106,9 +106,9 @@ public class Day21 : Problem<int, DelimitedList<string>>
         public IEnumerator<Food> GetEnumerator() => Foods.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
-    private record Food(IEnumerable<string> Ingredients, IEnumerable<string> Allergens)
+    private partial record Food(IEnumerable<string> Ingredients, IEnumerable<string> Allergens)
     {
-        private readonly static Regex foodPattern = new(@"(?'ingredients'[\w ]*) \(contains (?'allergens'.*)\)", RegexOptions.Compiled);
+        private readonly static Regex foodPattern = FoodRegex();
 
         public static Food Parse(string raw)
         {
@@ -117,5 +117,8 @@ public class Day21 : Problem<int, DelimitedList<string>>
             var allergens = groups["allergens"].Value.Split(", ");
             return new(ingredients, allergens);
         }
+
+        [GeneratedRegex("(?'ingredients'[\\w ]*) \\(contains (?'allergens'.*)\\)", RegexOptions.Compiled)]
+        private static partial Regex FoodRegex();
     }
 }

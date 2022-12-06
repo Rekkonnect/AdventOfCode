@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace AdventOfCode.Problems.Year2016;
 
-public class Day9 : Problem<long>
+public partial class Day9 : Problem<long>
 {
     private CompressedFile compressedFile;
 
@@ -25,9 +25,9 @@ public class Day9 : Problem<long>
         compressedFile = CompressedFile.Parse(FileContents);
     }
 
-    private record CompressedFile(CompressedFileSegmentRoot SegmentRoot)
+    private partial record CompressedFile(CompressedFileSegmentRoot SegmentRoot)
     {
-        private static readonly Regex markerPattern = new(@"\((?'length'\d*)x(?'repetitions'\d*)\)", RegexOptions.Compiled);
+        private static readonly Regex markerPattern = MarkerRegex();
 
         public long SinglyDecompressedLength => SegmentRoot.SinglyDecompressedLength;
         public long FullyDecompressedLength => SegmentRoot.FullyDecompressedLength;
@@ -58,6 +58,9 @@ public class Day9 : Problem<long>
             segmentRoot.Length = currentUnmarkedContentIndex;
             return new(segmentRoot);
         }
+
+        [GeneratedRegex("\\((?'length'\\d*)x(?'repetitions'\\d*)\\)", RegexOptions.Compiled)]
+        private static partial Regex MarkerRegex();
     }
 
     private record CompressedFileSegmentRoot() : CompressedFileSegment((Marker)null)

@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day4 : Problem<int>
+public partial class Day4 : Problem<int>
 {
     private GuardPost post;
 
@@ -160,10 +160,15 @@ public class Day4 : Problem<int>
         protected override string ActionString => $"wakes up";
     }
 
-    private abstract record GuardPostRecord(DateTime Timestamp) : IComparable<GuardPostRecord>
+    private abstract partial record GuardPostRecord(DateTime Timestamp) : IComparable<GuardPostRecord>
     {
-        private static readonly Regex recordPattern = new(@"\[(?'timestamp'.*)\] (?'action'.*)", RegexOptions.Compiled);
-        private static readonly Regex shiftBeginPattern = new(@"#(?'guardID'\d*) begins shift", RegexOptions.Compiled);
+        private static readonly Regex recordPattern = RecordRegex();
+        private static readonly Regex shiftBeginPattern = ShiftBeginRegex1();
+
+        [GeneratedRegex("\\[(?'timestamp'.*)\\] (?'action'.*)", RegexOptions.Compiled)]
+        private static partial Regex RecordRegex();
+        [GeneratedRegex("#(?'guardID'\\d*) begins shift", RegexOptions.Compiled)]
+        private static partial Regex ShiftBeginRegex1();
 
         private const string timestampFormat = "yyyy-MM-dd HH:mm";
 

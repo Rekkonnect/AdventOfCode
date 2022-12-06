@@ -12,7 +12,7 @@ using System.Collections;
 
 namespace AdventOfCode.Problems.Year2020;
 
-public class Day22 : Problem<int>
+public partial class Day22 : Problem<int>
 {
     // I feel so bad for having made a purely generalized solution;
     // the game is only between two players after all
@@ -38,7 +38,7 @@ public class Day22 : Problem<int>
         foreach (var rawPlayer in rawPlayers)
         {
             var lines = rawPlayer.GetLines(false);
-            int playerID = lines[0][("Player ".Length)..^1].ParseInt32();
+            int playerID = lines[0]["Player ".Length..^1].ParseInt32();
             var cards = lines.Skip(1).Select(v => new Card(v.ParseInt32()));
             players.Add(new Player(playerID, cards));
         }
@@ -225,9 +225,9 @@ public class Day22 : Problem<int>
         protected virtual void SortWinningCards(List<Card> cards, Player winningPlayer, Card winningPlayerCard) { }
     }
 
-    private class Player
+    private partial class Player
     {
-        private static readonly Regex playerPattern = new(@"Player (?'id'\d)\n(?'cards'((\d*)\n)*)", RegexOptions.Compiled);
+        private static readonly Regex playerPattern = PlayerRegex();
 
         public int PlayerID { get; init; }
         public Deck Deck { get; }
@@ -267,6 +267,9 @@ public class Day22 : Problem<int>
             var cards = groups["cards"].Value.GetLines(false).Select(v => new Card(v.ParseInt32()));
             return new(playerID, cards);
         }
+
+        [GeneratedRegex("Player (?'id'\\d)\\n(?'cards'((\\d*)\\n)*)", RegexOptions.Compiled)]
+        private static partial Regex PlayerRegex();
     }
     private class Deck : IEnumerable<Card>
     {

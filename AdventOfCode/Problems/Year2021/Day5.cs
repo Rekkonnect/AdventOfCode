@@ -6,7 +6,7 @@ using static System.Math;
 
 namespace AdventOfCode.Problems.Year2021;
 
-public class Day5 : Problem<int>
+public partial class Day5 : Problem<int>
 {
     private Lines? lines;
 
@@ -129,9 +129,9 @@ public class Day5 : Problem<int>
         }
     }
 
-    private record Line(int StartX, int StartY, int EndX, int EndY)
+    private partial record Line(int StartX, int StartY, int EndX, int EndY)
     {
-        private static readonly Regex linePattern = new(@"(?'startX'\d*),(?'startY'\d*) -> (?'endX'\d*),(?'endY'\d*)");
+        private static readonly Regex linePattern = LineRegex();
         
         public int MinX { get; } = Min(StartX, EndX);
         public int MinY { get; } = Min(StartY, EndY);
@@ -159,5 +159,8 @@ public class Day5 : Problem<int>
 
             return new(startX, startY, endX, endY);
         }
+
+        [GeneratedRegex("(?'startX'\\d*),(?'startY'\\d*) -> (?'endX'\\d*),(?'endY'\\d*)")]
+        private static partial Regex LineRegex();
     }
 }

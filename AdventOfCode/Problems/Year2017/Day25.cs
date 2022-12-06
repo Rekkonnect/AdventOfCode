@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2017;
 
-public class Day25 : FinalDay<int>
+public partial class Day25 : FinalDay<int>
 {
     private TuringMachine turingMachine;
 
@@ -18,9 +18,9 @@ public class Day25 : FinalDay<int>
         turingMachine = null;
     }
 
-    private class TuringMachine
+    private partial class TuringMachine
     {
-        private static readonly Regex initialPattern = new(@"Begin in state (?'initial'\w)\.(\s*)Perform a diagnostic checksum after (?'steps'\d*) steps\.(\s*)(?'declarations'.*)", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex initialPattern = InitialRegex();
 
         private int desiredSteps;
         private int currentStep;
@@ -69,11 +69,14 @@ public class Day25 : FinalDay<int>
             var states = initialGroups["declarations"].Value.Split("\n\n").Select(State.Parse);
             return new(initialState, steps, states);
         }
+
+        [GeneratedRegex("Begin in state (?'initial'\\w)\\.(\\s*)Perform a diagnostic checksum after (?'steps'\\d*) steps\\.(\\s*)(?'declarations'.*)", RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex InitialRegex();
     }
 
-    private record StateAction(int WrittenValue, int SlotOffset, char NextState)
+    private partial record StateAction(int WrittenValue, int SlotOffset, char NextState)
     {
-        private static readonly Regex stateActionPattern = new(@"- Write the value (?'value'\d)\.(\s*)- Move one slot to the (?'direction'left|right)\.(\s*)- Continue with state (?'nextState'\w)", RegexOptions.Compiled);
+        private static readonly Regex stateActionPattern = StateActionRegex();
 
         public static StateAction Parse(string raw)
         {
@@ -83,11 +86,14 @@ public class Day25 : FinalDay<int>
             char nextState = groups["nextState"].Value[0];
             return new(writtenValue, slotOffset, nextState);
         }
+
+        [GeneratedRegex("- Write the value (?'value'\\d)\\.(\\s*)- Move one slot to the (?'direction'left|right)\\.(\\s*)- Continue with state (?'nextState'\\w)", RegexOptions.Compiled)]
+        private static partial Regex StateActionRegex();
     }
 
-    private record State(char Name, StateAction Action0, StateAction Action1)
+    private partial record State(char Name, StateAction Action0, StateAction Action1)
     {
-        private static readonly Regex statePattern = new(@"In state (?'name'\w):(\s*).*is 0:(\s*)(?'action0'.*)is 1:(?'action1'.*)", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex statePattern = StateRegex();
 
         public StateAction ActionFor(bool value) => value ? Action1 : Action0;
 
@@ -99,5 +105,8 @@ public class Day25 : FinalDay<int>
             var action1 = StateAction.Parse(groups["action1"].Value);
             return new(name, action0, action1);
         }
+
+        [GeneratedRegex("In state (?'name'\\w):(\\s*).*is 0:(\\s*)(?'action0'.*)is 1:(?'action1'.*)", RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex StateRegex();
     }
 }

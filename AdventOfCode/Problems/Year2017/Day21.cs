@@ -4,7 +4,7 @@ using AdventOfCSharp.Utilities;
 
 namespace AdventOfCode.Problems.Year2017;
 
-public class Day21 : Problem<int>
+public partial class Day21 : Problem<int>
 {
     private EnchantmentRuleSystem particleSystem;
     private PixelGrid expanded5;
@@ -64,9 +64,9 @@ public class Day21 : Problem<int>
         }
     }
 
-    private record EnchantmentRule(PixelGrid Input, PixelGrid Output)
+    private partial record EnchantmentRule(PixelGrid Input, PixelGrid Output)
     {
-        private static readonly Regex rulePattern = new(@"(?'input'[\.\#\/]*) => (?'output'[\.\#\/]*)", RegexOptions.Compiled);
+        private static readonly Regex rulePattern = RuleRegex();
 
         public static EnchantmentRule Parse(string raw)
         {
@@ -75,6 +75,9 @@ public class Day21 : Problem<int>
             var output = PixelGrid.Parse(groups["output"].Value);
             return new(input, output);
         }
+
+        [GeneratedRegex("(?'input'[\\.\\#\\/]*) => (?'output'[\\.\\#\\/]*)", RegexOptions.Compiled)]
+        private static partial Regex RuleRegex();
     }
 
     private class PixelGrid : SquareGrid2D<PixelState>

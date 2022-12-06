@@ -3,7 +3,7 @@ using AdventOfCode.Utilities.TwoDimensions;
 
 namespace AdventOfCode.Problems.Year2020;
 
-public class Day16 : Problem<int, ulong>
+public partial class Day16 : Problem<int, ulong>
 {
     // Is it just me or am I abusing LINQ a bit too much?
 
@@ -141,12 +141,17 @@ public class Day16 : Problem<int, ulong>
 
         public override string ToString() => Fields.Select(f => f.ToString()).Aggregate((a, b) => $"{a}, {b}");
     }
-    private class ValidFieldRanges : IKeyedObject<string>
+    private partial class ValidFieldRanges : IKeyedObject<string>
     {
         public const int Length = 1000;
 
-        private static readonly Regex rulePattern = new(@"(?'name'[\w ]*)\: (?'ranges'.*)", RegexOptions.Compiled);
-        private static readonly Regex rangePattern = new(@"(?'start'\d*)\-(?'end'\d*)", RegexOptions.Compiled);
+        private static readonly Regex rulePattern = RuleRegex();
+        private static readonly Regex rangePattern = RangeRegex();
+
+        [GeneratedRegex("(?'name'[\\w ]*)\\: (?'ranges'.*)", RegexOptions.Compiled)]
+        private static partial Regex RuleRegex();
+        [GeneratedRegex("(?'start'\\d*)\\-(?'end'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex RangeRegex();
 
         private readonly bool[] validRanges = new bool[Length];
 

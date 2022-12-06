@@ -4,7 +4,7 @@ using AdventOfCode.Functions;
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day12 : Problem<int, long>
+public partial class Day12 : Problem<int, long>
 {
     private PlantIterator plantIterator;
 
@@ -85,9 +85,9 @@ public class Day12 : Problem<int, long>
         public override int GetHashCode() => Code;
     }
 
-    private record PlantRule(NeighboringPots InitialPlants, bool ResultPlant)
+    private partial record PlantRule(NeighboringPots InitialPlants, bool ResultPlant)
     {
-        private static readonly Regex rulePattern = new(@"(?'initial'[.#]*) => (?'result'[.#])", RegexOptions.Compiled);
+        private static readonly Regex rulePattern = RuleRegex();
 
         public static PlantRule Parse(string rule)
         {
@@ -98,6 +98,8 @@ public class Day12 : Problem<int, long>
         }
 
         private static bool ParsePotCharacter(char c) => c is '#';
+        [GeneratedRegex("(?'initial'[.#]*) => (?'result'[.#])", RegexOptions.Compiled)]
+        private static partial Regex RuleRegex();
     }
 
     private class PlantIterator
@@ -134,9 +136,9 @@ public class Day12 : Problem<int, long>
         }
     }
 
-    private class PotRow
+    private partial class PotRow
     {
-        private static readonly Regex initialStatePattern = new(@"initial state: (?'initialState'.*)");
+        private static readonly Regex initialStatePattern = InitialStateRegex();
 
         private PotLinkedList pots;
 
@@ -274,6 +276,9 @@ public class Day12 : Problem<int, long>
             var plants = plantsString.Select(p => p == '#').ToArray();
             return new(plants);
         }
+
+        [GeneratedRegex("initial state: (?'initialState'.*)")]
+        private static partial Regex InitialStateRegex();
     }
 
     // TODO: Migrate this into a HashedItemDictionary

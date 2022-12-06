@@ -3,7 +3,7 @@ using Garyon.Objects;
 
 namespace AdventOfCode.Problems.Year2015;
 
-public class Day9 : Problem<int>
+public partial class Day9 : Problem<int>
 {
     private LocationSystem locations;
 
@@ -107,9 +107,12 @@ public class Day9 : Problem<int>
         public Trip GetTrip(string destinationName) => trips[destinationName];
     }
 
-    private record Trip(string LocationA, string LocationB, int Distance)
+    private partial record Trip(string LocationA, string LocationB, int Distance)
     {
-        private static readonly Regex tripPattern = new(@"(\w*) to (\w*) = (\d*)", RegexOptions.Compiled);
+        private static readonly Regex tripPattern = TripRegex();
+
+        [GeneratedRegex("(\\w*) to (\\w*) = (\\d*)", RegexOptions.Compiled)]
+        private static partial Regex TripRegex();
 
         public static Trip Parse(string s)
         {

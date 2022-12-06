@@ -7,7 +7,7 @@ using System.Collections.Immutable;
 
 namespace AdventOfCode.Problems.Year2021;
 
-public class Day19 : Problem<int>
+public partial class Day19 : Problem<int>
 {
     private Space space;
     private ScannerComplex scannerComplex;
@@ -371,9 +371,9 @@ public class Day19 : Problem<int>
         }
     }
 
-    private sealed class RelativeScannerData
+    private sealed partial class RelativeScannerData
     {
-        private static readonly Regex scannerDataPattern = new(@"--- scanner (?'id'\d*) ---");
+        private static readonly Regex scannerDataPattern = ScannerDataRegex();
 
         private readonly Location3D[] positions;
 
@@ -413,6 +413,9 @@ public class Day19 : Problem<int>
             var values = raw.ParseInt32Array(',');
             return new(values[0], values[1], values[2]);
         }
+
+        [GeneratedRegex("--- scanner (?'id'\\d*) ---")]
+        private static partial Regex ScannerDataRegex();
     }
 
     private sealed class Space

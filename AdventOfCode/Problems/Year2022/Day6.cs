@@ -1,7 +1,4 @@
-﻿using AdventOfCode.Functions;
-using AdventOfCSharp.Utilities;
-using System.Collections.Immutable;
-using System.Data;
+﻿using AdventOfCSharp.Utilities;
 
 namespace AdventOfCode.Problems.Year2022;
 
@@ -11,11 +8,16 @@ public class Day6 : Problem<int>
 
     public override int SolvePart1()
     {
-        return stream.GetDataStartIndex(4);
+        return SolvePart(4);
     }
     public override int SolvePart2()
     {
-        return stream.GetDataStartIndex(14);
+        return SolvePart(14);
+    }
+
+    private int SolvePart(int markerLength)
+    {
+        return stream.GetDataStartIndex(markerLength);
     }
 
     protected override void LoadState()

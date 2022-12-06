@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2017;
 
-public class Day16 : Problem<string>
+public partial class Day16 : Problem<string>
 {
     private Dance dance;
 
@@ -111,9 +111,9 @@ public class Day16 : Problem<string>
         }
     }
 
-    private sealed record ExchangeMove(int X, int Y) : DanceMove
+    private sealed partial record ExchangeMove(int X, int Y) : DanceMove
     {
-        private static readonly Regex exchangePattern = new(@"x(?'x'\d*)/(?'y'\d*)", RegexOptions.Compiled);
+        private static readonly Regex exchangePattern = ExchangeRegex();
 
         public override void Operate(ProgramArrangement programs)
         {
@@ -132,10 +132,13 @@ public class Day16 : Problem<string>
             int y = groups["y"].Value.ParseInt32();
             return new ExchangeMove(x, y);
         }
+
+        [GeneratedRegex("x(?'x'\\d*)/(?'y'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex ExchangeRegex();
     }
-    private sealed record PartnerOperation(char X, char Y) : DanceMove
+    private sealed partial record PartnerOperation(char X, char Y) : DanceMove
     {
-        private static readonly Regex partnerPattern = new(@"p(?'x'\w)/(?'y'\w)", RegexOptions.Compiled);
+        private static readonly Regex partnerPattern = PartnerRegex();
 
         public override void Operate(ProgramArrangement programs)
         {
@@ -154,6 +157,9 @@ public class Day16 : Problem<string>
             char y = groups["y"].Value[0];
             return new PartnerOperation(x, y);
         }
+
+        [GeneratedRegex("p(?'x'\\w)/(?'y'\\w)", RegexOptions.Compiled)]
+        private static partial Regex PartnerRegex();
     }
     private sealed record SpinOperation(int Rotation) : DanceMove
     {

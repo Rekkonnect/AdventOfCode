@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2015;
 
-public class Day15 : Problem<int>
+public partial class Day15 : Problem<int>
 {
     private IEnumerable<Ingredient> ingredients;
 
@@ -98,9 +98,9 @@ public class Day15 : Problem<int>
         protected virtual bool ValidateCalories(int calories) => true;
     }
 
-    private record Ingredient(string Name, int Capacity, int Durability, int Flavor, int Texture, int Calories)
+    private partial record Ingredient(string Name, int Capacity, int Durability, int Flavor, int Texture, int Calories)
     {
-        private static readonly Regex ingredientPattern = new(@"(?'name'\w*): capacity (?'capacity'[-\d]*), durability (?'durability'[-\d]*), flavor (?'flavor'[-\d]*), texture (?'texture'[-\d]*), calories (?'calories'[-\d]*)", RegexOptions.Compiled);
+        private static readonly Regex ingredientPattern = IngredientRegex();
 
         public static Ingredient Parse(string s)
         {
@@ -113,5 +113,8 @@ public class Day15 : Problem<int>
             int calories = groups["calories"].Value.ParseInt32();
             return new(name, capacity, durability, flavor, texture, calories);
         }
+
+        [GeneratedRegex("(?'name'\\w*): capacity (?'capacity'[-\\d]*), durability (?'durability'[-\\d]*), flavor (?'flavor'[-\\d]*), texture (?'texture'[-\\d]*), calories (?'calories'[-\\d]*)", RegexOptions.Compiled)]
+        private static partial Regex IngredientRegex();
     }
 }

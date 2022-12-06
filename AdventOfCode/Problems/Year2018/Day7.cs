@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day7 : Problem<string, int>
+public partial class Day7 : Problem<string, int>
 {
     private InstructionSet instructionSet;
 
@@ -235,9 +235,9 @@ public class Day7 : Problem<string, int>
         public int CompareTo(StepNetworkNode other) => Value.CompareTo(other.Value);
     }
 
-    private record StepRequirementDeclaration(char RequiredStep, char NextStep)
+    private partial record StepRequirementDeclaration(char RequiredStep, char NextStep)
     {
-        private static readonly Regex stepPattern = new(@"Step (?'required'\w) must be finished before step (?'next'\w) can begin.", RegexOptions.Compiled);
+        private static readonly Regex stepPattern = StepRegex();
 
         public static StepRequirementDeclaration Parse(string raw)
         {
@@ -246,5 +246,8 @@ public class Day7 : Problem<string, int>
             char next = groups["next"].Value[0];
             return new(required, next);
         }
+
+        [GeneratedRegex("Step (?'required'\\w) must be finished before step (?'next'\\w) can begin.", RegexOptions.Compiled)]
+        private static partial Regex StepRegex();
     }
 }

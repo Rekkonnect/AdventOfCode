@@ -5,7 +5,7 @@ using System.Data;
 
 namespace AdventOfCode.Problems.Year2022;
 
-public class Day5 : Problem<string>
+public partial class Day5 : Problem<string>
 {
     private InstructionCrateConfiguration crateConfiguration;
 
@@ -37,9 +37,9 @@ public class Day5 : Problem<string>
         crateConfiguration = null;
     }
 
-    private readonly record struct MovementInstruction(int Crates, int Origin, int Target)
+    private readonly partial record struct MovementInstruction(int Crates, int Origin, int Target)
     {
-        private static readonly Regex instructionPattern = new(@"move (?'crates'\d*) from (?'origin'\d*) to (?'target'\d*)");
+        private static readonly Regex instructionPattern = InstructionRegex();
 
         public static MovementInstruction Parse(string raw)
         {
@@ -49,6 +49,9 @@ public class Day5 : Problem<string>
             int target = match.Groups["target"].Value.ParseInt32();
             return new(crates, origin, target);
         }
+
+        [GeneratedRegex("move (?'crates'\\d*) from (?'origin'\\d*) to (?'target'\\d*)")]
+        private static partial Regex InstructionRegex();
     }
 
     private sealed class InstructionCrateConfiguration

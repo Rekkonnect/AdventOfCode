@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2015;
 
-public class Day7 : Problem<int>
+public partial class Day7 : Problem<int>
 {
     private Instruction[] instructions;
 
@@ -105,12 +105,21 @@ public class Day7 : Problem<int>
         IEnumerator IEnumerable.GetEnumerator() => instructions.GetEnumerator();
     }
 
-    private record Instruction(Operator Operator, string Argument0, string Argument1, string AssignedWire)
+    private partial record Instruction(Operator Operator, string Argument0, string Argument1, string AssignedWire)
     {
-        private static readonly Regex binaryOperatorPattern = new(@"([\d\w]*) (\w*) ([\d\w]*)", RegexOptions.Compiled);
-        private static readonly Regex unaryOperatorPattern = new(@"(\w*) ([\d\w]*)", RegexOptions.Compiled);
-        private static readonly Regex noOperatorPattern = new(@"([\d\w]*)", RegexOptions.Compiled);
-        private static readonly Regex instructionPattern = new(@"([\d\w ]*) \-\> (\w*)", RegexOptions.Compiled);
+        private static readonly Regex binaryOperatorPattern = BinaryOperatorRegex();
+        private static readonly Regex unaryOperatorPattern = UnaryOperatorRegex();
+        private static readonly Regex noOperatorPattern = NoOperatorRegex();
+        private static readonly Regex instructionPattern = InstructionRegex();
+
+        [GeneratedRegex("([\\d\\w]*) (\\w*) ([\\d\\w]*)", RegexOptions.Compiled)]
+        private static partial Regex BinaryOperatorRegex();
+        [GeneratedRegex("(\\w*) ([\\d\\w]*)", RegexOptions.Compiled)]
+        private static partial Regex UnaryOperatorRegex();
+        [GeneratedRegex("([\\d\\w]*)", RegexOptions.Compiled)]
+        private static partial Regex NoOperatorRegex();
+        [GeneratedRegex("([\\d\\w ]*) \\-\\> (\\w*)", RegexOptions.Compiled)]
+        private static partial Regex InstructionRegex();
 
         public static Instruction Assignment(string argument, string assignedWire) => new(Operator.NOP, argument, null, assignedWire);
 
@@ -120,7 +129,7 @@ public class Day7 : Problem<int>
             var leftHand = instructionMatch.Groups[1].Value;
             var assignedWire = instructionMatch.Groups[2].Value;
 
-            Operator op = Operator.NOP;
+            var op = Operator.NOP;
             string arg0 = null;
             string arg1 = null;
 

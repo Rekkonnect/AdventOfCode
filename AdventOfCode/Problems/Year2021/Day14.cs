@@ -3,7 +3,7 @@ using AdventOfCSharp.Utilities;
 
 namespace AdventOfCode.Problems.Year2021;
 
-public class Day14 : Problem<ulong>
+public partial class Day14 : Problem<ulong>
 {
     // If you wanna burn your computer, use this
     private Polymer templatePolymer;
@@ -100,16 +100,19 @@ public class Day14 : Problem<ulong>
         }
     }
 
-    private record InsertionRule(ElementAdjacency Adjacency, char Inserted)
+    private partial record InsertionRule(ElementAdjacency Adjacency, char Inserted)
     {
-        private static readonly Regex regex = new(@"(?'adjacency'\w{2}) -> (?'inserted'\w)");
+        private static readonly Regex pattern = RuleRegex();
+
+        [GeneratedRegex("(?'adjacency'\\w{2}) -> (?'inserted'\\w)")]
+        private static partial Regex RuleRegex();
 
         public ElementAdjacency LeftProducedAdjacency = new(Adjacency.Left, Inserted);
         public ElementAdjacency RightProducedAdjacency = new(Inserted, Adjacency.Right);
 
         public static InsertionRule Parse(string raw)
         {
-            var groups = regex.Match(raw).Groups;
+            var groups = pattern.Match(raw).Groups;
             var adjacency = ElementAdjacency.Parse(groups["adjacency"].Value);
             char inserted = groups["inserted"].Value[0];
             return new(adjacency, inserted);

@@ -3,7 +3,7 @@ using AdventOfCSharp.Extensions;
 
 namespace AdventOfCode.Problems.Year2015;
 
-public class Day19 : Problem<int>
+public partial class Day19 : Problem<int>
 {
     private string calibrationMolecule;
     private ReplacementMachine replacementMachine;
@@ -329,9 +329,9 @@ public class Day19 : Problem<int>
         }
     }
 
-    private record RawReplacementRule(string Molecule, string Replacement)
+    private partial record RawReplacementRule(string Molecule, string Replacement)
     {
-        private static readonly Regex rulePattern = new(@"(?'molecule'\w*) =\> (?'replacement'\w*)", RegexOptions.Compiled);
+        private static readonly Regex rulePattern = RuleRegex();
 
         public static RawReplacementRule Parse(string s)
         {
@@ -340,6 +340,9 @@ public class Day19 : Problem<int>
             var replacement = groups["replacement"].Value;
             return new(molecule, replacement);
         }
+
+        [GeneratedRegex("(?'molecule'\\w*) =\\> (?'replacement'\\w*)", RegexOptions.Compiled)]
+        private static partial Regex RuleRegex();
     }
     private record CompiledReplacementRule(int Molecule, MoleculeString Replacement);
 }

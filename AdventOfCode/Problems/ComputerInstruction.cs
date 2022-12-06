@@ -2,9 +2,9 @@
 
 namespace AdventOfCode.Problems;
 
-public record ComputerInstruction(ComputerOperator Operator, string[] Arguments)
+public partial record ComputerInstruction(ComputerOperator Operator, string[] Arguments)
 {
-    private static readonly Regex statPattern = new(@"(?'operator'\w*) (?'arguments'.*)", RegexOptions.Compiled);
+    private static readonly Regex statPattern = StatPatternRegex();
 
     public static readonly ComputerInstruction NoOperation = new(ComputerOperator.NoOperation, Array.Empty<string>());
 
@@ -31,4 +31,7 @@ public record ComputerInstruction(ComputerOperator Operator, string[] Arguments)
     {
         return $"{Operator.GetMnemonic()} {string.Join(" ", Arguments)}";
     }
+
+    [GeneratedRegex("(?'operator'\\w*) (?'arguments'.*)", RegexOptions.Compiled)]
+    private static partial Regex StatPatternRegex();
 }

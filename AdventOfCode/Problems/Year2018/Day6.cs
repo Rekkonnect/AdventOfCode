@@ -4,9 +4,9 @@ using AdventOfCSharp.Extensions;
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day6 : Problem<int>
+public partial class Day6 : Problem<int>
 {
-    private static readonly Regex locationPattern = new(@"(?'x'\d*), (?'y'\d*)", RegexOptions.Compiled);
+    private static readonly Regex locationPattern = LocationRegex();
 
     private Location2D[] importantLocations;
 
@@ -143,4 +143,7 @@ public class Day6 : Problem<int>
             ImportantLocations = importantLocations;
         }
     }
+
+    [GeneratedRegex("(?'x'\\d*), (?'y'\\d*)", RegexOptions.Compiled)]
+    private static partial Regex LocationRegex();
 }

@@ -3,7 +3,7 @@ using AdventOfCode.Utilities;
 
 namespace AdventOfCode.Problems.Year2017;
 
-public class Day12 : Problem<int>
+public partial class Day12 : Problem<int>
 {
     private ProgramSystem programSystem;
 
@@ -55,9 +55,9 @@ public class Day12 : Problem<int>
         }
     }
 
-    private record PipeConnection(int OriginalID, int[] ConnectedIDs)
+    private partial record PipeConnection(int OriginalID, int[] ConnectedIDs)
     {
-        private static readonly Regex connectionPattern = new(@"(?'original'\d*) \<\-\> (?'connected'.*)", RegexOptions.Compiled);
+        private static readonly Regex connectionPattern = ConnectionRegex();
 
         public static PipeConnection Parse(string raw)
         {
@@ -66,5 +66,8 @@ public class Day12 : Problem<int>
             var connected = groups["connected"].Value.ParseInt32Array(", ");
             return new(original, connected);
         }
+
+        [GeneratedRegex("(?'original'\\d*) \\<\\-\\> (?'connected'.*)", RegexOptions.Compiled)]
+        private static partial Regex ConnectionRegex();
     }
 }

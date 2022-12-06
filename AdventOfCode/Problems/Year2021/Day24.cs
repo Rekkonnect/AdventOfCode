@@ -1,4 +1,4 @@
-﻿using AdventOfCode.Utilities;
+﻿using Garyon.Objects;
 using System.Diagnostics;
 
 namespace AdventOfCode.Problems.Year2021;

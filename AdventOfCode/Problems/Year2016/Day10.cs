@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2016;
 
-public class Day10 : Problem<int>
+public partial class Day10 : Problem<int>
 {
     private BotHandlingMachine machine;
 
@@ -240,10 +240,15 @@ public class Day10 : Problem<int>
         public override BotInstructionOperation Operation => BotInstructionOperation.ValueAssignment;
     }
 
-    private abstract record BotInstruction
+    private abstract partial record BotInstruction
     {
-        private static readonly Regex comparisonPattern = new(@"bot (?'sourceID'\d*) gives low to (?'lowType'\w*) (?'lowID'\d*) and high to (?'highType'\w*) (?'highID'\d*)", RegexOptions.Compiled);
-        private static readonly Regex valueAssignmentPattern = new(@"value (?'value'\d*) goes to bot (?'botID'\d*)", RegexOptions.Compiled);
+        private static readonly Regex comparisonPattern = ComparisonRegex();
+        private static readonly Regex valueAssignmentPattern = ValueAssignmentRegex();
+
+        [GeneratedRegex("bot (?'sourceID'\\d*) gives low to (?'lowType'\\w*) (?'lowID'\\d*) and high to (?'highType'\\w*) (?'highID'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex ComparisonRegex();
+        [GeneratedRegex("value (?'value'\\d*) goes to bot (?'botID'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex ValueAssignmentRegex();
 
         public abstract BotInstructionOperation Operation { get; }
 

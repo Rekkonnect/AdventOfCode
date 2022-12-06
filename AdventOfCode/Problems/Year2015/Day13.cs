@@ -3,7 +3,7 @@ using Garyon.Objects;
 
 namespace AdventOfCode.Problems.Year2015;
 
-public class Day13 : Problem<int>
+public partial class Day13 : Problem<int>
 {
     private DinnerTable dinnerTable;
 
@@ -122,9 +122,9 @@ public class Day13 : Problem<int>
             arrangements[rule.Active] = rule;
         }
     }
-    private record SittingArrangementRule(string Passive, string Active, int HappinessAdjustment)
+    private partial record SittingArrangementRule(string Passive, string Active, int HappinessAdjustment)
     {
-        private static readonly Regex rulePattern = new(@"(?'passive'\w*) would have (?'adjustment'[+-]\d*) happiness units by sitting next to (?'active'\w*)\.", RegexOptions.Compiled);
+        private static readonly Regex rulePattern = RuleRegex();
 
         public static SittingArrangementRule Parse(string s)
         {
@@ -135,6 +135,9 @@ public class Day13 : Problem<int>
             int adjustment = groups["adjustment"].Value.ParseInt32();
             return new(passive, active, adjustment);
         }
+
+        [GeneratedRegex("(?'passive'\\w*) would have (?'adjustment'[+-]\\d*) happiness units by sitting next to (?'active'\\w*)\\.", RegexOptions.Compiled)]
+        private static partial Regex RuleRegex();
     }
 
     private class PersonDictionary : FlexibleDictionary<string, Person>

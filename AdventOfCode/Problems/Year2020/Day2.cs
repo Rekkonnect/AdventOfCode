@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2020;
 
-public class Day2 : Problem<int>
+public partial class Day2 : Problem<int>
 {
     private PasswordPolicyRule[] passwords;
 
@@ -29,7 +29,7 @@ public class Day2 : Problem<int>
 
     private class PasswordPolicyPart2 : PasswordPolicyBase
     {
-        public override bool IsValid => (Password[Start - 1] == MatchingCharacter) ^ (Password[End - 1] == MatchingCharacter);
+        public override bool IsValid => Password[Start - 1] == MatchingCharacter ^ Password[End - 1] == MatchingCharacter;
 
         public PasswordPolicyPart2(PasswordPolicyRule rule)
             : base(rule) { }
@@ -64,9 +64,9 @@ public class Day2 : Problem<int>
             Rule = rule;
         }
     }
-    private record PasswordPolicyRule(int Start, int End, char MatchingCharacter, string Password)
+    private partial record PasswordPolicyRule(int Start, int End, char MatchingCharacter, string Password)
     {
-        private readonly static Regex policyPattern = new(@"(?'start'\d*)\-(?'end'\d*) (?'match'\w)\: (?'password'\w*)", RegexOptions.Compiled);
+        private readonly static Regex policyPattern = PolicyRegex();
 
         public static PasswordPolicyRule Parse(string s)
         {
@@ -77,5 +77,8 @@ public class Day2 : Problem<int>
             string password = groups["password"].Value;
             return new(start, end, matchingCharacter, password);
         }
+
+        [GeneratedRegex("(?'start'\\d*)\\-(?'end'\\d*) (?'match'\\w)\\: (?'password'\\w*)", RegexOptions.Compiled)]
+        private static partial Regex PolicyRegex();
     }
 }

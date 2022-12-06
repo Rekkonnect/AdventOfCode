@@ -5,7 +5,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace AdventOfCode.Problems.Year2015;
 
-public class Day6 : Problem<int>
+public partial class Day6 : Problem<int>
 {
     private Instruction[] instructions;
 
@@ -142,7 +142,7 @@ public class Day6 : Problem<int>
             int endOffsetByte = Math.DivRem(endOffset, 8, out int endOffsetBitIndex);
             int offsetByteDifference = endOffsetByte - startOffsetByte;
 
-            *(byte*)&startMask = (byte)(0xFF >> (startOffsetBitIndex));
+            *(byte*)&startMask = (byte)(0xFF >> startOffsetBitIndex);
 
             byte* adjustedMaskBytePtr, maskEndPtr;
             if (offsetByteDifference < byteCount)
@@ -159,7 +159,7 @@ public class Day6 : Problem<int>
             adjustedMaskBytePtr += offsetByteDifference % byteCount;
             maskEndPtr += byteCount;
 
-            *adjustedMaskBytePtr = (byte)(*adjustedMaskBytePtr & (0xFF << (7 - endOffsetBitIndex)));
+            *adjustedMaskBytePtr = (byte)(*adjustedMaskBytePtr & 0xFF << 7 - endOffsetBitIndex);
             for (byte* ptr = adjustedMaskBytePtr + 1; ptr < maskEndPtr; ptr++)
                 *ptr = 0;
 
@@ -179,7 +179,7 @@ public class Day6 : Problem<int>
                 byte* byteOffset = bitArray + startX * arrayAdvancement;
                 for (int x = startX; x <= endX; x++, byteOffset += arrayAdvancement)
                 {
-                    Vector256<byte> usedMask = startMask;
+                    var usedMask = startMask;
 
                     for (int yByte = startOffsetByte; yByte <= endOffsetByte; yByte += byteCount)
                     {
@@ -213,14 +213,14 @@ public class Day6 : Problem<int>
 
                 int linearIndex = x * dimension + y;
                 int byteIndex = Math.DivRem(linearIndex, 8, out int bitShift);
-                return (bits[byteIndex] & (0x80 >> bitShift)) != 0;
+                return (bits[byteIndex] & 0x80 >> bitShift) != 0;
             }
         }
     }
 
-    private record Instruction(LightAction Action, Location2D Start, Location2D End)
+    private partial record Instruction(LightAction Action, Location2D Start, Location2D End)
     {
-        private static Regex parsePattern = new(@"(.*) (\d*),(\d*) through (\d*),(\d*)", RegexOptions.Compiled);
+        private static readonly Regex parsePattern = InstructionRegex();
 
         public Location2D RectangleSize => End - Start;
 
@@ -247,6 +247,9 @@ public class Day6 : Problem<int>
                 "turn off" => LightAction.TurnOff,
             };
         }
+
+        [GeneratedRegex("(.*) (\\d*),(\\d*) through (\\d*),(\\d*)", RegexOptions.Compiled)]
+        private static partial Regex InstructionRegex();
     }
 
     private enum LightAction

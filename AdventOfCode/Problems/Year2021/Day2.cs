@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2021;
 
-public class Day2 : Problem<int>
+public partial class Day2 : Problem<int>
 {
     private Command[] commands;
 
@@ -37,9 +37,9 @@ public class Day2 : Problem<int>
         Real,
     }
 
-    private abstract record Command(int Value)
+    private abstract partial record Command(int Value)
     {
-        private static readonly Regex commandPattern = new(@"(?'kind'\w*) (?'value'\d*)");
+        private static readonly Regex commandPattern = CommandRegex();
 
         public void ApplyCommand(CommandContext commandContext, SubmarineStats stats)
         {
@@ -70,6 +70,9 @@ public class Day2 : Problem<int>
                 "up" => new UpCommand(value),
             };
         }
+
+        [GeneratedRegex("(?'kind'\\w*) (?'value'\\d*)")]
+        private static partial Regex CommandRegex();
     }
 
     private sealed record ForwardCommand(int Value)

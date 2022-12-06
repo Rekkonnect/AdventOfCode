@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day9 : Problem<long>
+public partial class Day9 : Problem<long>
 {
     private MarbleGameConfiguration config;
 
@@ -30,9 +30,9 @@ public class Day9 : Problem<long>
         return new MarbleGame(configuration).PlayGame();
     }
 
-    private record MarbleGameConfiguration(int PlayerCount, int LastMarble)
+    private partial record MarbleGameConfiguration(int PlayerCount, int LastMarble)
     {
-        private static readonly Regex configurationPattern = new(@"(?'players'\d*) players; last marble is worth (?'lastValue'\d*) points");
+        private static readonly Regex configurationPattern = ConfigurationRegex();
 
         public static MarbleGameConfiguration Parse(string raw)
         {
@@ -41,12 +41,13 @@ public class Day9 : Problem<long>
             int lastValue = groups["lastValue"].Value.ParseInt32();
             return new(players, lastValue);
         }
+
+        [GeneratedRegex("(?'players'\\d*) players; last marble is worth (?'lastValue'\\d*) points")]
+        private static partial Regex ConfigurationRegex();
     }
 
-    private class MarbleGame
+    private partial class MarbleGame
     {
-        private static readonly Regex configurationPattern = new(@"(?'players'\d*) players; last marble is worth (?'lastValue'\d*) points");
-
         private readonly MarbleGameConfiguration configuration;
 
         public int PlayerCount => configuration.PlayerCount;

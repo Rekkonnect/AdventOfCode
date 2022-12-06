@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2015;
 
-public class Day25 : FinalDay<ulong>
+public partial class Day25 : FinalDay<ulong>
 {
     private CodeGridLocation gridLocation;
 
@@ -20,9 +20,9 @@ public class Day25 : FinalDay<ulong>
         gridLocation = CodeGridLocation.Parse(FileContents);
     }
 
-    private struct CodeGridLocation
+    private partial struct CodeGridLocation
     {
-        private static readonly Regex manualLocationPattern = new(@"row (?'row'\d*), column (?'column'\d*)", RegexOptions.Compiled);
+        private static readonly Regex manualLocationPattern = ManualLocationRegex();
 
         public int Row { get; }
         public int Column { get; }
@@ -48,5 +48,8 @@ public class Day25 : FinalDay<ulong>
         }
 
         private static int Sum(int n) => (n + 1) * n / 2;
+
+        [GeneratedRegex("row (?'row'\\d*), column (?'column'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex ManualLocationRegex();
     }
 }

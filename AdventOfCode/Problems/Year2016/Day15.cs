@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2016;
 
-public class Day15 : Problem<int>
+public partial class Day15 : Problem<int>
 {
     private DiscCollection discs;
 
@@ -67,9 +67,12 @@ public class Day15 : Problem<int>
         }
     }
 
-    private record Disc(int ID, int PositionCount, int StartingPosition)
+    private partial record Disc(int ID, int PositionCount, int StartingPosition)
     {
-        private static readonly Regex discPattern = new(@"Disc #(?'id'\d*) has (?'positions'\d*) positions; at time=0, it is at position (?'start'\d*)\.", RegexOptions.Compiled);
+        private static readonly Regex discPattern = DiscRegex();
+
+        [GeneratedRegex("Disc #(?'id'\\d*) has (?'positions'\\d*) positions; at time=0, it is at position (?'start'\\d*)\\.", RegexOptions.Compiled)]
+        private static partial Regex DiscRegex();
 
         public int PositionsAwayFromZero(int time) => (PositionCount - ButtonPressedPositionAt(time)) % PositionCount;
         public int ButtonPressedPositionAt(int time) => (time + ID + StartingPosition) % PositionCount;

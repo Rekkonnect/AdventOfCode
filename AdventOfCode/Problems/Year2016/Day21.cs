@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2016;
 
-public class Day21 : Problem<string>
+public partial class Day21 : Problem<string>
 {
     private PasswordScrambler scrambler;
 
@@ -80,9 +80,12 @@ public class Day21 : Problem<string>
         }
     }
 
-    private sealed record SwapPositionOperation(int X, int Y) : TwoPositionArgumentOperation(X, Y)
+    private sealed partial record SwapPositionOperation(int X, int Y) : TwoPositionArgumentOperation(X, Y)
     {
-        private static readonly Regex swapPositionPattern = new(@"swap position (?'x'\d) with position (?'y'\d)", RegexOptions.Compiled);
+        private static readonly Regex swapPositionPattern = SwapPositionRegex();
+
+        [GeneratedRegex("swap position (?'x'\\d) with position (?'y'\\d)", RegexOptions.Compiled)]
+        private static partial Regex SwapPositionRegex();
 
         public override void Operate(ConstructableArray<char> scrambledPassword)
         {
@@ -98,9 +101,9 @@ public class Day21 : Problem<string>
             return new SwapPositionOperation(x, y);
         }
     }
-    private sealed record SwapLetterOperation(char X, char Y) : Operation
+    private sealed partial record SwapLetterOperation(char X, char Y) : Operation
     {
-        private static readonly Regex swapLetterPattern = new(@"swap letter (?'x'\w) with letter (?'y'\w)", RegexOptions.Compiled);
+        private static readonly Regex swapLetterPattern = SwapLetterRegex();
 
         public override void Operate(ConstructableArray<char> scrambledPassword)
         {
@@ -119,10 +122,16 @@ public class Day21 : Problem<string>
             char y = groups["y"].Value[0];
             return new SwapLetterOperation(x, y);
         }
+
+        [GeneratedRegex("swap letter (?'x'\\w) with letter (?'y'\\w)", RegexOptions.Compiled)]
+        private static partial Regex SwapLetterRegex();
     }
-    private sealed record RotateOperation(int Rotation) : Operation
+    private sealed partial record RotateOperation(int Rotation) : Operation
     {
-        private static readonly Regex rotatePattern = new(@"rotate (?'direction'\w*) (?'x'\d) step", RegexOptions.Compiled);
+        private static readonly Regex rotatePattern = RotateRegex();
+
+        [GeneratedRegex("rotate (?'direction'\\w*) (?'x'\\d) step", RegexOptions.Compiled)]
+        private static partial Regex RotateRegex();
 
         public override void Operate(ConstructableArray<char> scrambledPassword)
         {
@@ -149,9 +158,12 @@ public class Day21 : Problem<string>
             return new RotateOperation(rotation);
         }
     }
-    private sealed record RotateBasedPositionOperation(char X) : Operation
+    private sealed partial record RotateBasedPositionOperation(char X) : Operation
     {
-        private static readonly Regex rotateBasedPositionPattern = new(@"rotate based on position of letter (?'x'\w)", RegexOptions.Compiled);
+        private static readonly Regex rotateBasedPositionPattern = RotateBasedPositionRegex();
+
+        [GeneratedRegex("rotate based on position of letter (?'x'\\w)", RegexOptions.Compiled)]
+        private static partial Regex RotateBasedPositionRegex();
 
         private static readonly FlexibleInitializableValueDictionary<int, RotateBasedPositionInversionDictionary> rotationMappings = new();
 
@@ -230,9 +242,12 @@ public class Day21 : Problem<string>
             return new RotateBasedPositionOperation(x);
         }
     }
-    private sealed record ReversePositionsOperation(int X, int Y) : TwoPositionArgumentOperation(X, Y)
+    private sealed partial record ReversePositionsOperation(int X, int Y) : TwoPositionArgumentOperation(X, Y)
     {
-        private static readonly Regex reversePositionsPattern = new(@"reverse positions (?'x'\d) through (?'y'\d)", RegexOptions.Compiled);
+        private static readonly Regex reversePositionsPattern = ReversePositionsRegex();
+
+        [GeneratedRegex("reverse positions (?'x'\\d) through (?'y'\\d)", RegexOptions.Compiled)]
+        private static partial Regex ReversePositionsRegex();
 
         public override void Operate(ConstructableArray<char> scrambledPassword)
         {
@@ -248,9 +263,12 @@ public class Day21 : Problem<string>
             return new ReversePositionsOperation(x, y);
         }
     }
-    private sealed record MovePositionOperation(int X, int Y) : TwoPositionArgumentOperation(X, Y)
+    private sealed partial record MovePositionOperation(int X, int Y) : TwoPositionArgumentOperation(X, Y)
     {
-        private static readonly Regex movePositionPattern = new(@"move position (?'x'\d) to position (?'y'\d)", RegexOptions.Compiled);
+        private static readonly Regex movePositionPattern = MovePositionRegex();
+
+        [GeneratedRegex("move position (?'x'\\d) to position (?'y'\\d)", RegexOptions.Compiled)]
+        private static partial Regex MovePositionRegex();
 
         public override void Operate(ConstructableArray<char> scrambledPassword)
         {
@@ -296,16 +314,13 @@ public class Day21 : Problem<string>
 
         public static Operation ParseOperation(string raw)
         {
-            Operation result = null;
-
-            result ??= SwapPositionOperation.Parse(raw);
-            result ??= SwapLetterOperation.Parse(raw);
-            result ??= RotateOperation.Parse(raw);
-            result ??= RotateBasedPositionOperation.Parse(raw);
-            result ??= ReversePositionsOperation.Parse(raw);
-            result ??= MovePositionOperation.Parse(raw);
-
-            return result;
+            return SwapPositionOperation.Parse(raw)
+                ?? SwapLetterOperation.Parse(raw)
+                ?? RotateOperation.Parse(raw)
+                ?? RotateBasedPositionOperation.Parse(raw)
+                ?? ReversePositionsOperation.Parse(raw)
+                ?? MovePositionOperation.Parse(raw)
+                as Operation;
         }
     }
 

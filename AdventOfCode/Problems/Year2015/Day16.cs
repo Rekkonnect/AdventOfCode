@@ -3,9 +3,7 @@ using Garyon.Objects;
 
 namespace AdventOfCode.Problems.Year2015;
 
-using GiftDictionary = Dictionary<string, OpenRange<int>>;
-
-public class Day16 : Problem<int>
+public partial class Day16 : Problem<int>
 {
     private static GiftDictionary receivedGiftsPart1 = new()
     {
@@ -24,12 +22,11 @@ public class Day16 : Problem<int>
 
     static Day16()
     {
-        // TODO: Explore better syntax for replacing these values
         receivedGiftsPart2 = new(receivedGiftsPart1);
-        receivedGiftsPart2["cats"] = receivedGiftsPart2["cats"] with { ComparisonKinds = ComparisonKinds.Greater };
-        receivedGiftsPart2["trees"] = receivedGiftsPart2["trees"] with { ComparisonKinds = ComparisonKinds.Greater };
-        receivedGiftsPart2["pomeranians"] = receivedGiftsPart2["pomeranians"] with { ComparisonKinds = ComparisonKinds.Less };
-        receivedGiftsPart2["goldfish"] = receivedGiftsPart2["goldfish"] with { ComparisonKinds = ComparisonKinds.Less };
+        receivedGiftsPart2.ChangeComparisonKinds("cats", ComparisonKinds.Greater);
+        receivedGiftsPart2.ChangeComparisonKinds("trees", ComparisonKinds.Greater);
+        receivedGiftsPart2.ChangeComparisonKinds("pomeranians", ComparisonKinds.Less);
+        receivedGiftsPart2.ChangeComparisonKinds("goldfish", ComparisonKinds.Less);
     }
 
     private FamilyGifts gifts;
@@ -52,6 +49,21 @@ public class Day16 : Problem<int>
         gifts = new(ParsedFileLines(AuntGifts.Parse));
     }
 
+    private class GiftDictionary : Dictionary<string, OpenInterval<int>>
+    {
+        public GiftDictionary() { }
+        public GiftDictionary(IDictionary<string, OpenInterval<int>> dictionary)
+            : base(dictionary) { }
+
+        public void ChangeComparisonKinds(string key, ComparisonKinds comparisonKinds)
+        {
+            this[key] = this[key] with
+            {
+                ComparisonKinds = comparisonKinds
+            };
+        }
+    }
+
     private class FamilyGifts
     {
         private readonly AuntGifts[] auntGifts;
@@ -72,9 +84,9 @@ public class Day16 : Problem<int>
         }
     }
 
-    private class AuntGifts
+    private partial class AuntGifts
     {
-        private static readonly Regex auntPattern = new(@"Sue (?'id'\d*): (?'gifts'.*)", RegexOptions.Compiled);
+        private static readonly Regex auntPattern = AuntRegex();
         private static readonly Regex giftPattern = new(@"(?'name'\w*): (?'number'\d*)", RegexOptions.Compiled);
 
         public int SueID { get; }
@@ -89,7 +101,7 @@ public class Day16 : Problem<int>
         public bool MatchesGifts(GiftDictionary expectedGifts)
         {
             foreach (var g in Gifts)
-                if (!expectedGifts[g.Key].MatchesComparison(g.Value))
+                if (!expectedGifts[g.Key].Contains(g.Value))
                     return false;
 
             return true;
@@ -109,5 +121,8 @@ public class Day16 : Problem<int>
 
             return new(sueID, gifts);
         }
+
+        [GeneratedRegex("Sue (?'id'\\d*): (?'gifts'.*)", RegexOptions.Compiled)]
+        private static partial Regex AuntRegex();
     }
 }

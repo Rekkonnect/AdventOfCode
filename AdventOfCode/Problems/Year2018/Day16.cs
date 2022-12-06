@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day16 : Problem<int>
+public partial class Day16 : Problem<int>
 {
     private MonitoredOperationResult[] monitoredResults;
     private Operation[] operations;
@@ -85,9 +85,9 @@ public class Day16 : Problem<int>
         }
     }
 
-    private record MonitoredOperationResult(RegisterState InitialState, Operation Operation, RegisterState ResultingState)
+    private partial record MonitoredOperationResult(RegisterState InitialState, Operation Operation, RegisterState ResultingState)
     {
-        private static readonly Regex resultPattern = new(@"Before: \[(?'initial'[\d, ]*)\]\n(?'operation'[\d ]*)\nAfter:  \[(?'result'[\d, ]*)\]", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex resultPattern = ResultRegex();
 
         public OpcodeCandidates OpcodeCandidates => InitialState.GetCandidates(Operation, ResultingState);
         public int CandidateOpcodeCount => OpcodeCandidates.CandidateOpcodeCount;
@@ -109,6 +109,9 @@ public class Day16 : Problem<int>
         {
             return new(raw.ParseInt32Array(", "));
         }
+
+        [GeneratedRegex("Before: \\[(?'initial'[\\d, ]*)\\]\\n(?'operation'[\\d ]*)\\nAfter:  \\[(?'result'[\\d, ]*)\\]", RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex ResultRegex();
     }
 
     private record Operation(int Opcode, int InputA, int InputB, int Output)

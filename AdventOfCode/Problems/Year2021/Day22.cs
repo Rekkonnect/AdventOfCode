@@ -4,7 +4,7 @@ using Garyon.Objects;
 
 namespace AdventOfCode.Problems.Year2021;
 
-public class Day22 : Problem<ulong>
+public partial class Day22 : Problem<ulong>
 {
     private CommandList commands;
 
@@ -254,13 +254,13 @@ public class Day22 : Problem<ulong>
         }
     }
 
-    private sealed record Command(LightState State, Rectangle3D Rectangle)
+    private sealed partial record Command(LightState State, Rectangle3D Rectangle)
     {
         // It would help if the same pattern could be abstracted away
-        private static readonly Regex commandPattern = new(@"(?'state'\w*) " +
-            @"x=(?'startX'-?\d*)\.\.(?'endX'-?\d*)," +
-            @"y=(?'startY'-?\d*)\.\.(?'endY'-?\d*)," +
-            @"z=(?'startZ'-?\d*)\.\.(?'endZ'-?\d*)");
+        private static readonly Regex commandPattern = ComandRegex();
+
+        [GeneratedRegex("(?'state'\\w*) x=(?'startX'-?\\d*)\\.\\.(?'endX'-?\\d*),y=(?'startY'-?\\d*)\\.\\.(?'endY'-?\\d*),z=(?'startZ'-?\\d*)\\.\\.(?'endZ'-?\\d*)")]
+        private static partial Regex ComandRegex();
 
         public static Command Parse(string raw)
         {

@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day17 : Problem<int>
+public partial class Day17 : Problem<int>
 {
     private WaterSystem system;
 
@@ -51,9 +51,9 @@ public class Day17 : Problem<int>
         }
     }
 
-    private record ClayVein(Range X, Range Y)
+    private partial record ClayVein(Range X, Range Y)
     {
-        private static readonly Regex veinPattern = new(@"(?'a'[xy])=(?'aValue'\d*), (?'b'[xy])=(?'bStart'\d*)\.\.(?'bEnd'\d*)", RegexOptions.Compiled);
+        private static readonly Regex veinPattern = VeinRegex();
 
         public static ClayVein Parse(string raw)
         {
@@ -88,6 +88,9 @@ public class Day17 : Problem<int>
                     break;
             }
         }
+
+        [GeneratedRegex("(?'a'[xy])=(?'aValue'\\d*), (?'b'[xy])=(?'bStart'\\d*)\\.\\.(?'bEnd'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex VeinRegex();
     }
 
     private enum GroundType

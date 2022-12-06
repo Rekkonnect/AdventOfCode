@@ -6,7 +6,7 @@ using System.Collections.Immutable;
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day23 : Problem<int>
+public partial class Day23 : Problem<int>
 {
     private NanobotCollection nanobots;
 
@@ -198,9 +198,9 @@ public class Day23 : Problem<int>
         #endregion
     }
 
-    private record struct Nanobot(int ID, Location3D Position, int Radius)
+    private partial record struct Nanobot(int ID, Location3D Position, int Radius)
     {
-        private static readonly Regex nanobotDescriptionPattern = new(@"pos=<(?'position'[\-\d\,]*)>, r=(?'radius'.*)");
+        private static readonly Regex nanobotDescriptionPattern = NanobotDescriptionRegex();
 
         public Location3D LeftmostPosition => Position - (Radius, 0, 0);
         public Octahedron SignalOctahedron => Octahedron.Regular(LeftmostPosition, Radius);
@@ -238,5 +238,8 @@ public class Day23 : Problem<int>
         {
             return ID;
         }
+
+        [GeneratedRegex("pos=<(?'position'[\\-\\d\\,]*)>, r=(?'radius'.*)")]
+        private static partial Regex NanobotDescriptionRegex();
     }
 }

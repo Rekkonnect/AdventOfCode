@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2017;
 
-public class Day13 : Problem<int>
+public partial class Day13 : Problem<int>
 {
     private Firewall firewall;
 
@@ -60,9 +60,9 @@ public class Day13 : Problem<int>
         }
     }
 
-    private record Layer(int Depth, int Range)
+    private partial record Layer(int Depth, int Range)
     {
-        private static readonly Regex layerPattern = new(@"(?'depth'\d*): (?'range'\d*)", RegexOptions.Compiled);
+        private static readonly Regex layerPattern = LayerRegex();
 
         public int ScannerCycleTime => (Range - 1) * 2;
         public int Severity => Depth * Range;
@@ -86,5 +86,8 @@ public class Day13 : Problem<int>
             var range = groups["range"].Value.ParseInt32();
             return new(depth, range);
         }
+
+        [GeneratedRegex("(?'depth'\\d*): (?'range'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex LayerRegex();
     }
 }

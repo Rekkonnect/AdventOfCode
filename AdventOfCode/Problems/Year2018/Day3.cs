@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day3 : Problem<int>
+public partial class Day3 : Problem<int>
 {
     private FabricGrid grid;
 
@@ -132,9 +132,9 @@ public class Day3 : Problem<int>
         }
     }
 
-    private record Claim(int ID, int StartX, int StartY, int Width, int Height)
+    private partial record Claim(int ID, int StartX, int StartY, int Width, int Height)
     {
-        private static readonly Regex claimPattern = new(@"#(?'id'\d*) @ (?'startX'\d*),(?'startY'\d*): (?'width'\d*)x(?'height'\d*)", RegexOptions.Compiled);
+        private static readonly Regex claimPattern = ClaimRegex();
 
         public int EndX => StartX + Width - 1;
         public int EndY => StartY + Height - 1;
@@ -162,5 +162,8 @@ public class Day3 : Problem<int>
             int height = groups["height"].Value.ParseInt32();
             return new(id, startX, startY, width, height);
         }
+
+        [GeneratedRegex("#(?'id'\\d*) @ (?'startX'\\d*),(?'startY'\\d*): (?'width'\\d*)x(?'height'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex ClaimRegex();
     }
 }

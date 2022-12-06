@@ -3,7 +3,7 @@ using AdventOfCSharp.Extensions;
 
 namespace AdventOfCode.Problems.Year2016;
 
-public class Day8 : Problem<int, IGlyphGrid>
+public partial class Day8 : Problem<int, IGlyphGrid>
 {
     private PixelAdjustmentInstruction[] instructions;
     private Screen screen;
@@ -76,11 +76,18 @@ public class Day8 : Problem<int, IGlyphGrid>
         On,
     }
 
-    private record PixelAdjustmentInstruction(PixelAdjustmentOperation Operation, int A, int B)
+    private partial record PixelAdjustmentInstruction(PixelAdjustmentOperation Operation, int A, int B)
     {
-        private static readonly Regex rectanglePattern = new(@"rect (?'a'\d*)x(?'b'\d*)", RegexOptions.Compiled);
-        private static readonly Regex rotateRowPattern = new(@"rotate row y=(?'a'\d*) by (?'b'\d*)", RegexOptions.Compiled);
-        private static readonly Regex rotateColumnPattern = new(@"rotate column x=(?'a'\d*) by (?'b'\d*)", RegexOptions.Compiled);
+        private static readonly Regex rectanglePattern = RectangleRegex();
+        private static readonly Regex rotateRowPattern = RotateRowRegex();
+        private static readonly Regex rotateColumnPattern = RotateColumnRegex();
+
+        [GeneratedRegex("rect (?'a'\\d*)x(?'b'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex RectangleRegex();
+        [GeneratedRegex("rotate row y=(?'a'\\d*) by (?'b'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex RotateRowRegex();
+        [GeneratedRegex("rotate column x=(?'a'\\d*) by (?'b'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex RotateColumnRegex();
 
         public static PixelAdjustmentInstruction Parse(string raw)
         {

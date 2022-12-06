@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2016;
 
-public class Day3 : Problem<int>
+public partial class Day3 : Problem<int>
 {
     private TriangleSides[] triangles;
 
@@ -37,9 +37,9 @@ public class Day3 : Problem<int>
         triangles = ParsedFileLines(TriangleSides.Parse);
     }
 
-    private record TriangleSides(int A, int B, int C)
+    private partial record TriangleSides(int A, int B, int C)
     {
-        private static readonly Regex sidesPattern = new(@"\s*(?'a'\d*)\s*(?'b'\d*)\s*(?'c'\d*)", RegexOptions.Compiled);
+        private static readonly Regex sidesPattern = SidesRegex();
 
         public bool ValidTriangle
         {
@@ -66,5 +66,8 @@ public class Day3 : Problem<int>
             int c = groups["c"].Value.ParseInt32();
             return new(a, b, c);
         }
+
+        [GeneratedRegex("\\s*(?'a'\\d*)\\s*(?'b'\\d*)\\s*(?'c'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex SidesRegex();
     }
 }

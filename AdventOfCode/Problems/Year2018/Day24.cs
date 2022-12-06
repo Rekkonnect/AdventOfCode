@@ -3,7 +3,7 @@ using AdventOfCSharp.Extensions;
 
 namespace AdventOfCode.Problems.Year2018;
 
-public class Day24 : Problem<int>
+public partial class Day24 : Problem<int>
 {
     private InfectionCombat combat;
 
@@ -14,7 +14,7 @@ public class Day24 : Problem<int>
     public override int SolvePart2()
     {
         int maxBoost = 1;
-        InfectionCombat targetEmboostedCombat = combat;
+        var targetEmboostedCombat = combat;
 
         while (true)
         {
@@ -62,9 +62,9 @@ public class Day24 : Problem<int>
         Immunity = 0,
     }
 
-    private sealed class DamageModificationRules
+    private sealed partial class DamageModificationRules
     {
-        private static readonly Regex modificationDescriptionPattern = new(@"(?'modification'\w*) to (?'types'.*)");
+        private static readonly Regex modificationDescriptionPattern = ModificationDescriptionRegex();
 
         private readonly string[] weaknesses;
         private readonly string[] immunities;
@@ -127,10 +127,13 @@ public class Day24 : Problem<int>
                 }
             }
         }
+
+        [GeneratedRegex("(?'modification'\\w*) to (?'types'.*)")]
+        private static partial Regex ModificationDescriptionRegex();
     }
-    private sealed record ArmyGroup(int InitialUnitCount, int UnitHP, DamageModificationRules Modifications, Attack Attack, int Initiative)
+    private sealed partial record ArmyGroup(int InitialUnitCount, int UnitHP, DamageModificationRules Modifications, Attack Attack, int Initiative)
     {
-        private static readonly Regex groupPattern = new(@"(?'units'\d*) units each with (?'hp'\d*) hit points (\((?'modifications'[\w ,;]*)\) )?with an attack that does (?'attackDamage'\d*) (?'damageType'\w*) damage at initiative (?'initiative'\d*)");
+        private static readonly Regex groupPattern = GroupRegex();
 
         public int CurrentUnitCount { get; private set; } = InitialUnitCount;
 
@@ -200,6 +203,9 @@ public class Day24 : Problem<int>
 
             return SelectionOrder(left, right);
         }
+
+        [GeneratedRegex("(?'units'\\d*) units each with (?'hp'\\d*) hit points (\\((?'modifications'[\\w ,;]*)\\) )?with an attack that does (?'attackDamage'\\d*) (?'damageType'\\w*) damage at initiative (?'initiative'\\d*)")]
+        private static partial Regex GroupRegex();
     }
     private record struct Attack(int Damage, string DamageType)
     {

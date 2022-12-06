@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2016;
 
-public class Day20 : Problem<uint>
+public partial class Day20 : Problem<uint>
 {
     private BlacklistedAddresses addresses;
 
@@ -71,9 +71,12 @@ public class Day20 : Problem<uint>
             ranges.Add(merged);
         }
     }
-    private struct AddressRange
+    private partial struct AddressRange
     {
-        private static readonly Regex rangePattern = new(@"(?'start'\d*)\-(?'end'\d*)", RegexOptions.Compiled);
+        private static readonly Regex rangePattern = RangeRegex();
+
+        [GeneratedRegex("(?'start'\\d*)\\-(?'end'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex RangeRegex();
 
         public uint Start { get; set; }
         public uint End { get; set; }

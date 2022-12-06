@@ -2,7 +2,7 @@
 
 namespace AdventOfCode.Problems.Year2016;
 
-public class Day7 : Problem<int>
+public partial class Day7 : Problem<int>
 {
     private IPv7[] ips;
 
@@ -24,9 +24,9 @@ public class Day7 : Problem<int>
         ips = ParsedFileLines(IPv7.Parse);
     }
 
-    private record IPv7(IPv7Sequence[] Sequences)
+    private partial record IPv7(IPv7Sequence[] Sequences)
     {
-        private static readonly Regex ipPattern = new(@"(?'left'\w*)\[(?'hypernet'\w*)\](?'right'\w*)", RegexOptions.Compiled);
+        private static readonly Regex ipPattern = IPRegex();
 
         private bool? supportsTLS;
         private bool? supportsSSL;
@@ -111,6 +111,9 @@ public class Day7 : Problem<int>
 
             return result.ToString();
         }
+
+        [GeneratedRegex("(?'left'\\w*)\\[(?'hypernet'\\w*)\\](?'right'\\w*)", RegexOptions.Compiled)]
+        private static partial Regex IPRegex();
     }
     private record IPv7Sequence(string Characters, bool IsHypernetSequence)
     {

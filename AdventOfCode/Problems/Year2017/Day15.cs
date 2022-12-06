@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2017;
 
-public class Day15 : Problem<int>
+public partial class Day15 : Problem<int>
 {
     private Duel duel;
 
@@ -77,9 +77,9 @@ public class Day15 : Problem<int>
         }
     }
 
-    private class Duel
+    private partial class Duel
     {
-        private static readonly Regex generatorPattern = new(@"Generator (?'name'\w) starts with (?'startingValue'\d*)", RegexOptions.Compiled);
+        private static readonly Regex generatorPattern = GeneratorRegex();
 
         public GeneratorA A { get; }
         public GeneratorB B { get; }
@@ -145,5 +145,8 @@ public class Day15 : Problem<int>
 
             return new(a, b);
         }
+
+        [GeneratedRegex("Generator (?'name'\\w) starts with (?'startingValue'\\d*)", RegexOptions.Compiled)]
+        private static partial Regex GeneratorRegex();
     }
 }

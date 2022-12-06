@@ -5,7 +5,7 @@ using AdventOfCode.Utilities.TwoDimensions;
 
 namespace AdventOfCode.Problems.Year2016;
 
-public class Day22 : Problem<int>
+public partial class Day22 : Problem<int>
 {
     private StorageCluster cluster;
 
@@ -90,9 +90,9 @@ public class Day22 : Problem<int>
         }
     }
 
-    private struct StorageDisk : IEquatable<StorageDisk>
+    private partial struct StorageDisk : IEquatable<StorageDisk>
     {
-        private static readonly Regex diskPattern = new(@"node-x(?'x'\d*)-y(?'y'\d*)\s*(?'size'\d*)T\s*(?'used'\d*)T", RegexOptions.Compiled);
+        private static readonly Regex diskPattern = DiskRegex();
 
         public int X { get; }
         public int Y { get; }
@@ -137,10 +137,13 @@ public class Day22 : Problem<int>
         public static int DescendingUsed(StorageDisk left, StorageDisk right) => right.Used.CompareTo(left.Used);
         public static int DescendingAvailable(StorageDisk left, StorageDisk right) => right.Available.CompareTo(left.Available);
 
-        public override int GetHashCode() => (X << 5) | Y;
+        public override int GetHashCode() => X << 5 | Y;
         public override string ToString()
         {
             return $"{X,2}, {Y,2} - Used {Used,3}T / {Size,3}T - Available {Available,3}T";
         }
+
+        [GeneratedRegex("node-x(?'x'\\d*)-y(?'y'\\d*)\\s*(?'size'\\d*)T\\s*(?'used'\\d*)T", RegexOptions.Compiled)]
+        private static partial Regex DiskRegex();
     }
 }

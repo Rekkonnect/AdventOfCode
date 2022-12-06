@@ -4,7 +4,7 @@ using AdventOfCSharp.Extensions;
 
 namespace AdventOfCode.Problems.Year2017;
 
-public class Day20 : Problem<int>
+public partial class Day20 : Problem<int>
 {
     private ParticleSystem particleSystem;
 
@@ -135,7 +135,7 @@ public class Day20 : Problem<int>
             // Is this actually correct?
             var positionDifference = position.SignedDifferenceFrom(other.position);
             var accelerationDifference = acceleration.SignedDifferenceFrom(other.acceleration);
-            return positionDifference == accelerationDifference && (acceleration + other.acceleration == Location3D.Zero);
+            return positionDifference == accelerationDifference && acceleration + other.acceleration == Location3D.Zero;
         }
 
         public void Iterate()
@@ -152,10 +152,15 @@ public class Day20 : Problem<int>
         }
     }
 
-    private record Particle(Location3D Position, Location3D Velocity, Location3D Acceleration)
+    private partial record Particle(Location3D Position, Location3D Velocity, Location3D Acceleration)
     {
-        private static readonly Regex particlePattern = new(@"p=(?'position'.*), v=(?'velocity'.*), a=(?'acceleration'.*)", RegexOptions.Compiled);
-        private static readonly Regex locationPattern = new(@"\<(?'x'[-\d]*),(?'y'[-\d]*),(?'z'[-\d]*)\>", RegexOptions.Compiled);
+        private static readonly Regex particlePattern = ParticleRegex();
+        private static readonly Regex locationPattern = LocationRegex();
+
+        [GeneratedRegex("p=(?'position'.*), v=(?'velocity'.*), a=(?'acceleration'.*)", RegexOptions.Compiled)]
+        private static partial Regex ParticleRegex();
+        [GeneratedRegex("\\<(?'x'[-\\d]*),(?'y'[-\\d]*),(?'z'[-\\d]*)\\>", RegexOptions.Compiled)]
+        private static partial Regex LocationRegex();
 
         public static Particle Parse(string raw)
         {

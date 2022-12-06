@@ -1,6 +1,6 @@
 ﻿namespace AdventOfCode.Problems.Year2021;
 
-public class Day21 : Problem<int, ulong>
+public partial class Day21 : Problem<int, ulong>
 {
     private PlayerContainer container;
 
@@ -344,14 +344,14 @@ public class Day21 : Problem<int, ulong>
         public PlayerState AdvancedBy(int moves)
         {
             int advancedIndex = CurrentPosition + moves - 1;
-            int nextPosition = (advancedIndex % 10) + 1;
+            int nextPosition = advancedIndex % 10 + 1;
             return new(nextPosition, Score + nextPosition);
         }
     }
 
-    private class Player
+    private partial class Player
     {
-        private static readonly Regex playerPattern = new(@"Player (?'id'\d) starting position: (?'cards'\d*)");
+        private static readonly Regex playerPattern = PlayerRegex();
 
         public int ID { get; }
 
@@ -381,5 +381,8 @@ public class Day21 : Problem<int, ulong>
             int startingPosition = groups["cards"].Value.ParseInt32();
             return new(playerID, startingPosition);
         }
+
+        [GeneratedRegex("Player (?'id'\\d) starting position: (?'cards'\\d*)")]
+        private static partial Regex PlayerRegex();
     }
 }
