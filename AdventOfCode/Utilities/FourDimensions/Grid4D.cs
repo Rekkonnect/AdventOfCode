@@ -61,16 +61,14 @@ public class Grid4D<T> : BaseGrid<T, Location4D>
     {
         Values = new T[Width = width, Height = height, Depth = depth, DepthW = depthW];
         if (!defaultValue.Equals(default(T)))
-            for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                    for (int z = 0; z < depth; z++)
-                        for (int w = 0; w < depthW; w++)
-                            Values[x, y, z, w] = defaultValue;
+        {
+            Values.AsSpan().Fill(defaultValue);
+        }
 
         if (initializeValueCounters)
         {
             ValueCounters = new();
-            ValueCounters.Add(defaultValue, width * height * depth);
+            ValueCounters.Add(defaultValue, width * height * depth * depthW);
         }
     }
 

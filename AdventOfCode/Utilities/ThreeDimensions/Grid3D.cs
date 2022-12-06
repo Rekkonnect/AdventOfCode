@@ -56,10 +56,9 @@ public class Grid3D<T> : BaseGrid<T, Location3D>
     {
         Values = new T[Width = width, Height = height, Depth = depth];
         if (!defaultValue.Equals(default(T)))
-            for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                    for (int z = 0; z < depth; z++)
-                        Values[x, y, z] = defaultValue;
+        {
+            Values.AsSpan().Fill(defaultValue);
+        }
 
         if (initializeValueCounters)
         {

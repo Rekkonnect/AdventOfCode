@@ -73,9 +73,9 @@ public class Grid2D<T> : BaseGrid<T, Location2D>, IEquatable<Grid2D<T>>
     {
         Values = new T[Width = width, Height = height];
         if (!defaultValue.Equals(default(T)))
-            for (int x = 0; x < width; x++)
-                for (int y = 0; y < height; y++)
-                    Values[x, y] = defaultValue;
+        {
+            Values.AsSpan().Fill(defaultValue);
+        }
 
         if (initializeValueCounters)
             ValueCounters = new(Values.Cast<T>());
