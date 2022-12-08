@@ -1,5 +1,4 @@
-﻿using AdventOfCode.Functions;
-using AdventOfCode.Utilities.FourDimensions;
+﻿using AdventOfCode.Utilities.FourDimensions;
 using AdventOfCode.Utilities.ThreeDimensions;
 using AdventOfCSharp.Utilities;
 using Garyon.Exceptions;
@@ -527,6 +526,15 @@ public class Grid2D<T> : BaseGrid<T, Location2D>, IEquatable<Grid2D<T>>
     {
         // Do not take too much time to generate the hash code
         return ValueCounters.GetHashCode();
+    }
+
+    public ref T GetRef(int x, int y)
+    {
+        return ref Values[x, y];
+    }
+    public ref T GetRef(Index x, Index y)
+    {
+        return ref Values[x.GetOffset(Width), y.GetOffset(Height)];
     }
 
     public virtual T this[Range x, Range y]
