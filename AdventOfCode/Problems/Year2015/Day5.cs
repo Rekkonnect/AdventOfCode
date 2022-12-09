@@ -102,7 +102,7 @@ public class Day5 : Problem<int>
             return true;
         }
 
-        private static bool HasVowels(string s) => s.CountAtLeast(IsVowel, 3);
+        private static bool HasVowels(string s) => s.CountAtLeast((Predicate<char>)IsVowel, 3);
         private static bool HasConsecutiveLetter(string s)
         {
             char previous = s[0];

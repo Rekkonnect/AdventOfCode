@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Functions;
+using System.Numerics;
 
 namespace AdventOfCode.Utilities.TwoDimensions;
 
@@ -33,6 +34,8 @@ public struct Rectangle
     public int Width => Math.Abs(Top - Bottom) + 1;
     public int Height => Math.Abs(Left - Right) + 1;
 
+    public Location2D Dimensions => new(Width, Height);
+
     public int Area => Width * Height;
 
     public Rectangle(int left, int right, int bottom, int top)
@@ -54,4 +57,25 @@ public struct Rectangle
     public bool IsWithinX(int x) => MathFunctions.BetweenInclusive(x, Left, Right);
     public bool IsWithinY(int y) => MathFunctions.BetweenInclusive(y, Top, Bottom);
     public bool IsWithin(Location2D point) => IsWithinX(point.X) && IsWithinY(point.Y);
+
+    public static Rectangle FromBounds(Location2D a, Location2D b)
+    {
+        MinMax(a.X, b.X, out int minX, out int maxX);
+        MinMax(a.Y, b.Y, out int minY, out int maxY);
+        return new(minX, maxX, minY, maxY);
+    }
+    private static void MinMax<T>(T a, T b, out T min, out T max)
+        where T : struct, INumber<T>
+    {
+        if (a < b)
+        {
+            min = a;
+            max = b;
+        }
+        else
+        {
+            min = b;
+            max = a;
+        }
+    }
 }

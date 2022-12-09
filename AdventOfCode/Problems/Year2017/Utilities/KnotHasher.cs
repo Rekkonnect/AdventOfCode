@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Utilities;
+using UInt128 = UltimateOrb.UInt128;
 
 namespace AdventOfCode.Problems.Year2017.Utilities;
 
