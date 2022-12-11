@@ -10,23 +10,11 @@ public static class StringExtensions
     // TODO: Migrate to Garyon with documentation
     public static int ParseFirstInt32(this string s, int startingIndex, out int endIndex)
     {
-        if (s.TryParseFirstInt32(startingIndex, out int value, out endIndex))
-            return value;
-
-        ThrowHelper.Throw<ArgumentException>("The number could not be parsed from that index.");
-        return -1;
+        return s.AsSpan().ParseFirstInt32(startingIndex, out endIndex);
     }
     public static bool TryParseFirstInt32(this string s, int startingIndex, out int value, out int endIndex)
     {
-        endIndex = startingIndex;
-        if (s[endIndex] is '+' or '-')
-            endIndex++;
-
-        for (; endIndex < s.Length; endIndex++)
-            if (!s[endIndex].IsDigit())
-                break;
-
-        return s[startingIndex..endIndex].TryParseInt32(out value);
+        return s.AsSpan().TryParseFirstInt32(startingIndex, out value, out endIndex);
     }
 
     // Too implementation-specific
@@ -124,31 +112,11 @@ public static class StringExtensions
     /// </returns>
     public static bool SplitOnceSpan(this string s, string delimiter, out SpanString left, out SpanString right)
     {
-        var span = s.AsSpan();
-        left = span;
-        right = default;
-
-        int index = s.IndexOf(delimiter, out int nextIndex);
-        if (index < 0)
-            return false;
-
-        left = span[..index];
-        right = span[nextIndex..];
-        return true;
+        return s.AsSpan().SplitOnceSpan(delimiter, out left, out right);
     }
     /// <inheritdoc cref="SplitOnceSpan(string, string, out SpanString, out SpanString)"/>
     public static bool SplitOnceSpan(this string s, char delimiter, out SpanString left, out SpanString right)
     {
-        var span = s.AsSpan();
-        left = span;
-        right = default;
-
-        int index = s.IndexOf(delimiter, out int nextIndex);
-        if (index < 0)
-            return false;
-
-        left = span[..index];
-        right = span[nextIndex..];
-        return true;
+        return s.AsSpan().SplitOnceSpan(delimiter, out left, out right);
     }
 }

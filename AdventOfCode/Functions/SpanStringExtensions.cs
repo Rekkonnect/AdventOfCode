@@ -1,6 +1,9 @@
 ﻿namespace AdventOfCode.Functions;
 
+using Garyon.Exceptions;
 using System;
+using System.Globalization;
+using static AdventOfCode.Functions.SpanStringExtensions;
 
 // For convenience when typing the type out
 using SpanString = ReadOnlySpan<char>;
@@ -23,6 +26,78 @@ public static class SpanStringExtensions
     public static ulong ParseUInt64(this SpanString spanString)
     {
         return ulong.Parse(spanString);
+    }
+
+    // Bloating the library
+    public static bool TryParseInt32(this SpanString spanString, out int value)
+    {
+        return int.TryParse(spanString, out value);
+    }
+    public static bool TryParseInt64(this SpanString spanString, out long value)
+    {
+        return long.TryParse(spanString, out value);
+    }
+    public static bool TryParseUInt32(this SpanString spanString, out uint value)
+    {
+        return uint.TryParse(spanString, out value);
+    }
+    public static bool TryParseUInt64(this SpanString spanString, out ulong value)
+    {
+        return ulong.TryParse(spanString, out value);
+    }
+
+    public static bool TryParseInt32(this SpanString spanString, NumberStyles numberStyles, IFormatProvider? formatProvider, out int value)
+    {
+        return int.TryParse(spanString, numberStyles, formatProvider, out value);
+    }
+    public static bool TryParseInt64(this SpanString spanString, NumberStyles numberStyles, IFormatProvider? formatProvider, out long value)
+    {
+        return long.TryParse(spanString, numberStyles, formatProvider, out value);
+    }
+    public static bool TryParseUInt32(this SpanString spanString, NumberStyles numberStyles, IFormatProvider? formatProvider, out uint value)
+    {
+        return uint.TryParse(spanString, numberStyles, formatProvider, out value);
+    }
+    public static bool TryParseUInt64(this SpanString spanString, NumberStyles numberStyles, IFormatProvider? formatProvider, out ulong value)
+    {
+        return ulong.TryParse(spanString, numberStyles, formatProvider, out value);
+    }
+
+    public static int ParseFirstInt32(this SpanString spanString, int startingIndex, out int endIndex)
+    {
+        if (spanString.TryParseFirstInt32(startingIndex, out int value, out endIndex))
+            return value;
+
+        ThrowHelper.Throw<ArgumentException>("The number could not be parsed from that index.");
+        return -1;
+    }
+    public static bool TryParseFirstInt32(this SpanString spanString, int startingIndex, out int value, out int endIndex)
+    {
+        endIndex = startingIndex;
+        if (spanString[endIndex] is '+' or '-')
+            endIndex++;
+
+        for (; endIndex < spanString.Length; endIndex++)
+            if (!spanString[endIndex].IsDigit())
+                break;
+
+        return spanString[startingIndex..endIndex].TryParseInt32(out value);
+    }
+
+    public static int ParseLastInt32(this SpanString spanString)
+    {
+        int startIndex = spanString.Length - 1;
+
+        while (startIndex > 0)
+        {
+            int next = startIndex - 1;
+            if (!spanString[next].IsDigit())
+                break;
+
+            startIndex = next;
+        }
+
+        return spanString[startIndex..].ParseInt32();
     }
 
     public static int IndexOf(this SpanString s, string delimiter, out int nextIndex)
@@ -94,4 +169,36 @@ public static class SpanStringExtensions
         right = spanString[nextIndex..];
         return true;
     }
+
+    public static IReadOnlyList<string> SplitToStrings(this SpanString spanString, string delimiter)
+    {
+        return SplitSelect(spanString, delimiter, span => new string(span));
+    }
+    public static IReadOnlyList<T> SplitSelect<T>(this SpanString spanString, string delimiter, SpanStringSelector<T> selector)
+    {
+        var results = new List<T>();
+
+        var remainingSpan = spanString;
+        while (true)
+        {
+            int delimiterIndex = remainingSpan.IndexOf(delimiter, out int nextIndex);
+            if (delimiterIndex < 0)
+                break;
+
+            var delimitedSlice = remainingSpan[..delimiterIndex];
+            AddResult(delimitedSlice);
+            remainingSpan = remainingSpan[nextIndex..];
+        }
+
+        AddResult(remainingSpan);
+
+        return results;
+
+        void AddResult(SpanString span)
+        {
+            results.Add(selector(span));
+        }
+    }
+
+    public delegate T SpanStringSelector<T>(SpanString spanString);
 }

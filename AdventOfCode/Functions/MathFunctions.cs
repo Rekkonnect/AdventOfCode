@@ -1,5 +1,5 @@
 ﻿using Garyon.Functions;
-using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 using static System.Math;
 
 namespace AdventOfCode.Functions;
@@ -7,27 +7,55 @@ namespace AdventOfCode.Functions;
 public static class MathFunctions
 {
     #region Divisions
-    public static int GCD(int a, int b) => (int)GCD((long)a, b);
-    public static long GCD(long a, long b)
+    public static T GCD<T>(T a, T b)
+        where T : IBinaryNumber<T>
     {
-        a = Abs(a);
-        b = Abs(b);
+        a = T.Abs(a);
+        b = T.Abs(b);
 
-        while (a != 0 && b != 0)
+        while (true)
         {
             if (a > b)
                 a %= b;
             else
                 b %= a;
+
+            if (a == T.Zero || b == T.Zero)
+                break;
         }
 
         return a | b;
     }
 
-    public static int LCM(int a, int b) => a * b / GCD(a, b);
-    public static long LCM(long a, long b) => a * b / GCD(a, b);
+    public static T LCM<T>(T a, T b)
+        where T : IBinaryNumber<T>
+    {
+        return a * b
+             / GCD(a, b);
+    }
 
-    public static void SimplifyFraction(ref int nominator, ref int denominator)
+    public static T LCM<T>(IEnumerable<T> values)
+        where T : IBinaryNumber<T>
+    {
+        var lcm = T.One;
+
+        foreach (var value in values)
+        {
+            if (value == T.One)
+            {
+                lcm = value;
+            }
+            else
+            {
+                lcm = LCM(lcm, value);
+            }
+        }
+
+        return lcm;
+    }
+
+    public static void SimplifyFraction<T>(ref T nominator, ref T denominator)
+        where T : IBinaryNumber<T>
     {
         var gcd = GCD(nominator, denominator);
         nominator /= gcd;
@@ -62,7 +90,8 @@ public static class MathFunctions
     #endregion
 
     #region Comparisons
-    public static bool BetweenInclusive(int value, int a, int b)
+    public static bool BetweenInclusive<T>(T value, T a, T b)
+        where T : IBinaryNumber<T>, IShiftOperators<T, T, T>
     {
         EnsureOrdered(ref a, ref b);
         return a <= value && value <= b;
@@ -84,7 +113,25 @@ public static class MathFunctions
     #endregion
 
     #region Sequences
-    public static int Sum(int max) => max * (max + 1) / 2;
-    public static int Sum(int start, int end) => Sum(end) - Sum(start);
+    public static T HalveInteger<T>(this T number)
+        where T : IBinaryNumber<T>, IShiftOperators<T, T, T>
+    {
+        if (T.IsNegative(number))
+        {
+            number++;
+        }
+        return number >> T.One;
+    }
+
+    public static T Sum<T>(T max)
+        where T : IBinaryNumber<T>, IShiftOperators<T, T, T>
+    {
+        return HalveInteger(max * (max + T.One));
+    }
+    public static T Sum<T>(T start, T end)
+        where T : IBinaryNumber<T>, IShiftOperators<T, T, T>
+    {
+        return Sum(end) - Sum(start);
+    }
     #endregion
 }
