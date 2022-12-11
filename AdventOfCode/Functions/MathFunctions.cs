@@ -15,13 +15,13 @@ public static class MathFunctions
 
         while (true)
         {
+            if (a == T.Zero || b == T.Zero)
+                break;
+
             if (a > b)
                 a %= b;
             else
                 b %= a;
-
-            if (a == T.Zero || b == T.Zero)
-                break;
         }
 
         return a | b;
