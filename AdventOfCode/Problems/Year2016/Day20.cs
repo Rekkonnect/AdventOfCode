@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Utilities;
+﻿using AdventOfCode.Functions;
+using AdventOfCode.Utilities;
 
 namespace AdventOfCode.Problems.Year2016;
 
@@ -71,23 +72,9 @@ public partial class Day20 : Problem<uint>
             ranges.Add(merged);
         }
     }
-    private partial struct AddressRange
+    private record struct AddressRange(uint Start, uint End)
     {
-        private static readonly Regex rangePattern = RangeRegex();
-
-        [GeneratedRegex("(?'start'\\d*)\\-(?'end'\\d*)", RegexOptions.Compiled)]
-        private static partial Regex RangeRegex();
-
-        public uint Start { get; set; }
-        public uint End { get; set; }
-
         public uint Length => End - Start + 1;
-
-        public AddressRange(uint start, uint end)
-        {
-            Start = start;
-            End = end;
-        }
 
         public bool Contains(uint value) => Start <= value && value <= End;
 
@@ -95,9 +82,10 @@ public partial class Day20 : Problem<uint>
 
         public static AddressRange Parse(string raw)
         {
-            var groups = rangePattern.Match(raw).Groups;
-            uint start = groups["start"].Value.ParseUInt32();
-            uint end = groups["end"].Value.ParseUInt32();
+            var spanString = raw.AsSpan();
+            spanString.SplitOnceSpan('-', out var leftSpan, out var rightSpan);
+            uint start = leftSpan.ParseUInt32();
+            uint end = rightSpan.ParseUInt32();
             return new(start, end);
         }
 

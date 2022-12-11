@@ -98,6 +98,8 @@ public partial class Day12 : Problem<int, long>
         }
 
         private static bool ParsePotCharacter(char c) => c is '#';
+
+        // TODO: Simplify to SpanString
         [GeneratedRegex("(?'initial'[.#]*) => (?'result'[.#])", RegexOptions.Compiled)]
         private static partial Regex RuleRegex();
     }

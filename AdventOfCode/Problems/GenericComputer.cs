@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Functions;
+using AdventOfCSharp;
 
 namespace AdventOfCode.Problems;
 
@@ -48,9 +49,15 @@ public class GenericComputer
     }
     public void ResumeExecution()
     {
-        do
+        while (true)
+        {
             ExecuteInstruction(program[instructionIndex]);
-        while (!HaltRequested && instructionIndex < program.Length);
+
+            if (HaltRequested || instructionIndex >= program.Length)
+            {
+                break;
+            }
+        }
     }
 
     public int GetInvocationCount(ComputerOperator op) => operatorInvocationCount[op];
@@ -161,7 +168,8 @@ public class GenericComputer
                 break;
 
             case ComputerOperator.Output:
-                if (HaltRequested = !OutputHandler(arg0.Value))
+                HaltRequested = !OutputHandler(arg0.Value);
+                if (HaltRequested)
                     return;
                 break;
         }
@@ -171,7 +179,7 @@ public class GenericComputer
     {
         var arguments = instruction.Arguments;
 
-        if (argumentIndex >= arguments.Length)
+        if (argumentIndex >= arguments.Count)
             return ArgumentInfo.InvalidArgument;
 
         bool isConstant = instruction.Arguments[argumentIndex].ExtractInt64AndFirstChar(out long value, out char registerName);

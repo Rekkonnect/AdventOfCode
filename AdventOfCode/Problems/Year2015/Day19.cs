@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Utilities;
+﻿using AdventOfCode.Functions;
+using AdventOfCode.Utilities;
 using AdventOfCSharp.Extensions;
 
 namespace AdventOfCode.Problems.Year2015;
@@ -26,9 +27,9 @@ public partial class Day19 : Problem<int>
     {
         var contents = NormalizedFileContents;
         var sections = contents.Split("\n\n");
-        var rules = sections[0];
+        var rules = sections[0].AsSpan();
         calibrationMolecule = sections[1];
-        var moleculeRules = rules.GetLines(false).Select(RawReplacementRule.Parse).ToArray();
+        var moleculeRules = rules.SplitSelect('\n', RawReplacementRule.Parse).ToArray();
         replacementMachine = new(moleculeRules);
     }
 
@@ -331,18 +332,13 @@ public partial class Day19 : Problem<int>
 
     private partial record RawReplacementRule(string Molecule, string Replacement)
     {
-        private static readonly Regex rulePattern = RuleRegex();
-
-        public static RawReplacementRule Parse(string s)
+        public static RawReplacementRule Parse(SpanString s)
         {
-            var groups = rulePattern.Match(s).Groups;
-            var molecule = groups["molecule"].Value;
-            var replacement = groups["replacement"].Value;
+            s.SplitOnceSpan(" => ", out var moleculeSpan, out var replacementSpan);
+            var molecule = moleculeSpan.ToString();
+            var replacement = replacementSpan.ToString();
             return new(molecule, replacement);
         }
-
-        [GeneratedRegex("(?'molecule'\\w*) =\\> (?'replacement'\\w*)", RegexOptions.Compiled)]
-        private static partial Regex RuleRegex();
     }
     private record CompiledReplacementRule(int Molecule, MoleculeString Replacement);
 }

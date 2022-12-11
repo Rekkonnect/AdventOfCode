@@ -1,4 +1,5 @@
 ﻿using AdventOfCode.Utilities;
+using System.Security.Cryptography.X509Certificates;
 
 namespace AdventOfCode.Problems.Year2017;
 
@@ -67,9 +68,9 @@ public partial class Day16 : Problem<string>
             return new(result.ConstructArray());
         }
 
-        public static Dance Parse(string raw)
+        public static Dance Parse(SpanString raw)
         {
-            return new(raw.Split(',').Select(DanceMove.ParseMove));
+            return new(raw.SplitSelect(',', DanceMove.ParseMove));
         }
     }
 
@@ -113,58 +114,43 @@ public partial class Day16 : Problem<string>
 
     private sealed partial record ExchangeMove(int X, int Y) : DanceMove
     {
-        private static readonly Regex exchangePattern = ExchangeRegex();
-
         public override void Operate(ProgramArrangement programs)
         {
             programs.SwapPosition(X, Y);
         }
 
-        public static ExchangeMove Parse(string raw)
+        public static ExchangeMove Parse(SpanString raw)
         {
-            var match = exchangePattern.Match(raw);
-
-            if (!match.Success)
+            if (raw[0] is not 'x')
                 return null;
 
-            var groups = match.Groups;
-            int x = groups["x"].Value.ParseInt32();
-            int y = groups["y"].Value.ParseInt32();
+            var pattern = raw[1..];
+            pattern.SplitOnceSpan('/', out var left, out var right);
+            int x = left.ParseInt32();
+            int y = right.ParseInt32();
+
             return new ExchangeMove(x, y);
         }
-
-        [GeneratedRegex("x(?'x'\\d*)/(?'y'\\d*)", RegexOptions.Compiled)]
-        private static partial Regex ExchangeRegex();
     }
     private sealed partial record PartnerOperation(char X, char Y) : DanceMove
     {
-        private static readonly Regex partnerPattern = PartnerRegex();
-
         public override void Operate(ProgramArrangement programs)
         {
             programs.SwapItem(X, Y);
         }
 
-        public static PartnerOperation Parse(string raw)
+        public static PartnerOperation Parse(SpanString raw)
         {
-            var match = partnerPattern.Match(raw);
-
-            if (!match.Success)
+            if (raw[0] is not 'p')
                 return null;
 
-            var groups = match.Groups;
-            char x = groups["x"].Value[0];
-            char y = groups["y"].Value[0];
+            char x = raw[1];
+            char y = raw[3];
             return new PartnerOperation(x, y);
         }
-
-        [GeneratedRegex("p(?'x'\\w)/(?'y'\\w)", RegexOptions.Compiled)]
-        private static partial Regex PartnerRegex();
     }
     private sealed record SpinOperation(int Rotation) : DanceMove
     {
-        private static readonly Regex spinPattern = new(@"s(?'x'\d*)", RegexOptions.Compiled);
-
         public override void Operate(ProgramArrangement programs)
         {
             programs.Rotate(Rotation);
@@ -172,17 +158,14 @@ public partial class Day16 : Problem<string>
         public override void OperateReverse(ProgramArrangement programs)
         {
             programs.Rotate(-Rotation);
-        }
+        } 
 
-        public static SpinOperation Parse(string raw)
+        public static SpinOperation Parse(SpanString raw)
         {
-            var match = spinPattern.Match(raw);
-
-            if (!match.Success)
+            if (raw[0] is not 's')
                 return null;
 
-            var groups = match.Groups;
-            int rotation = groups["x"].Value.ParseInt32();
+            var rotation = raw[1..].ParseInt32();
 
             return new SpinOperation(rotation);
         }
@@ -193,15 +176,12 @@ public partial class Day16 : Problem<string>
         public abstract void Operate(ProgramArrangement arrangement);
         public virtual void OperateReverse(ProgramArrangement arrangement) => Operate(arrangement);
 
-        public static DanceMove ParseMove(string raw)
+        public static DanceMove ParseMove(SpanString raw)
         {
-            DanceMove result = null;
-
-            result ??= ExchangeMove.Parse(raw);
-            result ??= PartnerOperation.Parse(raw);
-            result ??= SpinOperation.Parse(raw);
-
-            return result;
+            return ExchangeMove.Parse(raw)
+                ?? PartnerOperation.Parse(raw)
+                ?? SpinOperation.Parse(raw)
+                as DanceMove;
         }
     }
 }

@@ -17,7 +17,8 @@ public partial class Day24 : Problem<int, int>
 
     protected override void LoadState()
     {
-        builder = new(ParsedFileLines(Component.Parse));
+        var normalizedSpan = NormalizedFileContents.AsSpan();
+        builder = new(normalizedSpan.SplitSelect('\n', Component.Parse));
     }
     protected override void ResetState()
     {
@@ -143,8 +144,6 @@ public partial class Day24 : Problem<int, int>
 
     private readonly partial struct Component : IEquatable<Component>
     {
-        private static readonly Regex componentPattern = ComponentRegex();
-
         public int EndA { get; }
         public int EndB { get; }
 
@@ -167,11 +166,11 @@ public partial class Day24 : Problem<int, int>
             b = EndB;
         }
 
-        public static Component Parse(string raw)
+        public static Component Parse(SpanString raw)
         {
-            var groups = componentPattern.Match(raw).Groups;
-            int a = groups["a"].Value.ParseInt32();
-            int b = groups["b"].Value.ParseInt32();
+            raw.SplitOnceSpan('/', out var leftSpan, out var rightSpan);
+            int a = leftSpan.ParseInt32();
+            int b = rightSpan.ParseInt32();
             return new(a, b);
         }
 
@@ -179,7 +178,5 @@ public partial class Day24 : Problem<int, int>
         public override bool Equals(object obj) => obj is Component other && Equals(other);
         public override int GetHashCode() => EndA << 8 | EndB;
         public override string ToString() => $"{EndA}/{EndB}";
-        [GeneratedRegex("(?'a'\\d*)/(?'b'\\d*)", RegexOptions.Compiled)]
-        private static partial Regex ComponentRegex();
     }
 }

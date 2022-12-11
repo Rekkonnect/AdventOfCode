@@ -118,7 +118,7 @@ public class Day3 : Problem<int>
             return distinctTypes.Contains(item.Type);
         }
 
-        public static Compartment Parse(ReadOnlySpan<char> line)
+        public static Compartment Parse(SpanString line)
         {
             var itemsBuilder = ImmutableArray.CreateBuilder<Item>(line.Length);
             for (int i = 0; i < line.Length; i++)

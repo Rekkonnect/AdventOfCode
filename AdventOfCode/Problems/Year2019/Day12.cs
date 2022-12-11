@@ -83,8 +83,8 @@ public class Day12 : Problem<int, long>
 
     public class Moon
     {
-        private Location3D InitialLocation;
-        public Location3D Location;
+        private Vector3D InitialLocation;
+        public Vector3D Location;
         public Vector3D Velocity;
 
         public bool HasInitialState => InitialLocation == Location && Velocity == Vector3D.Zero;
@@ -96,7 +96,7 @@ public class Day12 : Problem<int, long>
         public int KineticEnergy => Velocity.Absolute.ValueSum;
         public int TotalEnergy => PotentialEnergy * KineticEnergy;
 
-        public Moon(Location3D location) => InitialLocation = Location = location;
+        public Moon(Vector3D location) => InitialLocation = Location = location;
 
         public void ApplyGravity(Moon other)
         {

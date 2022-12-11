@@ -4,7 +4,7 @@ namespace AdventOfCode.Problems.Year2020;
 
 public partial class Day14 : Problem<ulong>
 {
-    private MemorySystemCommand[] commands;
+    private IReadOnlyList<MemorySystemCommand> commands;
     private MemorySystem memorySystem;
 
     public override ulong SolvePart1()
@@ -31,13 +31,14 @@ public partial class Day14 : Problem<ulong>
     }
     protected override void LoadState()
     {
-        commands = ParsedFileLines(MemorySystemCommand.ParseBase);
+        var normalizedSpan = NormalizedFileContents.AsSpan().Trim();
+        commands = normalizedSpan.SplitSelect('\n', MemorySystemCommand.ParseBase);
     }
 
     #region Memory Systems
     private class MemorySystemVersion2 : MemorySystem
     {
-        public MemorySystemVersion2(MemorySystemCommand[] commands)
+        public MemorySystemVersion2(IReadOnlyList<MemorySystemCommand> commands)
             : base(commands) { }
 
         public override void RunCommand(MemorySystemCommand command)
@@ -56,14 +57,14 @@ public partial class Day14 : Problem<ulong>
     }
     private class MemorySystem
     {
-        private readonly MemorySystemCommand[] memoryCommands;
+        private readonly IReadOnlyList<MemorySystemCommand> memoryCommands;
         protected readonly FlexibleDictionary<ulong, ulong> Memory = new();
 
         protected Bitmask CurrentMask = new();
 
         public ulong MemoryValuesSum => Memory.Sum(kvp => kvp.Value);
 
-        public MemorySystem(MemorySystemCommand[] commands)
+        public MemorySystem(IReadOnlyList<MemorySystemCommand> commands)
         {
             memoryCommands = commands;
         }
@@ -90,7 +91,7 @@ public partial class Day14 : Problem<ulong>
     #region Commands
     private abstract class MemorySystemCommand
     {
-        public static MemorySystemCommand ParseBase(string command)
+        public static MemorySystemCommand ParseBase(SpanString command)
         {
             if (command.StartsWith("mask"))
                 return MaskSetCommand.Parse(command);
@@ -101,11 +102,6 @@ public partial class Day14 : Problem<ulong>
     }
     private partial class MemoryWriteCommand : MemorySystemCommand
     {
-        private static readonly Regex commandPattern = CommandRegex();
-
-        [GeneratedRegex("mem\\[(?'addr'\\d*)\\] = (?'val'\\d*)", RegexOptions.Compiled)]
-        private static partial Regex CommandRegex();
-
         public ulong MemoryAddress { get; }
         public ulong NewValue { get; }
 
@@ -118,11 +114,11 @@ public partial class Day14 : Problem<ulong>
         public ulong GetMaskedNewValue(Bitmask mask) => mask.ApplyToValue(NewValue);
         public MaskedMemoryAddress GetVersion2MemoryAddress(Bitmask mask) => new(MemoryAddress | mask.RawValueMask, mask.XMask);
 
-        public static MemoryWriteCommand Parse(string command)
+        public static MemoryWriteCommand Parse(SpanString command)
         {
-            var groups = commandPattern.Match(command).Groups;
-            ulong memoryAddress = groups["addr"].Value.ParseUInt32();
-            ulong value = groups["val"].Value.ParseUInt64();
+            ulong memoryAddress = command.SliceBetween('[', ']').ParseUInt32();
+            ulong value = command.ParseLastUInt64();
+
             return new(memoryAddress, value);
         }
 
@@ -130,10 +126,7 @@ public partial class Day14 : Problem<ulong>
     }
     private partial class MaskSetCommand : MemorySystemCommand
     {
-        private static readonly Regex commandPattern = CommandRegex();
-
-        [GeneratedRegex("mask = (?'val'[01X]*)", RegexOptions.Compiled)]
-        private static partial Regex CommandRegex();
+        private const string maskPrefix = "mask = ";
 
         public Bitmask NewMask { get; }
 
@@ -142,12 +135,14 @@ public partial class Day14 : Problem<ulong>
             NewMask = newMask;
         }
 
-        public static MaskSetCommand Parse(string command)
+        public static MaskSetCommand Parse(SpanString command)
         {
-            return new(Bitmask.Parse(commandPattern.Match(command).Groups["val"].Value));
+            int maskPrefixLength = maskPrefix.Length;
+            var mask = command[maskPrefixLength..];
+            return new(Bitmask.Parse(mask));
         }
 
-        public override string ToString() => $"mask = {NewMask}";
+        public override string ToString() => $"{maskPrefix}{NewMask}";
     }
     #endregion
 
@@ -208,13 +203,13 @@ public partial class Day14 : Problem<ulong>
             return new(chars);
         }
 
-        public static Bitmask Parse(string rawMask)
+        public static Bitmask Parse(SpanString rawMask)
         {
             ulong xMask = 0;
             ulong rawValueMask = 0;
 
             ulong currentMaskBit = 1;
-            for (int i = rawMask.Length - 1; i >= 0; i--, currentMaskBit <<= 1)
+            for (int i = rawMask.Length - 1; i >= 0; i--)
             {
                 switch (rawMask[i])
                 {
@@ -225,6 +220,7 @@ public partial class Day14 : Problem<ulong>
                         rawValueMask |= currentMaskBit;
                         break;
                 }
+                currentMaskBit <<= 1;
             }
 
             return new(xMask, rawValueMask);

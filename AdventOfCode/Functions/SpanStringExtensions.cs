@@ -5,9 +5,6 @@ using System;
 using System.Globalization;
 using static AdventOfCode.Functions.SpanStringExtensions;
 
-// For convenience when typing the type out
-using SpanString = ReadOnlySpan<char>;
-
 public static class SpanStringExtensions
 {
     // And of course more overloads
@@ -84,9 +81,12 @@ public static class SpanStringExtensions
         return spanString[startingIndex..endIndex].TryParseInt32(out value);
     }
 
-    public static int ParseLastInt32(this SpanString spanString)
+    public static int LastNumberStartIndex(this SpanString spanString)
     {
         int startIndex = spanString.Length - 1;
+
+        if (!spanString[startIndex].IsDigit())
+            return -1;
 
         while (startIndex > 0)
         {
@@ -97,7 +97,27 @@ public static class SpanStringExtensions
             startIndex = next;
         }
 
+        return startIndex;
+    }
+    public static int ParseLastInt32(this SpanString spanString)
+    {
+        int startIndex = LastNumberStartIndex(spanString);
         return spanString[startIndex..].ParseInt32();
+    }
+    public static long ParseLastInt64(this SpanString spanString)
+    {
+        int startIndex = LastNumberStartIndex(spanString);
+        return spanString[startIndex..].ParseInt64();
+    }
+    public static uint ParseLastUInt32(this SpanString spanString)
+    {
+        int startIndex = LastNumberStartIndex(spanString);
+        return spanString[startIndex..].ParseUInt32();
+    }
+    public static ulong ParseLastUInt64(this SpanString spanString)
+    {
+        int startIndex = LastNumberStartIndex(spanString);
+        return spanString[startIndex..].ParseUInt64();
     }
 
     public static int IndexOf(this SpanString s, string delimiter, out int nextIndex)
@@ -170,11 +190,64 @@ public static class SpanStringExtensions
         return true;
     }
 
+    public static SpanString SliceAfter(this SpanString spanString, char delimiter)
+    {
+        spanString.IndexOf(delimiter, out int startIndex);
+        if (startIndex < 0)
+            return spanString;
+
+        return spanString[startIndex..];
+    }
+    public static SpanString SliceBefore(this SpanString spanString, char delimiter)
+    {
+        int endIndex = spanString.IndexOf(delimiter);
+        if (endIndex < 0)
+            return spanString;
+
+        return spanString[..endIndex];
+    }
+
+    public static SpanString SliceBetween(this SpanString spanString, char delimiterStart, char delimiterEnd)
+    {
+        spanString = SliceAfter(spanString, delimiterStart);
+        return SliceBefore(spanString, delimiterEnd);
+    }
+
     public static IReadOnlyList<string> SplitToStrings(this SpanString spanString, string delimiter)
     {
         return SplitSelect(spanString, delimiter, span => new string(span));
     }
     public static IReadOnlyList<T> SplitSelect<T>(this SpanString spanString, string delimiter, SpanStringSelector<T> selector)
+    {
+        var results = new List<T>();
+
+        var remainingSpan = spanString;
+        while (true)
+        {
+            int delimiterIndex = remainingSpan.IndexOf(delimiter, out int nextIndex);
+            if (delimiterIndex < 0)
+                break;
+
+            var delimitedSlice = remainingSpan[..delimiterIndex];
+            AddResult(delimitedSlice);
+            remainingSpan = remainingSpan[nextIndex..];
+        }
+
+        AddResult(remainingSpan);
+
+        return results;
+
+        void AddResult(SpanString span)
+        {
+            results.Add(selector(span));
+        }
+    }
+
+    public static IReadOnlyList<string> SplitToStrings(this SpanString spanString, char delimiter)
+    {
+        return SplitSelect(spanString, delimiter, span => new string(span));
+    }
+    public static IReadOnlyList<T> SplitSelect<T>(this SpanString spanString, char delimiter, SpanStringSelector<T> selector)
     {
         var results = new List<T>();
 

@@ -2,10 +2,8 @@
 
 namespace AdventOfCode.Problems;
 
-public partial record ComputerInstruction(ComputerOperator Operator, string[] Arguments)
+public partial record ComputerInstruction(ComputerOperator Operator, IReadOnlyList<string> Arguments)
 {
-    private static readonly Regex statPattern = StatPatternRegex();
-
     public static readonly ComputerInstruction NoOperation = new(ComputerOperator.NoOperation, Array.Empty<string>());
 
     public bool Argument(int index, out int constantValue, out char register)
@@ -13,7 +11,7 @@ public partial record ComputerInstruction(ComputerOperator Operator, string[] Ar
         constantValue = default;
         register = default;
 
-        if (index >= Arguments.Length)
+        if (index >= Arguments.Count)
             return false;
 
         return Arguments[index].ExtractInt32AndFirstChar(out constantValue, out register);
@@ -21,9 +19,10 @@ public partial record ComputerInstruction(ComputerOperator Operator, string[] Ar
 
     public static ComputerInstruction Parse(string s, string argumentSplitter = " ")
     {
-        var groups = statPattern.Match(s).Groups;
-        var op = ComputerOperatorInformation.ParseMnemonic(groups["operator"].Value);
-        var arguments = groups["arguments"].Value.Split(argumentSplitter);
+        var spanString = s.AsSpan();
+        spanString.SplitOnceSpan(' ', out var operatorSpan, out var argumentsSpan);
+        var op = ComputerOperatorInformation.ParseMnemonic(operatorSpan.ToString());
+        var arguments = argumentsSpan.SplitToStrings(argumentSplitter).ToArray();
         return new(op, arguments);
     }
 
@@ -31,7 +30,4 @@ public partial record ComputerInstruction(ComputerOperator Operator, string[] Ar
     {
         return $"{Operator.GetMnemonic()} {string.Join(" ", Arguments)}";
     }
-
-    [GeneratedRegex("(?'operator'\\w*) (?'arguments'.*)", RegexOptions.Compiled)]
-    private static partial Regex StatPatternRegex();
 }

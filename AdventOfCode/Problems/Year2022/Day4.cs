@@ -90,7 +90,7 @@ public class Day4 : Problem<int>
                 && other.End <= End;
         }
 
-        public static ElfAssignment Parse(ReadOnlySpan<char> raw)
+        public static ElfAssignment Parse(SpanString raw)
         {
             bool delimited = raw.SplitOnceSpan('-', out var left, out var right);
             Debug.Assert(delimited);

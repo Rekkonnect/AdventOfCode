@@ -3,7 +3,7 @@ using Garyon.Exceptions;
 
 namespace AdventOfCode.Functions;
 
-using SpanString = ReadOnlySpan<char>;
+using SpanString = SpanString;
 
 public static class StringExtensions
 {
@@ -61,6 +61,15 @@ public static class StringExtensions
     public static SpanString SubstringSpanAfter(this string s, string match)
     {
         int index = s.IndexOfAfter(match);
+        var result = s.AsSpan();
+        if (index < 0)
+            return result;
+
+        return result[index..];
+    }
+    public static SpanString SubstringSpanAfter(this string s, char match)
+    {
+        s.IndexOf(match, out int index);
         var result = s.AsSpan();
         if (index < 0)
             return result;
