@@ -439,9 +439,7 @@ public class Grid2D<T> : BaseGrid<T, Location2D>, IEquatable<Grid2D<T>>
         List<Direction> resultingDirections = null;
 
         var grid = new int[Width, Height];
-        for (int x = 0; x < Width; x++)
-            for (int y = 0; y < Height; y++)
-                grid[x, y] = int.MaxValue;
+        grid.AsSpan().Fill(int.MaxValue);
 
         AnalyzeGridDepth(start, 0);
 
