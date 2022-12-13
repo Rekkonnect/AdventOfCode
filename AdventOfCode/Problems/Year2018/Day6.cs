@@ -1,14 +1,13 @@
 ﻿using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
 using AdventOfCSharp.Extensions;
+using System.Collections.Immutable;
 
 namespace AdventOfCode.Problems.Year2018;
 
 public partial class Day6 : Problem<int>
 {
-    private static readonly Regex locationPattern = LocationRegex();
-
-    private Location2D[] importantLocations;
+    private ImmutableArray<Location2D> importantLocations;
 
     public override int SolvePart1()
     {
@@ -24,24 +23,24 @@ public partial class Day6 : Problem<int>
 
     protected override void LoadState()
     {
-        importantLocations = ParsedFileLines(ParseLocation);
+        importantLocations = FileContents.SelectLines(ParseLocation);
     }
     protected override void ResetState()
     {
-        importantLocations = null;
+        importantLocations = default;
     }
 
-    private static Location2D ParseLocation(string raw)
+    private static Location2D ParseLocation(SpanString span)
     {
-        var groups = locationPattern.Match(raw).Groups;
-        int x = groups["x"].Value.ParseInt32();
-        int y = groups["y"].Value.ParseInt32();
+        span.SplitOnceSpan(", ", out var xSpan, out var ySpan);
+        int x = xSpan.ParseInt32();
+        int y = ySpan.ParseInt32();
         return (x, y);
     }
 
     private class SafeLocationGrid : LocationGridBase<bool>
     {
-        public SafeLocationGrid(Location2D[] importantLocations)
+        public SafeLocationGrid(ImmutableArray<Location2D> importantLocations)
             : base(importantLocations) { }
 
         public int GetMaxDistanceRegion(int maxDistance)
@@ -70,7 +69,7 @@ public partial class Day6 : Problem<int>
     {
         private readonly IDMap<Location2D> locationIDs;
 
-        public DangerousLocationGrid(Location2D[] importantLocations)
+        public DangerousLocationGrid(ImmutableArray<Location2D> importantLocations)
             : base(importantLocations)
         {
             locationIDs = new(ImportantLocations);
@@ -135,15 +134,12 @@ public partial class Day6 : Problem<int>
 
     private abstract class LocationGridBase<T> : Grid2D<T>
     {
-        protected readonly Location2D[] ImportantLocations;
+        protected readonly ImmutableArray<Location2D> ImportantLocations;
 
-        protected LocationGridBase(Location2D[] importantLocations)
+        protected LocationGridBase(ImmutableArray<Location2D> importantLocations)
             : base(importantLocations.MaxSource(l => l.ValueSum) + (1, 1))
         {
             ImportantLocations = importantLocations;
         }
     }
-
-    [GeneratedRegex("(?'x'\\d*), (?'y'\\d*)", RegexOptions.Compiled)]
-    private static partial Regex LocationRegex();
 }

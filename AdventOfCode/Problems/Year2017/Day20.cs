@@ -1,6 +1,7 @@
 ﻿using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.ThreeDimensions;
 using AdventOfCSharp.Extensions;
+using System.Collections.Immutable;
 
 namespace AdventOfCode.Problems.Year2017;
 
@@ -19,7 +20,8 @@ public partial class Day20 : Problem<int>
 
     protected override void LoadState()
     {
-        particleSystem = new(ParsedFileLines(Particle.Parse));
+        var particles = FileContents.AsSpan().SelectLines(Particle.Parse);
+        particleSystem = new(particles);
     }
     protected override void ResetState()
     {
@@ -28,11 +30,11 @@ public partial class Day20 : Problem<int>
 
     private class ParticleSystem
     {
-        private readonly Particle[] particles;
+        private readonly ImmutableArray<Particle> particles;
 
         public int ClosestParticleIndex => particles.Select(p => p.Acceleration.ManhattanDistanceFromCenter).ToArray().MinIndex();
 
-        public ParticleSystem(Particle[] particles)
+        public ParticleSystem(ImmutableArray<Particle> particles)
         {
             this.particles = particles;
         }
@@ -154,29 +156,31 @@ public partial class Day20 : Problem<int>
 
     private partial record Particle(Location3D Position, Location3D Velocity, Location3D Acceleration)
     {
-        private static readonly Regex particlePattern = ParticleRegex();
-        private static readonly Regex locationPattern = LocationRegex();
-
-        [GeneratedRegex("p=(?'position'.*), v=(?'velocity'.*), a=(?'acceleration'.*)", RegexOptions.Compiled)]
-        private static partial Regex ParticleRegex();
-        [GeneratedRegex("\\<(?'x'[-\\d]*),(?'y'[-\\d]*),(?'z'[-\\d]*)\\>", RegexOptions.Compiled)]
-        private static partial Regex LocationRegex();
-
-        public static Particle Parse(string raw)
+        public static Particle Parse(SpanString spanString)
         {
-            var groups = particlePattern.Match(raw).Groups;
-            var position = ParseLocation(groups["position"].Value);
-            var velocity = ParseLocation(groups["velocity"].Value);
-            var acceleration = ParseLocation(groups["acceleration"].Value);
+            var position = ParseLocationField(ref spanString);
+            var velocity = ParseLocationField(ref spanString);
+            var acceleration = ParseLocationField(ref spanString);
             return new(position, velocity, acceleration);
         }
 
-        private static Location3D ParseLocation(string raw)
+        private static Location3D ParseLocationField(ref SpanString raw)
         {
-            var groups = locationPattern.Match(raw).Groups;
-            int x = groups["x"].Value.ParseInt32();
-            int y = groups["y"].Value.ParseInt32();
-            int z = groups["z"].Value.ParseInt32();
+            raw.SplitOnceSpan('>', out var locationSpan, out var nextSpan);
+            raw = nextSpan;
+
+            locationSpan = locationSpan.SliceAfter('<');
+            return ParseLocation(locationSpan);
+        }
+
+        private static Location3D ParseLocation(SpanString raw)
+        {
+            raw.SplitOnceSpan(',', out var xSpan, out var yzSpan);
+            yzSpan.SplitOnceSpan(',', out var ySpan, out var zSpan);
+
+            int x = xSpan.ParseInt32();
+            int y = ySpan.ParseInt32();
+            int z = zSpan.ParseInt32();
             return (x, y, z);
         }
     }

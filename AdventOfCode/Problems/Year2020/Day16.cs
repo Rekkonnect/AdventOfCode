@@ -136,35 +136,27 @@ public partial class Day16 : Problem<int, ulong>
 
         public static Ticket Parse(string raw)
         {
-            return new(raw.Split(',').Select(int.Parse));
+            return new(raw.AsSpan().SplitSelect(',', SpanStringExtensions.ParseInt32));
         }
 
-        public override string ToString() => Fields.Select(f => f.ToString()).Aggregate((a, b) => $"{a}, {b}");
+        public override string ToString() => string.Join(", ", Fields);
     }
-    private partial class ValidFieldRanges : IKeyedObject<string>
+    private record ValidFieldRanges(string Name = null) : IKeyedObject<string>
     {
         public const int Length = 1000;
 
-        private static readonly Regex rulePattern = RuleRegex();
-        private static readonly Regex rangePattern = RangeRegex();
-
-        [GeneratedRegex("(?'name'[\\w ]*)\\: (?'ranges'.*)", RegexOptions.Compiled)]
-        private static partial Regex RuleRegex();
-        [GeneratedRegex("(?'start'\\d*)\\-(?'end'\\d*)", RegexOptions.Compiled)]
-        private static partial Regex RangeRegex();
-
         private readonly bool[] validRanges = new bool[Length];
-
-        public string Name { get; }
 
         string IKeyedObject<string>.Key => Name;
 
-        public ValidFieldRanges(string name = null) => Name = name;
-
+        public void Set(FieldRange range, bool value = true)
+        {
+            Set(range.Start, range.End, value);
+        }
         public void Set(int start, int end, bool value = true)
         {
-            for (int i = start; i <= end; i++)
-                validRanges[i] = value;
+            int count = end - start + 1;
+            Array.Fill(validRanges, value, start, count);
         }
 
         public bool this[int index]
@@ -175,18 +167,16 @@ public partial class Day16 : Problem<int, ulong>
 
         public static ValidFieldRanges Parse(string raw)
         {
-            var groups = rulePattern.Match(raw).Groups;
-            var fieldName = groups["name"].Value;
+            var rawSpan = raw.AsSpan();
+            rawSpan.SplitOnceSpan(": ", out var fieldNameSpan, out var fieldRanges);
+            var fieldName = fieldNameSpan.ToString();
             var result = new ValidFieldRanges(fieldName);
 
-            var ranges = groups["ranges"].Value;
+            var ranges = fieldRanges.SplitSelect(" or ", FieldRange.Parse);
 
-            foreach (Match range in rangePattern.Matches(ranges))
+            foreach (var range in ranges)
             {
-                var rangeGroups = range.Groups;
-                int start = rangeGroups["start"].Value.ParseInt32();
-                int end = rangeGroups["end"].Value.ParseInt32();
-                result.Set(start, end);
+                result.Set(range);
             }
 
             return result;
@@ -202,6 +192,17 @@ public partial class Day16 : Problem<int, ulong>
                         result[i] = true;
 
             return result;
+        }
+    }
+
+    private record struct FieldRange(int Start, int End)
+    {
+        public static FieldRange Parse(SpanString spanString)
+        {
+            spanString.SplitOnceSpan('-', out var left, out var right);
+            int start = left.ParseInt32();
+            int end = right.ParseInt32();
+            return new(start, end);
         }
     }
 }

@@ -68,6 +68,7 @@ public partial class Day21 : Problem<int>
     {
         private static readonly Regex rulePattern = RuleRegex();
 
+        // TODO: Improve using spans
         public static EnchantmentRule Parse(string raw)
         {
             var groups = rulePattern.Match(raw).Groups;

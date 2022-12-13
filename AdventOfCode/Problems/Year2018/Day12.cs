@@ -1,8 +1,4 @@
-﻿#if DEBUG
-using AdventOfCode.Functions;
-#endif
-
-namespace AdventOfCode.Problems.Year2018;
+﻿namespace AdventOfCode.Problems.Year2018;
 
 public partial class Day12 : Problem<int, long>
 {
@@ -87,21 +83,14 @@ public partial class Day12 : Problem<int, long>
 
     private partial record PlantRule(NeighboringPots InitialPlants, bool ResultPlant)
     {
-        private static readonly Regex rulePattern = RuleRegex();
-
         public static PlantRule Parse(string rule)
         {
-            var groups = rulePattern.Match(rule).Groups;
-            var initialPlants = new NeighboringPots(groups["initial"].Value.Select(ParsePotCharacter));
-            bool result = ParsePotCharacter(groups["result"].Value[0]);
+            rule.SplitOnceSpan(" => ", out var left, out var right);
+            var initialPots = left.SelectArray(Pot.ParsePotCharacter);
+            var initialPlants = new NeighboringPots(initialPots);
+            bool result = Pot.ParsePotCharacter(right[0]);
             return new(initialPlants, result);
         }
-
-        private static bool ParsePotCharacter(char c) => c is '#';
-
-        // TODO: Simplify to SpanString
-        [GeneratedRegex("(?'initial'[.#]*) => (?'result'[.#])", RegexOptions.Compiled)]
-        private static partial Regex RuleRegex();
     }
 
     private class PlantIterator
@@ -138,10 +127,8 @@ public partial class Day12 : Problem<int, long>
         }
     }
 
-    private partial class PotRow
+    private class PotRow
     {
-        private static readonly Regex initialStatePattern = InitialStateRegex();
-
         private PotLinkedList pots;
 
         public int PotIndexSum => pots.GetAlivePlantIndices().Sum();
@@ -274,13 +261,10 @@ public partial class Day12 : Problem<int, long>
 
         public static PotRow Parse(string rawInitialState)
         {
-            var plantsString = initialStatePattern.Match(rawInitialState).Groups["initialState"].Value;
-            var plants = plantsString.Select(p => p == '#').ToArray();
+            var plantsString = rawInitialState.SubstringSpanAfter(": ");
+            var plants = plantsString.SelectArray(Pot.ParsePotCharacter);
             return new(plants);
         }
-
-        [GeneratedRegex("initial state: (?'initialState'.*)")]
-        private static partial Regex InitialStateRegex();
     }
 
     // TODO: Migrate this into a HashedItemDictionary
@@ -400,5 +384,7 @@ public partial class Day12 : Problem<int, long>
 
         public Pot NewPrevious() => new(Index - 1, default);
         public Pot NewNext() => new(Index + 1, default);
+
+        public static bool ParsePotCharacter(char c) => c is '#';
     }
 }

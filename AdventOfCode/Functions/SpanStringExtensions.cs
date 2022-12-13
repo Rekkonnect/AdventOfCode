@@ -1,7 +1,9 @@
 ﻿namespace AdventOfCode.Functions;
 
+using AdventOfCode.Utilities.TwoDimensions;
 using Garyon.Exceptions;
 using System;
+using System.Collections.Immutable;
 using System.Globalization;
 using static AdventOfCode.Functions.SpanStringExtensions;
 
@@ -131,17 +133,6 @@ public static class SpanStringExtensions
 
         return index;
     }
-    public static int IndexOf(this SpanString s, char delimiter, out int nextIndex)
-    {
-        int index = s.IndexOf(delimiter);
-        nextIndex = -1;
-        if (index > -1)
-        {
-            nextIndex = index + 1;
-        }
-
-        return index;
-    }
 
     /// <summary>
     /// Splits the given <seealso cref="SpanString"/> based on the first
@@ -213,6 +204,29 @@ public static class SpanStringExtensions
         return SliceBefore(spanString, delimiterEnd);
     }
 
+    public static SpanString SliceAfter(this SpanString spanString, string delimiter)
+    {
+        spanString.IndexOf(delimiter, out int startIndex);
+        if (startIndex < 0)
+            return spanString;
+
+        return spanString[startIndex..];
+    }
+    public static SpanString SliceBefore(this SpanString spanString, string delimiter)
+    {
+        int endIndex = spanString.IndexOf(delimiter);
+        if (endIndex < 0)
+            return spanString;
+
+        return spanString[..endIndex];
+    }
+
+    public static SpanString SliceBetween(this SpanString spanString, string delimiterStart, string delimiterEnd)
+    {
+        spanString = SliceAfter(spanString, delimiterStart);
+        return SliceBefore(spanString, delimiterEnd);
+    }
+
     public static IReadOnlyList<string> SplitToStrings(this SpanString spanString, string delimiter)
     {
         return SplitSelect(spanString, delimiter, span => new string(span));
@@ -241,6 +255,19 @@ public static class SpanStringExtensions
         {
             results.Add(selector(span));
         }
+    }
+
+    public static ImmutableArray<TResult> SelectLines<TResult>(this SpanString spanString, SpanStringSelector<TResult> selector)
+    {
+        var arrayBuilder = ImmutableArray.CreateBuilder<TResult>();
+
+        var lineEnumerator = spanString.EnumerateLines();
+        foreach (var line in lineEnumerator)
+        {
+            var selected = selector(line);
+            arrayBuilder.Add(selected);
+        }
+        return arrayBuilder.ToImmutable();
     }
 
     public static IReadOnlyList<string> SplitToStrings(this SpanString spanString, char delimiter)
@@ -272,6 +299,6 @@ public static class SpanStringExtensions
             results.Add(selector(span));
         }
     }
-
-    public delegate T SpanStringSelector<T>(SpanString spanString);
 }
+
+public delegate T SpanStringSelector<T>(SpanString spanString);
