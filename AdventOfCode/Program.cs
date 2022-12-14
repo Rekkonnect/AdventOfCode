@@ -4,6 +4,7 @@ public class Program : BaseProgram
 {
     public static void Main()
     {
-        ValidateAllSolutions();
+        //RunTodaysProblem();
+        RunProblem(2022, 13);
     }
 }
