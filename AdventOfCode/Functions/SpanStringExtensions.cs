@@ -1,11 +1,9 @@
-﻿namespace AdventOfCode.Functions;
-
-using AdventOfCode.Utilities.TwoDimensions;
-using Garyon.Exceptions;
-using System;
+﻿using Garyon.Exceptions;
 using System.Collections.Immutable;
 using System.Globalization;
 using static AdventOfCode.Functions.SpanStringExtensions;
+
+namespace AdventOfCode.Functions;
 
 public static class SpanStringExtensions
 {
