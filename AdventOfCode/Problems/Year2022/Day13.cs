@@ -1,6 +1,7 @@
 ﻿using Garyon.Objects.Enumerators;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 
 namespace AdventOfCode.Problems.Year2022;
 
@@ -11,19 +12,33 @@ public class Day13 : Problem<int>
     public override int SolvePart1()
     {
         int indexSum = 0;
-        for (int i = 0; i < packetPairs.Length; i++)
+
+        foreach (var (index, packetPair) in packetPairs.WithIndex())
         {
-            bool ordered = packetPairs[i].IsOrdered();
+            bool ordered = packetPair.IsOrdered();
             if (!ordered)
                 continue;
 
-            indexSum += i + 1;
+            indexSum += index + 1;
         }
         return indexSum;
     }
     public override int SolvePart2()
     {
-        return -1;
+        var pairList = new PacketPairList(packetPairs);
+        var packetList = pairList.GetAllPackets();
+
+        var divisorPacket2 = Packet.Parse("[[2]]");
+        var divisorPacket6 = Packet.Parse("[[6]]");
+
+        packetList.Add(divisorPacket2);
+        packetList.Add(divisorPacket6);
+
+        packetList.Sort();
+
+        int divisorPacket2Index = packetList.IndexOf(divisorPacket2) + 1;
+        int divisorPacket6Index = packetList.IndexOf(divisorPacket6) + 1;
+        return divisorPacket2Index * divisorPacket6Index;
     }
 
     protected override void LoadState()
@@ -52,6 +67,29 @@ public class Day13 : Problem<int>
         packetPairs = pairBuilder.ToImmutable();
     }
 
+    private class PacketPairList
+    {
+        public ImmutableArray<PacketPair> PacketPairs { get; }
+
+        public PacketPairList(ImmutableArray<PacketPair> packetPairs)
+        {
+            PacketPairs = packetPairs;
+        }
+
+        public List<Packet> GetAllPackets()
+        {
+            var result = new List<Packet>(PacketPairs.Length * 2);
+
+            foreach (var packetPair in PacketPairs)
+            {
+                result.Add(packetPair.Left);
+                result.Add(packetPair.Right);
+            }
+
+            return result;
+        }
+    }
+
     private record PacketPair(Packet Left, Packet Right)
     {
         public bool IsOrdered()
@@ -60,7 +98,7 @@ public class Day13 : Problem<int>
         }
     }
 
-    private interface IPacketData : IComparable<IPacketData>
+    private interface IPacketData : IComparable<IPacketData>, IEquatable<IPacketData>
     {
         public abstract IEnumerable<IPacketData> EnumerateNestedData();
     }
@@ -73,7 +111,7 @@ public class Day13 : Problem<int>
 
         public static Packet Parse(SpanString spanString)
         {
-            var dataList = PacketDataList.Parse(ref spanString);
+            var dataList = Parse(ref spanString);
             return new(dataList);
         }
 
@@ -93,7 +131,7 @@ public class Day13 : Problem<int>
             switch (other)
             {
                 case SinglePacketData single:
-                    return -single.CompareTo(DataList.FirstOrDefault());
+                    return -single.CompareTo(this);
 
                 case PacketDataList otherList:
                     int countComparison = DataList.Count.CompareTo(otherList.DataList.Count);
@@ -158,6 +196,14 @@ public class Day13 : Problem<int>
         {
             return $"[{string.Join(',', DataList)}]";
         }
+
+        public bool Equals(IPacketData other)
+        {
+            if (other is not PacketDataList packetList)
+                return false;
+
+            return DataList.SequenceEqual(packetList.DataList);
+        }
     }
     private record SinglePacketData(int Value)
         : IPacketData
@@ -179,6 +225,7 @@ public class Day13 : Problem<int>
             }
 
             var nextEnumerated = right.EnumerateNestedData();
+            bool nextHasMoreElements = false;
             while (true)
             {
                 if (nextEnumerated is null)
@@ -187,16 +234,26 @@ public class Day13 : Problem<int>
                     return 1;
                 }
 
-                if (nextEnumerated is SingleElementCollection<IPacketData> single)
+                if (nextEnumerated is IEnumerable<SinglePacketData> single)
                 {
-                    return CompareTo(single.First() as SinglePacketData);
+                    int comparison = CompareTo(single.First());
+
+                    if (comparison is 0)
+                    {
+                        if (nextHasMoreElements)
+                            return -1;
+                    }
+                    return comparison;
                 }
+
+                int nextCount = nextEnumerated.Count();
+                nextHasMoreElements |= nextCount > 1;
 
                 nextEnumerated = nextEnumerated.FirstOrDefault()?.EnumerateNestedData();
             }
         }
 
-        public IEnumerable<IPacketData> EnumerateNestedData() => new SingleElementCollection<IPacketData>(this);
+        public IEnumerable<IPacketData> EnumerateNestedData() => new SingleElementCollection<SinglePacketData>(this);
 
         public static SinglePacketData Parse(ref SpanString spanString)
         {
@@ -208,6 +265,12 @@ public class Day13 : Problem<int>
         public override string ToString()
         {
             return Value.ToString();
+        }
+
+        public bool Equals(IPacketData other)
+        {
+            return other is SinglePacketData single
+                && single.Value == Value;
         }
     }
 }
