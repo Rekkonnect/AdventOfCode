@@ -1,5 +1,4 @@
-﻿using AdventOfCode.Functions;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace AdventOfCode.Utilities.TwoDimensions;
 
@@ -31,8 +30,17 @@ public struct Rectangle
         set => (Right, Bottom) = value;
     }
 
-    public int Width => Math.Abs(Top - Bottom) + 1;
-    public int Height => Math.Abs(Left - Right) + 1;
+    public int MinX => Math.Min(Left, Right);
+    public int MaxX => Math.Max(Left, Right);
+
+    public int MinY => Math.Min(Bottom, Top);
+    public int MaxY => Math.Max(Bottom, Top);
+
+    public Location2D Min => (MinX, MinY);
+    public Location2D Max => (MaxX, MaxY);
+
+    public int Width => Math.Abs(Left - Right) + 1;
+    public int Height => Math.Abs(Top - Bottom) + 1;
 
     public Location2D Dimensions => new(Width, Height);
 
@@ -57,6 +65,22 @@ public struct Rectangle
     public bool IsWithinX(int x) => MathFunctions.BetweenInclusive(x, Left, Right);
     public bool IsWithinY(int y) => MathFunctions.BetweenInclusive(y, Top, Bottom);
     public bool IsWithin(Location2D point) => IsWithinX(point.X) && IsWithinY(point.Y);
+
+    public static Rectangle FromRectangles(Rectangle a, Rectangle b)
+    {
+        // I fucking hate this
+        var minA = a.Min;
+        var maxA = a.Max;
+        var minB = b.Min;
+        var maxB = b.Max;
+
+        int minX = Math.Min(a.MinX, b.MinX);
+        int maxX = Math.Max(a.MaxX, b.MaxX);
+        int minY = Math.Min(a.MinY, b.MinY);
+        int maxY = Math.Max(a.MaxY, b.MaxY);
+
+        return new(minX, maxX, minY, maxY);
+    }
 
     public static Rectangle FromBounds(Location2D a, Location2D b)
     {

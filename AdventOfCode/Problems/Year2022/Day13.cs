@@ -1,7 +1,6 @@
 ﻿using Garyon.Objects.Enumerators;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
 
 namespace AdventOfCode.Problems.Year2022;
 
