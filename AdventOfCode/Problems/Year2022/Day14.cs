@@ -185,12 +185,13 @@ public class Day14 : Problem<int>
         {
             var bounds = DrawnBounds(lines);
 
-            int floorY = bounds.MaxY + 2;
+            int floorY = bounds.MaxY + 1;
             bounds.Top += 2;
 
             // Greatly overshoot the width because laziness
-            bounds.Left -= floorY + 1;
-            bounds.Right += floorY + 1;
+            int previousWidth = bounds.Width;
+            bounds.Left -= floorY * 2;
+            bounds.Right += floorY * 2;
 
             Location2D floorStart = (bounds.MinX, floorY);
             Location2D floorEnd = (bounds.MaxX, floorY);
