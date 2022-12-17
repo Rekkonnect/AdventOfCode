@@ -190,8 +190,8 @@ public class Day14 : Problem<int>
 
             // Greatly overshoot the width because laziness
             int previousWidth = bounds.Width;
-            bounds.Left -= floorY * 2;
-            bounds.Right += floorY * 2;
+            bounds.Left -= floorY;
+            bounds.Right += floorY;
 
             Location2D floorStart = (bounds.MinX, floorY);
             Location2D floorEnd = (bounds.MaxX, floorY);
