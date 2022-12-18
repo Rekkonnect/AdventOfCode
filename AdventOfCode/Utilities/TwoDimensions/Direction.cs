@@ -12,3 +12,18 @@ public enum Direction
     East = Right,
     West = Left,
 }
+
+public static class DirectionExtensions
+{
+    public static Direction Inverse(this Direction direction)
+    {
+        return direction switch
+        {
+            Direction.Left => Direction.Right,
+            Direction.Right => Direction.Left,
+            Direction.Down => Direction.Up,
+            Direction.Up => Direction.Down,
+            _ => default,
+        };
+    }
+}
