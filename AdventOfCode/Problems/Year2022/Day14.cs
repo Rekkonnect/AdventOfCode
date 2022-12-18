@@ -293,18 +293,9 @@ public class Day14 : Problem<int>
 
             static void ParseAddLocation(DrawnLineCollectionBuilder builder, SpanString startSpan)
             {
-                var lastLocation = ParseLocation(startSpan);
+                var lastLocation = CommonParsing.ParseLocation2D(startSpan);
                 builder.Add(lastLocation);
             }
-        }
-
-        // I must abstract these parsing methods somewhere
-        private static Location2D ParseLocation(SpanString span)
-        {
-            span.SplitOnceSpan(',', out var xSpan, out var ySpan);
-            int x = xSpan.ParseInt32();
-            int y = ySpan.ParseInt32();
-            return (x, y);
         }
 
         private class DrawnLineCollectionBuilder

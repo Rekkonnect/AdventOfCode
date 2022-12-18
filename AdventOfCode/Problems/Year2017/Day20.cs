@@ -170,18 +170,7 @@ public partial class Day20 : Problem<int>
             raw = nextSpan;
 
             locationSpan = locationSpan.SliceAfter('<');
-            return ParseLocation(locationSpan);
-        }
-
-        private static Location3D ParseLocation(SpanString raw)
-        {
-            raw.SplitOnceSpan(',', out var xSpan, out var yzSpan);
-            yzSpan.SplitOnceSpan(',', out var ySpan, out var zSpan);
-
-            int x = xSpan.ParseInt32();
-            int y = ySpan.ParseInt32();
-            int z = zSpan.ParseInt32();
-            return (x, y, z);
+            return CommonParsing.ParseLocation3D(locationSpan);
         }
     }
 }
