@@ -80,5 +80,24 @@ public class CircularLinkedListNode<T>
         return current;
     }
 
+    public void ShiftRight(int steps)
+    {
+        var removedPrevious = previous;
+        previous.Next = Next;
+        var nextAfter = removedPrevious.GetNext(steps);
+
+        Next = nextAfter.next;
+        nextAfter.Next = this;
+    }
+    public void ShiftLeft(int steps)
+    {
+        var removedNext = next;
+        previous.Next = Next;
+        var previousBefore = removedNext.GetPrevious(steps);
+
+        Previous = previousBefore.previous;
+        previousBefore.Previous = this;
+    }
+
     public override string ToString() => Value.ToString();
 }

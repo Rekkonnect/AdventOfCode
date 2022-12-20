@@ -1,5 +1,4 @@
 ﻿using AdventOfCode.Utilities.TwoDimensions;
-using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 
 namespace AdventOfCode.Problems.Year2022;
@@ -8,10 +7,12 @@ public class Day17 : Problem<long>
 {
     private MovementInstructionList instructionList;
 
+    [PartSolution(PartSolutionStatus.WIP)]
     public override long SolvePart1()
     {
         return PlayGame(2022);
     }
+    [PartSolution(PartSolutionStatus.WIP)]
     public override long SolvePart2()
     {
         const long trillion = 1_000_000_000_000;

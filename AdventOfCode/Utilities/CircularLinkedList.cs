@@ -141,7 +141,7 @@ public class CircularLinkedList<T> : IList<T>
         if (Count > 1)
             return false;
 
-        if (Count == 1)
+        if (Count is 1)
             ResetState();
 
         return true;
@@ -195,7 +195,7 @@ public class CircularLinkedList<T> : IList<T>
     }
     public int IndexOf(T item)
     {
-        if (Count == 0)
+        if (Count is 0)
             return -1;
 
         int firstIndex = lastIndexedNodeIndex;
@@ -269,7 +269,12 @@ public class CircularLinkedList<T> : IList<T>
     public IEnumerator<T> GetEnumerator() => new Enumerator(this);
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    public class Enumerator : IEnumerator<T>
+    public IEnumerator<CircularLinkedListNode<T>> GetNodeEnumerator()
+    {
+        return new Enumerator(this);
+    }
+
+    public class Enumerator : IEnumerator<T>, IEnumerator<CircularLinkedListNode<T>>
     {
         private CircularLinkedListNode<T> currentNode;
         private readonly CircularLinkedListNode<T> head;
@@ -277,6 +282,14 @@ public class CircularLinkedList<T> : IList<T>
 
         public T Current => currentNode.Value;
         object IEnumerator.Current => Current;
+
+        CircularLinkedListNode<T> IEnumerator<CircularLinkedListNode<T>>.Current
+        {
+            get
+            {
+                return currentNode;
+            }
+        }
 
         public Enumerator(CircularLinkedList<T> list)
         {
