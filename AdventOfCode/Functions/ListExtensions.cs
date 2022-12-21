@@ -8,4 +8,12 @@ public static class IListExtensions
         list.RemoveLast();
         return last;
     }
+
+    public static List<T> ToListOrExisting<T>(this IEnumerable<T> source)
+    {
+        if (source is List<T> list)
+            return list;
+
+        return source.ToList();
+    }
 }
