@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-using AdventOfCode.Utilities;
+using AdventOfCode.Functions;
 using System.Numerics;
 
 namespace AdventOfCode.Problems.Year2021;

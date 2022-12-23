@@ -69,17 +69,28 @@ public struct Rectangle
     public static Rectangle FromRectangles(Rectangle a, Rectangle b)
     {
         // I fucking hate this
-        var minA = a.Min;
-        var maxA = a.Max;
-        var minB = b.Min;
-        var maxB = b.Max;
-
         int minX = Math.Min(a.MinX, b.MinX);
         int maxX = Math.Max(a.MaxX, b.MaxX);
         int minY = Math.Min(a.MinY, b.MinY);
         int maxY = Math.Max(a.MaxY, b.MaxY);
 
         return new(minX, maxX, minY, maxY);
+    }
+
+    public static Rectangle MBR(IReadOnlyList<Location2D> locations)
+    {
+        var min = locations[0];
+        var max = locations[0];
+
+        foreach (var location in locations)
+        {
+            min.X = Math.Min(location.X, min.X);
+            min.Y = Math.Min(location.Y, min.Y);
+            max.X = Math.Max(location.X, max.X);
+            max.Y = Math.Max(location.Y, max.Y);
+        }
+
+        return FromBounds(min, max);
     }
 
     public static Rectangle FromBounds(Location2D a, Location2D b)
