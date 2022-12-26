@@ -1,18 +1,56 @@
-﻿namespace AdventOfCode.Problems.Year2022;
+﻿#define ANIMATION
+
+using System.Threading;
+
+namespace AdventOfCode.Problems.Year2022;
 
 public class Day25 : FinalDay<string>
 {
     private ImmutableArray<SNAFU> numbers;
 
+#if ANIMATION
+    [PrintsToConsole]
+#endif
     public override string SolvePart1()
     {
-        return SNAFU.Sum(numbers).ToString();
+        var sum = SNAFU.Sum(numbers);
+#if ANIMATION
+        ConsoleAnimation(sum);
+#endif
+        return sum.ToString();
     }
 
     protected override void LoadState()
     {
         var span = FileContents.AsSpan();
         numbers = span.Trim().SelectLines(SNAFU.Parse);
+    }
+
+    private void ConsoleAnimation(SNAFU target)
+    {
+        var previousPosition = Console.GetCursorPosition();
+        Console.SetCursorPosition(0, previousPosition.Top + 3);
+        Console.CursorVisible = false;
+
+        int targetvalueLength = target.ToString().Length;
+
+        long targetValue = target.Value;
+
+        const int frames = 148;
+        for (int i = 0; i < frames; i++)
+        {
+            double multiplier = Math.Pow((double)i / frames, 4.8);
+            long currentValue = (long)(targetValue * multiplier);
+            var current = new SNAFU(currentValue);
+            Console.CursorLeft = 22;
+            Console.Write(current.ToString().PadLeft(targetvalueLength));
+
+            Thread.Sleep(1);
+        }
+
+        Console.CursorVisible = true;
+        Console.SetCursorPosition(previousPosition.Left, previousPosition.Top);
+        Console.WriteLine();
     }
 
     /// <summary>It is a SNAFU, duh</summary>
@@ -22,7 +60,7 @@ public class Day25 : FinalDay<string>
     /// <see langword="F"/>uel
     /// <see langword="U"/>nit
     /// </remarks>
-    private record SNAFU(long Value)
+    private record struct SNAFU(long Value)
     {
         private const int radix = 5;
 
@@ -73,6 +111,9 @@ public class Day25 : FinalDay<string>
 
         public override string ToString()
         {
+            if (Value is 0)
+                return "0";
+
             long leftover = Value;
             var stringBuilder = new StringBuilder();
 

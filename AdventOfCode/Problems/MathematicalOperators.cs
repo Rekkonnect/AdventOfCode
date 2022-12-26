@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace AdventOfCode.Problems.Year2022;
+namespace AdventOfCode.Problems;
 
 public static class MathematicalOperators
 {

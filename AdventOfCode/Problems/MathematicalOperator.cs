@@ -1,4 +1,4 @@
-﻿namespace AdventOfCode.Problems.Year2022;
+﻿namespace AdventOfCode.Problems;
 
 public enum MathematicalOperator
 {
