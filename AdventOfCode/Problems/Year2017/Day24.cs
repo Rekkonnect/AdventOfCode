@@ -168,7 +168,7 @@ public partial class Day24 : Problem<int, int>
 
         public static Component Parse(SpanString raw)
         {
-            raw.SplitOnceSpan('/', out var leftSpan, out var rightSpan);
+            raw.SplitOnce('/', out var leftSpan, out var rightSpan);
             int a = leftSpan.ParseInt32();
             int b = rightSpan.ParseInt32();
             return new(a, b);

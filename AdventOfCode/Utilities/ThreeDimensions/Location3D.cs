@@ -49,9 +49,9 @@ public struct Location3D : ILocation<Location3D>, IHasX, IHasY, IHasZ
     public bool SatisfiesComparisonPerCoordinate(Location3D other, ComparisonKinds kinds)
     {
         var difference = SignedDifferenceFrom(other);
-        return difference.X.SatisfiesComparisonFixed(0, kinds)
-            && difference.Y.SatisfiesComparisonFixed(0, kinds)
-            && difference.Z.SatisfiesComparisonFixed(0, kinds);
+        return difference.X.SatisfiesComparison(0, kinds)
+            && difference.Y.SatisfiesComparison(0, kinds)
+            && difference.Z.SatisfiesComparison(0, kinds);
     }
     public bool MatchesComparisonPerCoordinate(Location3D other, ComparisonResult result)
     {

@@ -1,6 +1,6 @@
 ﻿using AdventOfCode.Utilities;
 using AdventOfCode.Utilities.TwoDimensions;
-using System.IO.Compression;
+using Garyon.Functions;
 
 namespace AdventOfCode.Problems.Year2022;
 
@@ -8,12 +8,14 @@ public class Day23 : Problem<int>
 {
     private ImmutableArray<Location2D> locations;
 
+    [PartSolution(PartSolutionStatus.WIP)]
     public override int SolvePart1()
     {
         var grid = new ElfGrid(locations);
         grid.Iterate(10);
         return grid.MBREmptySpace();
     }
+    [PartSolution(PartSolutionStatus.Uninitialized)]
     public override int SolvePart2()
     {
         return -1;

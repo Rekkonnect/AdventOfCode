@@ -166,7 +166,7 @@ public partial class Day20 : Problem<int>
 
         private static Location3D ParseLocationField(ref SpanString raw)
         {
-            raw.SplitOnceSpan('>', out var locationSpan, out var nextSpan);
+            raw.SplitOnce('>', out var locationSpan, out var nextSpan);
             raw = nextSpan;
 
             locationSpan = locationSpan.SliceAfter('<');

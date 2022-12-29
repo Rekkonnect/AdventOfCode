@@ -1,6 +1,4 @@
 ﻿using AdventOfCSharp.Extensions;
-using static AdventOfCode.Functions.SpanStringExtensions;
-using System.Collections.Immutable;
 
 namespace AdventOfCode.Functions;
 
@@ -120,12 +118,12 @@ public static class StringExtensions
     /// </returns>
     public static bool SplitOnceSpan(this string s, string delimiter, out SpanString left, out SpanString right)
     {
-        return s.AsSpan().SplitOnceSpan(delimiter, out left, out right);
+        return s.AsSpan().SplitOnce(delimiter, out left, out right);
     }
     /// <inheritdoc cref="SplitOnceSpan(string, string, out SpanString, out SpanString)"/>
     public static bool SplitOnceSpan(this string s, char delimiter, out SpanString left, out SpanString right)
     {
-        return s.AsSpan().SplitOnceSpan(delimiter, out left, out right);
+        return s.AsSpan().SplitOnce(delimiter, out left, out right);
     }
 
     public static ImmutableArray<TResult> SelectLines<TResult>(this string s, SpanStringSelector<TResult> selector)

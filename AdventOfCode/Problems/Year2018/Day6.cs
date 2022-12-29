@@ -32,7 +32,7 @@ public partial class Day6 : Problem<int>
 
     private static Location2D ParseLocation(SpanString span)
     {
-        span.SplitOnceSpan(", ", out var xSpan, out var ySpan);
+        span.SplitOnce(", ", out var xSpan, out var ySpan);
         int x = xSpan.ParseInt32();
         int y = ySpan.ParseInt32();
         return (x, y);

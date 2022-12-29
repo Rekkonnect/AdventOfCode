@@ -92,7 +92,7 @@ public class Day4 : Problem<int>
 
         public static ElfAssignment Parse(SpanString raw)
         {
-            bool delimited = raw.SplitOnceSpan('-', out var left, out var right);
+            bool delimited = raw.SplitOnce('-', out var left, out var right);
             Debug.Assert(delimited);
 
             int start = left.ParseInt32();

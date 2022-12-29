@@ -1,5 +1,4 @@
-﻿using AdventOfCode.Functions;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace AdventOfCode.Problems.Year2015;
 

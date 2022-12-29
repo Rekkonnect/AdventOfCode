@@ -56,29 +56,4 @@ public static class SpanExtensions
 
         return result;
     }
-
-    public static int IndexOf<TSource>(this Span<TSource> s, TSource delimiter, out int nextIndex)
-        where TSource : IEquatable<TSource>
-    {
-        int index = s.IndexOf(delimiter);
-        nextIndex = -1;
-        if (index > -1)
-        {
-            nextIndex = index + 1;
-        }
-
-        return index;
-    }
-    public static int IndexOf<TSource>(this ReadOnlySpan<TSource> s, TSource delimiter, out int nextIndex)
-        where TSource : IEquatable<TSource>
-    {
-        int index = s.IndexOf(delimiter);
-        nextIndex = -1;
-        if (index > -1)
-        {
-            nextIndex = index + 1;
-        }
-
-        return index;
-    }
 }

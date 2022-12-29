@@ -1,5 +1,4 @@
 ﻿using Garyon.Objects.Enumerators;
-using System.Collections.Immutable;
 using System.Diagnostics;
 
 namespace AdventOfCode.Problems.Year2022;

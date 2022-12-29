@@ -291,20 +291,9 @@ public class Day13 : Problem<Location2D>
             var cell = new TrackCell(connection);
 
             if (hasCart)
-                cell.Cart = new((x, y), ParseDirection(c));
+                cell.Cart = new((x, y), CommonParsing.ParseDirectionArrow(c));
 
             return cell;
-        }
-
-        private static Direction ParseDirection(char c)
-        {
-            return c switch
-            {
-                '<' => Direction.Left,
-                '^' => Direction.Up,
-                '>' => Direction.Right,
-                'v' => Direction.Down,
-            };
         }
 
         private static TrackCellConnection ParseConnection(char c, out bool hasCart)

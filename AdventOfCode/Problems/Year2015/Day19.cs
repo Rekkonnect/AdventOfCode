@@ -334,7 +334,7 @@ public partial class Day19 : Problem<int>
     {
         public static RawReplacementRule Parse(SpanString s)
         {
-            s.SplitOnceSpan(" => ", out var moleculeSpan, out var replacementSpan);
+            s.SplitOnce(" => ", out var moleculeSpan, out var replacementSpan);
             var molecule = moleculeSpan.ToString();
             var replacement = replacementSpan.ToString();
             return new(molecule, replacement);

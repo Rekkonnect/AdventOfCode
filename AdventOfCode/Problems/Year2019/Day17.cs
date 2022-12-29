@@ -359,20 +359,17 @@ public class Day17 : Problem<int>
             lines = k.ToArray();
             var grid = new SpaceGrid(lines[0].Length, lines.Length);
             for (int y = 0; y < grid.Height; y++)
+            {
                 for (int x = 0; x < grid.Width; x++)
                 {
                     if ((grid[x, y] = ParseElementType(lines[y][x])) == ElementType.VacuumRobot)
                     {
                         grid.CurrentRobotLocation = (x, y);
-                        grid.CurrentRobotDirection = lines[y][x] switch
-                        {
-                            '^' => Direction.Up,
-                            '>' => Direction.Right,
-                            'v' => Direction.Down,
-                            '<' => Direction.Right,
-                        };
+                        grid.CurrentRobotDirection = CommonParsing.ParseDirectionArrow(lines[y][x]);
                     }
                 }
+            }
+
             return grid;
         }
     }

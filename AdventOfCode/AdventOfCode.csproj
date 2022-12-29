@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="AdventOfCSharp" Version="1.4.2" />
     <PackageReference Include="AdventOfCSharp.Analyzers" Version="1.4.2" />
-    <PackageReference Include="Garyon" Version="0.2.7" />
+    <PackageReference Include="Garyon" Version="0.3.0.1" />
     <PackageReference Include="UltimateOrb.Int128" Version="1.0.8" />
   </ItemGroup>
 </Project>

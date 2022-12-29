@@ -168,7 +168,7 @@ public partial class Day16 : Problem<int, ulong>
         public static ValidFieldRanges Parse(string raw)
         {
             var rawSpan = raw.AsSpan();
-            rawSpan.SplitOnceSpan(": ", out var fieldNameSpan, out var fieldRanges);
+            rawSpan.SplitOnce(": ", out var fieldNameSpan, out var fieldRanges);
             var fieldName = fieldNameSpan.ToString();
             var result = new ValidFieldRanges(fieldName);
 
@@ -199,7 +199,7 @@ public partial class Day16 : Problem<int, ulong>
     {
         public static FieldRange Parse(SpanString spanString)
         {
-            spanString.SplitOnceSpan('-', out var left, out var right);
+            spanString.SplitOnce('-', out var left, out var right);
             int start = left.ParseInt32();
             int end = right.ParseInt32();
             return new(start, end);

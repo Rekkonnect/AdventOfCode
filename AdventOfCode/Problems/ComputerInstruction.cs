@@ -20,7 +20,7 @@ public partial record ComputerInstruction(ComputerOperator Operator, IReadOnlyLi
     public static ComputerInstruction Parse(string s, string argumentSplitter = " ")
     {
         var spanString = s.AsSpan();
-        spanString.SplitOnceSpan(' ', out var operatorSpan, out var argumentsSpan);
+        spanString.SplitOnce(' ', out var operatorSpan, out var argumentsSpan);
         var op = ComputerOperatorInformation.ParseMnemonic(operatorSpan.ToString());
         var arguments = argumentsSpan.SplitToStrings(argumentSplitter).ToArray();
         return new(op, arguments);

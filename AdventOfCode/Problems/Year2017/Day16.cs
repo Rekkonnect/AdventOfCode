@@ -125,7 +125,7 @@ public partial class Day16 : Problem<string>
                 return null;
 
             var pattern = raw[1..];
-            pattern.SplitOnceSpan('/', out var left, out var right);
+            pattern.SplitOnce('/', out var left, out var right);
             int x = left.ParseInt32();
             int y = right.ParseInt32();
 

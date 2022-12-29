@@ -1,5 +1,4 @@
 ﻿using AdventOfCode.Utilities;
-using System.Collections.Immutable;
 
 namespace AdventOfCode.Functions;
 

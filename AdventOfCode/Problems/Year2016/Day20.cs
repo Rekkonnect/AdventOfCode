@@ -83,7 +83,7 @@ public partial class Day20 : Problem<uint>
         public static AddressRange Parse(string raw)
         {
             var spanString = raw.AsSpan();
-            spanString.SplitOnceSpan('-', out var leftSpan, out var rightSpan);
+            spanString.SplitOnce('-', out var leftSpan, out var rightSpan);
             uint start = leftSpan.ParseUInt32();
             uint end = rightSpan.ParseUInt32();
             return new(start, end);

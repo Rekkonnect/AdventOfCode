@@ -206,7 +206,7 @@ public partial class Day19 : Problem<int>
         }
         private static ResourceValue ParseResourceValue(SpanString span)
         {
-            span.SplitOnceSpan(' ', out var valueSpan, out var resourceTypeSpan);
+            span.SplitOnce(' ', out var valueSpan, out var resourceTypeSpan);
             int value = valueSpan.ParseInt32();
             var resource = ParseResourceType(resourceTypeSpan);
             return new(resource, value);

@@ -60,7 +60,7 @@ public class Day3 : Problem<int>
 
         public DeliveryDirections(string s)
         {
-            Directions = s.Select(ParseDirection).ToArray();
+            Directions = s.Select(CommonParsing.ParseDirectionArrow).ToArray();
             AnalyzeDirections();
         }
 
@@ -73,17 +73,6 @@ public class Day3 : Problem<int>
                 location.Forward(d);
                 GivenPresents.Add(location);
             }
-        }
-
-        private static Direction ParseDirection(char c)
-        {
-            return c switch
-            {
-                '<' => Direction.Left,
-                '^' => Direction.Up,
-                '>' => Direction.Right,
-                'v' => Direction.Down,
-            };
         }
     }
 }

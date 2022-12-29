@@ -277,7 +277,7 @@ public class Day14 : Problem<int>
 
             while (true)
             {
-                bool hasNext = rawSequenceLine.SplitOnceSpan(" -> ", out var startSpan, out var nextSpan);
+                bool hasNext = rawSequenceLine.SplitOnce(" -> ", out var startSpan, out var nextSpan);
 
                 if (!hasNext)
                 {
