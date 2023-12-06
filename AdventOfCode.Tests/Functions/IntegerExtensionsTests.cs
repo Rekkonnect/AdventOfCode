@@ -13,13 +13,15 @@ public class IntegerExtensionsTests
         for (int next = 10; next < 100000; next *= 10)
         {
             for (int i = previous; i < next; i++)
-                Assert.AreEqual(currentDigitCount, i.GetDigitCount(), i.ToString());
+            {
+                Assert.That(i.GetDigitCount(), Is.EqualTo(currentDigitCount), message: i.ToString());
+            }
             previous = next;
             currentDigitCount++;
         }
 
-        Assert.AreEqual(6, 456100.GetDigitCount());
-        Assert.AreEqual(7, 2456100.GetDigitCount());
-        Assert.AreEqual(8, 99999999.GetDigitCount());
+        Assert.That(456100.GetDigitCount(), Is.EqualTo(6));
+        Assert.That(2456100.GetDigitCount(), Is.EqualTo(7));
+        Assert.That(99999999.GetDigitCount(), Is.EqualTo(8));
     }
 }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -13,7 +13,7 @@
   <ItemGroup>
     <PackageReference Include="AdventOfCSharp" Version="1.4.2" />
     <PackageReference Include="AdventOfCSharp.Analyzers" Version="1.4.2" />
-    <PackageReference Include="Garyon" Version="0.3.0.1" />
+    <PackageReference Include="Garyon" Version="0.3.2" />
     <PackageReference Include="UltimateOrb.Int128" Version="1.0.8" />
   </ItemGroup>
 </Project>

@@ -89,6 +89,29 @@ public static class MathFunctions
     public static double InvertRadians(double rad) => (FullCircleRadians - rad) % FullCircleRadians;
     #endregion
 
+    #region Tens
+    public static long MultipleOfTen(int exponent)
+    {
+        switch (exponent)
+        {
+            case < 0:
+                return 0;
+            case 0:
+                return 1;
+            case 1:
+                return 10;
+            case 2:
+                return 100;
+            case 3:
+                return 1000;
+            case 4:
+                return 10000;
+        }
+
+        return 10000 * MultipleOfTen(exponent - 4);
+    }
+    #endregion
+
     #region Comparisons
     public static bool BetweenInclusive<T>(T value, T a, T b)
         where T : IBinaryNumber<T>, IShiftOperators<T, T, T>
