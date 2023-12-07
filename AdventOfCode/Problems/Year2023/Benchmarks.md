@@ -1,4 +1,8 @@
-﻿## Day 1
+﻿# Benchmarks for Year 2023
+
+For 2023, the goal is to provide blazing fast solutions, with the primary guideline being < 1 ms.
+
+## Day 1
 
 | Method |      Mean |    Error |   StdDev |
 |------- |----------:|---------:|---------:|
@@ -41,3 +45,11 @@
 |  Input | 769.529 ns | 11.2119 ns | 9.9390 ns |
 |  Part1 |  24.614 ns |  0.2563 ns | 0.2140 ns |
 |  Part2 |   7.962 ns |  0.1027 ns | 0.0910 ns |
+
+## Day 7
+
+| Method |     Mean |   Error |  StdDev |
+|------- |---------:|--------:|--------:|
+|  Input | 135.2 us | 0.32 us | 0.25 us |
+|  Part1 | 279.5 us | 2.89 us | 2.56 us |
+|  Part2 | 296.1 us | 2.59 us | 2.30 us |
