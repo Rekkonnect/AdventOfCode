@@ -53,3 +53,7 @@ For 2023, the goal is to provide blazing fast solutions, with the primary guidel
 |  Input | 135.2 us | 0.32 us | 0.25 us |
 |  Part1 | 279.5 us | 2.89 us | 2.56 us |
 |  Part2 | 296.1 us | 2.59 us | 2.30 us |
+
+## Day 8
+
+> Unsolved part 2
