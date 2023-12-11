@@ -69,3 +69,11 @@ For 2023, the goal is to provide blazing fast solutions, with the primary guidel
 ## Day 10
 
 > Unsolved part 2
+
+## Day 11
+
+| Method |      Mean |    Error |   StdDev |
+|------- |----------:|---------:|---------:|
+|  Input |  37.38 us | 0.677 us | 0.949 us |
+|  Part1 | 288.97 us | 1.927 us | 1.708 us |
+|  Part2 | 287.79 us | 0.654 us | 0.511 us |
