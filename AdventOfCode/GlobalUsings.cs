@@ -11,3 +11,4 @@ global using System.Text;
 global using System.Text.RegularExpressions;
 
 global using SpanString = System.ReadOnlySpan<char>;
+global using MemoryString = System.ReadOnlyMemory<char>;

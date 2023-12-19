@@ -21,28 +21,12 @@ public static class SpanStringExtensionsEx
         return startIndex;
     }
 
-    public static int IndexOf(this SpanString s, string delimiter, out int nextIndex)
+    public static short ParseInt16(this SpanString spanString)
     {
-        int index = s.IndexOf(delimiter);
-        nextIndex = -1;
-        if (index > -1)
-        {
-            nextIndex = index + delimiter.Length;
-        }
-
-        return index;
+        return short.Parse(spanString);
     }
-
-    public static ImmutableArray<TResult> SelectLines<TResult>(this SpanString spanString, SpanStringSelector<TResult> selector)
+    public static ushort ParseUInt16(this SpanString spanString)
     {
-        var arrayBuilder = ImmutableArray.CreateBuilder<TResult>();
-
-        var lineEnumerator = spanString.EnumerateLines();
-        foreach (var line in lineEnumerator)
-        {
-            var selected = selector(line);
-            arrayBuilder.Add(selected);
-        }
-        return arrayBuilder.ToImmutable();
+        return ushort.Parse(spanString);
     }
 }

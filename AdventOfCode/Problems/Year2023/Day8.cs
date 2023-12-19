@@ -1,6 +1,6 @@
-﻿namespace AdventOfCode.Problems.Year2023;
+﻿using AdventOfCode.Utilities;
 
-using MemoryString = ReadOnlyMemory<char>;
+namespace AdventOfCode.Problems.Year2023;
 
 public class Day8 : Problem<int>
 {
@@ -112,7 +112,8 @@ public class Day8 : Problem<int>
 
     private class NodeMap
     {
-        private readonly Dictionary<MemoryString, Node> _nodes = new(SpanComparer.Instance);
+        private readonly MemoryStringDictionary<Node> _nodes
+            = new(MemoryStringComparerHash3.Instance);
 
         public IEnumerable<Node> AllNodes => _nodes.Values;
 
@@ -132,29 +133,7 @@ public class Day8 : Problem<int>
         }
         public Node NodeWithName(string name)
         {
-            return NodeWithName(name.AsMemory());
-        }
-
-        private sealed class SpanComparer : IEqualityComparer<MemoryString>
-        {
-            public static SpanComparer Instance { get; } = new();
-
-            public bool Equals(MemoryString x, MemoryString y)
-            {
-                return x.Span.SequenceEqual(y.Span);
-            }
-
-            public int GetHashCode(MemoryString obj)
-            {
-                // This is specifically for names
-                if (obj.Length < 3)
-                    return obj.Length;
-
-                var span = obj.Span;
-                return (span[0] << 16)
-                    | (span[1] << 8)
-                    | span[2];
-            }
+            return _nodes[name];
         }
     }
 
